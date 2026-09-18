@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --bianco: #ffffff;
+  --bianco-2: #f4f6fa;
+  --blu: #0e2a52;
+  --blu-chiaro: #1d5fd6;
+  --nero: #14161a;
+  --grigio: #6b7280;
+  --linea: #e2e6ee;
+  --accento: #e63946;
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-testo: 'IBM Plex Sans', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bianco); color: var(--nero); font-family: var(--font-testo); line-height: 1.65; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 800; color: var(--blu); line-height: 1.03; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); font-weight: 900; }
+h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
+p { max-width: 62ch; font-size: 1.08rem; }
+.grigio { color: var(--grigio); }
+.accento { color: var(--accento); }
+a { color: var(--blu-chiaro); }
+img { max-width: 100%; display: block; }
+
+/* ---------- header ---------- */
+.barra {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1.6rem;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linea);
+}
+.barra .loghi { display: flex; align-items: center; gap: 1.4rem; }
+.barra .loghi img { height: 34px; width: auto; }
+.barra .separatore { width: 1px; height: 26px; background: var(--linea); }
+.barra nav { display: flex; gap: 1.6rem; }
+.barra nav a { color: var(--nero); font-size: 0.92rem; font-weight: 500; text-decoration: none; }
+.barra nav a:hover { color: var(--accento); }
+
+/* ---------- hero ---------- */
+.hero {
+  padding: 5rem 1.6rem 4rem; text-align: center;
+  background: linear-gradient(180deg, var(--bianco-2), var(--bianco));
+}
+.hero .eyebrow { color: var(--accento); font-weight: 600; font-size: 1rem; margin-bottom: 0.8rem; }
+.hero h1 { margin-bottom: 0.5rem; }
+.hero p.sub { margin: 0 auto; font-size: 1.25rem; color: var(--blu); font-weight: 500; }
+.hero p.tag { margin: 1.2rem auto 0; color: var(--grigio); font-size: 0.95rem; max-width: 52ch; margin-left: auto; margin-right: auto; }
+.cta-scroll {
+  display: inline-block; margin-top: 2rem; padding: 0.85rem 1.8rem;
+  background: var(--blu); color: var(--bianco); border-radius: 999px;
+  font-weight: 600; font-size: 0.95rem; text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.cta-scroll:hover { background: var(--accento); transform: translateY(-2px); }
+
+/* ---------- sezioni ---------- */
+.sezione { padding: 5rem 1.6rem; max-width: 1120px; margin: 0 auto; }
+.sezione.striscia { max-width: none; }
+.intestazione-sezione { max-width: 720px; margin: 0 0 2.6rem; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visibile { opacity: 1; transform: translateY(0); }
+
+/* ---------- statistiche gender gap ---------- */
+.statistiche { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem; margin-bottom: 2.6rem; }
+.stat-card { background: var(--blu); color: var(--bianco); border-radius: 14px; padding: 1.8rem; text-align: center; }
+.stat-card .numero { font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; color: var(--accento); display: block; line-height: 1; margin-bottom: 0.5rem; }
+.stat-card .didascalia { font-size: 0.88rem; color: #cfe0f5; }
+.stat-fonte { text-align: center; font-size: 0.8rem; color: var(--grigio); margin-top: -1.4rem; margin-bottom: 2.6rem; }
+
+/* ---------- righe icona+testo ---------- */
+.righe-icona { display: grid; gap: 2rem; }
+.riga-icona { display: flex; gap: 1.4rem; align-items: flex-start; }
+.cerchio-icona {
+  flex: none; width: 3.2rem; height: 3.2rem; border-radius: 50%;
+  background: var(--bianco-2); display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.riga-icona h3 { font-family: var(--font-testo); font-weight: 700; font-size: 1.15rem; margin: 0 0 0.35rem; color: var(--blu); }
+.riga-icona p { margin: 0; font-size: 1rem; color: var(--nero); }
+
+/* ---------- griglia percorso (fasi) ---------- */
+.fasi { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.6rem; text-align: center; }
+.fase { padding: 2rem 1.2rem; background: var(--bianco-2); border-radius: 14px; }
+.fase .cerchio-icona { margin: 0 auto 1rem; }
+.fase h3 { color: var(--blu); font-size: 1.15rem; margin-bottom: 0.2rem; }
+.fase .tag-fase { color: var(--accento); font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; display: block; margin-bottom: 0.6rem; }
+.fase p { font-size: 0.95rem; margin: 0 auto; }
+
+/* ---------- griglia percorsi (5) ---------- */
+.percorsi { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
+.percorso-card { padding: 1.8rem; background: var(--bianco-2); border-radius: 14px; }
+.percorso-card .cerchio-icona { margin: 0 0 0.9rem; background: var(--bianco); }
+.percorso-card h3 { font-size: 1.15rem; color: var(--blu); margin-bottom: 0.3rem; }
+.percorso-card > p { font-size: 0.95rem; margin: 0 0 1rem; }
+.percorso-card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.6rem; }
+.percorso-card li { font-size: 0.88rem; color: var(--nero); padding-left: 1.1rem; position: relative; }
+.percorso-card li::before { content: '→'; position: absolute; left: 0; color: var(--accento); font-weight: 700; }
+.percorso-card li strong { color: var(--blu); }
+
+/* ---------- griglia strumenti (2x2) ---------- */
+.strumenti { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.4rem; }
+.strumento-card { display: flex; gap: 1.2rem; padding: 1.6rem; background: var(--bianco-2); border-radius: 14px; }
+.strumento-card .cerchio-icona { background: var(--bianco); }
+.strumento-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--blu); }
+.strumento-card p { font-size: 0.95rem; margin: 0; }
+
+/* ---------- striscia accento (stereotipi) ---------- */
+.striscia-accento {
+  background: var(--accento); color: var(--bianco); padding: 4.5rem 1.6rem;
+}
+.striscia-accento .contenuto { max-width: 900px; margin: 0 auto; display: flex; gap: 2rem; align-items: center; }
+.striscia-accento .cerchio-icona { background: rgba(255,255,255,0.18); width: 4.5rem; height: 4.5rem; font-size: 2rem; flex: none; }
+.striscia-accento h2 { color: var(--bianco); }
+.striscia-accento p { color: var(--bianco); opacity: 0.95; }
+.striscia-accento .eyebrow { color: rgba(255,255,255,0.85); font-weight: 600; margin-bottom: 0.5rem; }
+
+/* ---------- riquadro perché ne parliamo ---------- */
+.box-perche { display: flex; gap: 1.6rem; align-items: flex-start; background: var(--bianco-2); border-radius: 14px; padding: 2.2rem; }
+.box-perche .cerchio-icona { background: var(--bianco); width: 4rem; height: 4rem; font-size: 1.8rem; }
+.box-perche p { margin: 0 0 0.9rem; }
+.box-perche p:last-child { margin-bottom: 0; }
+.box-perche strong { color: var(--blu); }
+
+/* ---------- CTA / quiz teaser ---------- */
+.cta {
+  background: var(--blu); color: var(--bianco); padding: 5rem 1.6rem; text-align: center;
+}
+.cta h2 { color: var(--bianco); }
+.cta p.sub { margin: 0 auto 2rem; color: #cfe0f5; font-size: 1.1rem; }
+.badge-prossimamente {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.4);
+  padding: 0.7rem 1.4rem; border-radius: 999px; font-size: 0.92rem; color: #cfe0f5;
+}
+.badge-prossimamente .puntino { width: 8px; height: 8px; border-radius: 50%; background: var(--accento); }
+
+/* ---------- griglia temi (home) ---------- */
+.temi { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.4rem; }
+.tema-card { display: flex; flex-direction: column; padding: 1.8rem; background: var(--bianco-2); border-radius: 14px; }
+.tema-card .cerchio-icona { background: var(--bianco); margin-bottom: 1rem; }
+.tema-card h3 { font-size: 1.1rem; color: var(--blu); margin-bottom: 0.5rem; }
+.tema-card p { font-size: 0.92rem; margin: 0 0 1.4rem; flex-grow: 1; }
+.tema-card .link-tema {
+  align-self: flex-start; font-weight: 600; font-size: 0.92rem;
+  color: var(--blu); text-decoration: none; border-bottom: 2px solid var(--accento);
+  padding-bottom: 2px;
+}
+.tema-card .link-tema:hover { color: var(--accento); }
+
+/* ---------- pagina di approfondimento singolo tema ---------- */
+.hero-tema { padding: 4.5rem 1.6rem 3rem; text-align: center; background: linear-gradient(180deg, var(--bianco-2), var(--bianco)); }
+.hero-tema .eyebrow { color: var(--accento); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.8rem; }
+.hero-tema h1 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); }
+.testo-tema { max-width: 720px; margin: 0 auto; padding: 3rem 1.6rem; }
+.testo-tema p { font-size: 1.05rem; margin-bottom: 1.3rem; }
+.quiz-teaser {
+  background: var(--blu); color: var(--bianco); padding: 3.5rem 1.6rem; text-align: center;
+}
+.quiz-teaser h2 { color: var(--bianco); margin-bottom: 0.8rem; }
+.quiz-teaser p.sub { color: #cfe0f5; max-width: 480px; margin: 0 auto 1.6rem; }
+.link-indietro { display: inline-block; margin: 2rem auto 0; text-align: center; color: var(--grigio); font-size: 0.9rem; }
+
+/* ---------- bottoni regia ---------- */
+.btn {
+  font-family: var(--font-testo); font-weight: 700; font-size: 0.95rem;
+  padding: 0.75rem 1.5rem; border: 2px solid var(--blu); background: transparent;
+  color: var(--blu); cursor: pointer; border-radius: 999px;
+}
+.btn:hover:not(:disabled) { background: var(--blu); color: #fff; }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn.corallo { border-color: var(--accento); color: var(--accento); }
+.btn.corallo:hover:not(:disabled) { background: var(--accento); color: #fff; }
+
+/* ---------- footer ---------- */
+footer { padding: 3rem 1.6rem; text-align: center; }
+footer .loghi-footer { display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1.2rem; }
+footer .loghi-footer img { height: 30px; width: auto; }
+footer p { margin: 0; color: var(--grigio); font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+  .barra nav { display: none; }
+  .sezione { padding: 3.5rem 1.2rem; }
+  .striscia-accento .contenuto { flex-direction: column; text-align: center; }
+  .box-perche { flex-direction: column; text-align: center; align-items: center; }
+}

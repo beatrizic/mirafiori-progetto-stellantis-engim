@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirafiori — Un quartiere, un laboratorio per il futuro</title>
+<meta name="description" content="Progetto Mirafiori — ENGIM Piemonte CIAO Stellantis Philanthropy. Educazione digitale, intelligenza artificiale e orientamento per i mestieri di domani.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .sezione-centrata { text-align: center; }
+  .sezione-centrata p { margin-left: auto; margin-right: auto; }
+
+  /* header: solo nav, loghi rimossi da qui */
+  .barra { justify-content: flex-end; }
+  .barra nav { gap: 2rem; }
+
+  /* lockup loghi al centro della hero */
+  .hero { padding-top: 3.5rem; }
+  .lockup-brand {
+    display: flex; align-items: center; justify-content: center; gap: 1.6rem;
+    margin: 0 auto 2.2rem; padding: 1.4rem 2.4rem;
+    background: rgba(255,255,255,0.6); backdrop-filter: blur(6px);
+    border: 1px solid rgba(14,42,82,0.08); border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(14,42,82,0.08);
+    max-width: fit-content;
+  }
+  .logo-brand { height: 46px; width: auto; }
+  .segno-per { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: var(--accento); }
+  .motto-loghi { color: var(--grigio); font-size: 1rem; font-weight: 500; margin: 0 0 1.6rem; letter-spacing: 0.01em; }
+  @media (max-width: 640px) {
+    .lockup-brand { gap: 1rem; padding: 1.1rem 1.4rem; }
+    .logo-brand { height: 32px; }
+  }
+
+  /* banner quiz: vetro + parallax */
+  .quiz-parallax-scena { position: relative; max-width: 720px; margin: 0 auto; }
+  .quiz-blob {
+    position: absolute; border-radius: 50%; filter: blur(50px); z-index: 0; pointer-events: none;
+    will-change: transform;
+  }
+  .quiz-blob-1 { width: 260px; height: 260px; background: var(--accento); opacity: 0.35; top: -60px; left: -60px; }
+  .quiz-blob-2 { width: 220px; height: 220px; background: var(--blu-chiaro); opacity: 0.4; bottom: -50px; right: -40px; }
+  .box-quiz-iniziale {
+    position: relative; z-index: 1;
+    background: rgba(14,42,82,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 20px 50px rgba(14,42,82,0.25);
+  }
+  .box-quiz-iniziale {
+    max-width: 720px; margin: 0 auto; padding: 3rem 2rem; background: var(--blu);
+    color: #fff; border-radius: 20px; text-align: center;
+  }
+  .box-quiz-iniziale h2 { color: #fff; }
+  .box-quiz-iniziale p { color: #cfe0f5; margin-left: auto; margin-right: auto; }
+  .btn-grande {
+    display: inline-block; margin-top: 1.6rem; padding: 1rem 2.2rem;
+    background: var(--accento); color: #fff; border-radius: 999px;
+    font-weight: 700; font-size: 1.05rem; text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .btn-grande:hover { transform: translateY(-2px); }
+  .griglia-pulsanti-temi { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; max-width: 900px; margin: 0 auto; }
+  .pulsante-tema {
+    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+    padding: 2rem 1rem; background: var(--bianco-2); border-radius: 16px;
+    text-decoration: none; color: var(--blu); font-weight: 700; font-size: 1.02rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .pulsante-tema:hover { background: var(--blu); color: #fff; transform: translateY(-3px); }
+  .pulsante-tema .emoji-tema { font-size: 2.2rem; }
+  .lista-obiettivi-centrata { list-style: none; padding: 0; max-width: 640px; margin: 2rem auto 0; display: grid; gap: 1rem; text-align: left; }
+  .lista-obiettivi-centrata li { padding: 1rem 1.3rem; background: var(--bianco-2); border-radius: 10px; font-size: 1rem; }
+  .griglia-tecnologie { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem; max-width: 1000px; margin: 2rem auto 0; text-align: center; }
+  .tecnologia-item { padding: 1.8rem 1.2rem; background: var(--bianco-2); border-radius: 14px; }
+  .tecnologia-item .cerchio-icona { margin: 0 auto 1rem; }
+  .tecnologia-item h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .tecnologia-item p { font-size: 0.92rem; margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <nav>
+    <a href="#temi">Temi</a>
+    <a href="percorso.html">Il percorso</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="lockup-brand reveal">
+    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte" class="logo-brand">
+    <span class="segno-per">×</span>
+    <img src="img/logo-stellantis.png" alt="Logo Stellantis" class="logo-brand">
+  </div>
+  <p class="motto-loghi reveal">Un quartiere, un laboratorio per il futuro</p>
+  <h1 class="reveal">Mirafiori</h1>
+</section>
+
+<section class="sezione sezione-centrata" id="quiz-iniziale">
+  <div class="quiz-parallax-scena">
+    <div class="quiz-blob quiz-blob-1" data-parallax="0.12"></div>
+    <div class="quiz-blob quiz-blob-2" data-parallax="0.22"></div>
+    <div class="box-quiz-iniziale reveal">
+      <h2>Prima di iniziare, un quiz</h2>
+      <p>10 domande veloci per capire da dove partiamo — cosa sono le STEM, quanto le conoscete già. Anonimo al 100%: nessun nome, solo risposte.</p>
+      <a class="btn-grande" href="regia-quiz-iniziale.html">Avvia il quiz iniziale</a>
+    </div>
+  </div>
+</section>
+
+<section class="sezione sezione-centrata" id="temi">
+  <div class="intestazione-sezione reveal" style="margin-left:auto; margin-right:auto;">
+    <h2>Quattro temi da approfondire</h2>
+    <p>Ogni tema ha una spiegazione e, in fondo, un'attività interattiva.</p>
+  </div>
+  <div class="griglia-pulsanti-temi reveal">
+    <a class="pulsante-tema" href="tema-stereotipi.html">
+      <span class="emoji-tema">⚖️</span>
+      Stereotipi di genere
+    </a>
+    <a class="pulsante-tema" href="tema-rappresentazione-media.html">
+      <span class="emoji-tema">🎬</span>
+      Film, videogiochi e social
+    </a>
+    <a class="pulsante-tema" href="tema-gender-pay-gap.html">
+      <span class="emoji-tema">💶</span>
+      Gender pay gap
+    </a>
+    <a class="pulsante-tema" href="tema-cyberbullismo.html">
+      <span class="emoji-tema">📱</span>
+      Cyberbullismo
+    </a>
+  </div>
+</section>
+
+<section class="sezione sezione-centrata" id="progetto" style="background:var(--bianco-2); max-width:none;">
+  <div style="max-width:760px; margin:0 auto; padding:0 1.6rem;">
+    <div class="intestazione-sezione reveal" style="margin-left:auto; margin-right:auto;">
+      <h2>Il progetto e i suoi obiettivi</h2>
+      <p>"Mirafiori: A Neighborhood, A Lab for the Future" nasce da un problema concreto: un quartiere ricco di potenzialità ma segnato da un divario digitale che rischia di trasformarsi in un divario di opportunità per i suoi giovani. Il progetto è promosso da ENGIM Piemonte con il sostegno di Stellantis Philanthropy, per il triennio 2026-2028.</p>
+    </div>
+    <ul class="lista-obiettivi-centrata reveal">
+      <li>Portare l'educazione digitale e l'intelligenza artificiale dentro tutti e cinque i percorsi professionali della scuola</li>
+      <li>Garantire che almeno 6 studenti coinvolti su 10 siano ragazze</li>
+      <li>Formare i docenti come formatori sulle nuove tecnologie</li>
+      <li>Coinvolgere fino a 1000 studenti del quartiere nel corso del triennio</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sezione sezione-centrata">
+  <div class="intestazione-sezione reveal" style="margin-left:auto; margin-right:auto;">
+    <h2>Le tecnologie che abbiamo acquistato</h2>
+    <p>Non solo teoria: ecco gli strumenti che troverete nei laboratori pratici.</p>
+  </div>
+  <div class="griglia-tecnologie reveal">
+    <div class="tecnologia-item">
+      <div class="cerchio-icona">🖨️</div>
+      <h3>Stampanti 3D</h3>
+      <p>Per trasformare un'idea in un oggetto reale, strato dopo strato.</p>
+    </div>
+    <div class="tecnologia-item">
+      <div class="cerchio-icona">🥽</div>
+      <h3>Visori AR/VR</h3>
+      <p>Per provare un ambiente o un prodotto prima di realizzarlo davvero.</p>
+    </div>
+    <div class="tecnologia-item">
+      <div class="cerchio-icona">🎥</div>
+      <h3>Attrezzatura video</h3>
+      <p>Le stesse tecniche di ripresa e montaggio usate dai creator.</p>
+    </div>
+    <div class="tecnologia-item">
+      <div class="cerchio-icona">🤖</div>
+      <h3>Postazioni con IA generativa</h3>
+      <p>Per scrivere, progettare e verificare contenuti insieme a un'IA.</p>
+    </div>
+  </div>
+  <p class="reveal" style="margin-top:2rem;"><a href="percorso.html">Scopri come funziona il percorso e i 5 laboratori →</a></p>
+</section>
+
+<footer>
+  <div class="loghi-footer">
+    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
+    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
+  </div>
+  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
