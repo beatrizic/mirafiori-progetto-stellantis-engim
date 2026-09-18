@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chat — Mirafiori</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  html, body { height: 100%; }
+  body { text-align: left; background: #fff; overflow: hidden; }
+
+  .app { display: flex; flex-direction: column; height: 100dvh; max-width: 560px; margin: 0 auto; }
+
+  /* ---------- header chat ---------- */
+  .testata {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--linea);
+    background: #fff; flex: none;
+  }
+  .freccia { font-size: 1.3rem; color: var(--nero); line-height: 1; opacity: 0.55; }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 0.95rem; font-family: var(--font-testo);
+  }
+  .info-utente { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+  .info-utente .nome { font-weight: 600; font-size: 0.95rem; color: var(--nero); }
+  .info-utente .stato { font-size: 0.75rem; color: var(--grigio); }
+
+  /* ---------- area messaggi ---------- */
+  .messaggi {
+    flex: 1; overflow-y: auto; padding: 1rem 0.9rem 0.5rem;
+    display: flex; flex-direction: column; gap: 0.35rem;
+    scroll-behavior: smooth;
+  }
+  .bolla {
+    max-width: 78%; padding: 0.6rem 0.85rem; border-radius: 20px;
+    font-size: 0.95rem; line-height: 1.4; word-wrap: break-word;
+    animation: entra 260ms ease both;
+  }
+  .bolla.ricevuta { align-self: flex-start; background: #efefef; color: var(--nero); border-bottom-left-radius: 6px; }
+  .bolla.inviata  { align-self: flex-end;  background: var(--blu); color: #fff; border-bottom-right-radius: 6px; }
+
+  .evento {
+    align-self: center; text-align: center; font-size: 0.78rem; color: var(--grigio);
+    padding: 0.35rem 0.8rem; margin: 0.4rem 0; animation: entra 260ms ease both;
+  }
+  .evento.riquadro { background: #f6f6f6; border-radius: 10px; }
+  .visualizzato { align-self: flex-end; font-size: 0.7rem; color: var(--grigio); margin-top: -0.1rem; }
+
+  .scrivendo { align-self: flex-start; background: #efefef; border-radius: 20px; border-bottom-left-radius: 6px; padding: 0.75rem 0.9rem; display: flex; gap: 4px; }
+  .scrivendo span { width: 7px; height: 7px; border-radius: 50%; background: #9a9a9a; animation: puntino 1.2s infinite; }
+  .scrivendo span:nth-child(2) { animation-delay: 0.2s; }
+  .scrivendo span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes puntino { 0%,60%,100% { opacity: 0.3; } 30% { opacity: 1; } }
+
+  /* ---------- area risposte ---------- */
+  .risposte {
+    flex: none; border-top: 1px solid var(--linea); padding: 0.7rem 0.9rem 1rem;
+    background: #fff;
+  }
+  .risposte .istruzione { font-size: 0.78rem; color: var(--grigio); text-align: center; margin: 0 0 0.6rem; }
+  .risposte ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+  .btn-risposta {
+    width: 100%; min-height: 48px; padding: 0.75rem 1rem;
+    font-family: var(--font-testo); font-size: 0.95rem; text-align: center;
+    background: #fff; color: var(--blu); border: 2px solid var(--blu); border-radius: 999px; cursor: pointer;
+  }
+  .btn-risposta:disabled { opacity: 0.4; cursor: default; }
+  .btn-risposta:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .btn-risposta:hover:not(:disabled) { background: var(--blu); color: #fff; }
+
+  .nuovo-messaggio {
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 0.4rem;
+    background: var(--blu); color: #fff; font-size: 0.8rem; padding: 0.35rem 0.9rem;
+    border: none; border-radius: 999px; cursor: pointer; z-index: 5;
+  }
+
+  /* ---------- schermate post-chat ---------- */
+  .pannello { flex: 1; overflow-y: auto; padding: 2rem 1.1rem 3rem; text-align: center; }
+  .pannello h1 { font-size: clamp(1.7rem, 7vw, 2.4rem); margin-bottom: 1.2rem; }
+  .pannello p { font-size: 1rem; margin: 0 auto 0.9rem; max-width: 34ch; }
+  .pannello .domanda { font-family: var(--font-display); font-size: 1.3rem; color: var(--blu); line-height: 1.2; margin: 0 auto 1.2rem; max-width: 24ch; }
+
+  .timeline { list-style: none; padding: 0; margin: 0 0 1.4rem; display: grid; gap: 0.6rem; text-align: left; }
+  .momento {
+    width: 100%; min-height: 48px; padding: 0.8rem 1rem; cursor: pointer;
+    background: var(--bianco-2); border: 2px solid transparent; border-radius: 14px;
+    font-family: var(--font-testo); font-size: 0.92rem; color: var(--nero); text-align: left;
+    display: flex; gap: 0.7rem; align-items: center;
+  }
+  .momento[aria-pressed="true"] { border-color: var(--blu); background: #e8edf7; }
+  .momento:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .momento .numero {
+    width: 1.6rem; height: 1.6rem; flex: none; border-radius: 50%; background: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: var(--blu);
+  }
+  .momento[aria-pressed="true"] .numero { background: var(--blu); color: #fff; }
+
+  .azioni { list-style: none; padding: 0; margin: 0 0 1.2rem; display: grid; gap: 0.5rem; text-align: left; }
+  .azione {
+    width: 100%; min-height: 48px; padding: 0.75rem 1rem; cursor: pointer;
+    background: var(--bianco-2); border: 2px solid transparent; border-radius: 12px;
+    font-family: var(--font-testo); font-size: 0.92rem; color: var(--nero); text-align: left;
+    display: flex; gap: 0.7rem; align-items: center;
+  }
+  .azione[aria-pressed="true"] { border-color: var(--blu); background: #e8edf7; font-weight: 600; }
+  .azione:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .azione .casella {
+    width: 1.3rem; height: 1.3rem; flex: none; border-radius: 6px; border: 2px solid var(--linea); background: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #fff;
+  }
+  .azione[aria-pressed="true"] .casella { background: var(--blu); border-color: var(--blu); }
+
+  .riscontro { text-align: left; display: grid; gap: 0.6rem; margin-bottom: 1.4rem; }
+  .riga-riscontro { background: var(--bianco-2); border-radius: 12px; padding: 0.8rem 1rem; }
+  .riga-riscontro .titolo { font-weight: 600; font-size: 0.92rem; color: var(--blu); display: block; margin-bottom: 0.2rem; }
+  .riga-riscontro .commento { font-size: 0.85rem; color: var(--grigio); }
+  .tag-cat { font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 999px; margin-left: 0.4rem; }
+  .tag-cat.protettiva { background: #e3f3ea; color: #1d7a4c; }
+  .tag-cat.chiedere_aiuto { background: #e5edfb; color: var(--blu-chiaro); }
+  .tag-cat.escalation { background: #fde9eb; color: var(--accento); }
+  .tag-cat.passiva { background: #eef0f4; color: #6b7280; }
+
+  .btn-azione {
+    display: block; width: 100%; padding: 1rem; font-family: var(--font-testo); font-weight: 700; font-size: 1.05rem;
+    background: var(--blu); color: #fff; border: none; border-radius: 999px; cursor: pointer;
+  }
+  .btn-azione:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-azione:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+
+  .avviso { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 1rem 1.2rem; border-radius: 12px; font-size: 0.95rem; }
+  .nascosto { display: none !important; }
+  .sfumata { opacity: 0.25; transition: opacity 600ms ease; pointer-events: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bolla, .evento { animation: none; }
+    .scrivendo span { animation: none; opacity: 0.6; }
+    .messaggi { scroll-behavior: auto; }
+    .sfumata { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- stato / errori -->
+  <div id="schermo-stato" class="pannello" role="status" aria-live="polite">
+    <h1 id="stato-titolo">Un attimo…</h1>
+    <p id="stato-testo" class="grigio">Sto caricando.</p>
+  </div>
+
+  <!-- CHAT -->
+  <div id="schermo-chat" class="nascosto" style="display:flex; flex-direction:column; flex:1; min-height:0;">
+    <header class="testata">
+      <span class="freccia" aria-hidden="true">&#8249;</span>
+      <div class="avatar" id="avatar" aria-hidden="true"></div>
+      <div class="info-utente">
+        <span class="nome" id="chat-username"></span>
+        <span class="stato">Attivo ora</span>
+      </div>
+    </header>
+
+    <div class="messaggi" id="messaggi" role="log" aria-live="polite" aria-label="Conversazione"></div>
+
+    <div class="risposte" id="area-risposte">
+      <p class="istruzione">Scegli cosa rispondere</p>
+      <ul id="lista-risposte" role="group" aria-label="Risposte disponibili"></ul>
+    </div>
+  </div>
+
+  <!-- FINE SIMULAZIONE -->
+  <div id="schermo-fine-sim" class="pannello nascosto">
+    <h1 id="titolo-fine-sim"></h1>
+    <div id="testo-non-colpa"></div>
+    <button type="button" class="btn-azione" id="btn-vai-limite" style="margin-top:1.6rem;">Continua</button>
+  </div>
+
+  <!-- FASE 2: il limite -->
+  <div id="schermo-limite" class="pannello nascosto">
+    <p class="domanda" id="domanda-limite"></p>
+    <ul class="timeline" id="timeline" role="group" aria-label="Momenti della conversazione"></ul>
+    <button type="button" class="btn-azione" id="btn-limite" disabled>Conferma</button>
+  </div>
+
+  <!-- FASE 3: cosa faresti -->
+  <div id="schermo-debrief" class="pannello nascosto">
+    <p class="domanda" id="domanda-debrief"></p>
+    <p class="grigio" id="nota-debrief" style="font-size:0.85rem; margin-bottom:1.2rem;"></p>
+    <ul class="azioni" id="lista-azioni" role="group" aria-label="Azioni possibili"></ul>
+    <button type="button" class="btn-azione" id="btn-debrief" disabled>Conferma</button>
+  </div>
+
+  <!-- RISCONTRO + FINALE -->
+  <div id="schermo-finale" class="pannello nascosto">
+    <h1 style="font-size:1.5rem;">Alcune azioni possono aiutarti a proteggerti</h1>
+    <div class="riscontro" id="riscontro"></div>
+    <div id="testo-finale" style="margin-top:2rem;"></div>
+    <p class="grigio" style="margin-top:2rem; font-size:0.9rem;">Puoi appoggiare il telefono. Si continua insieme.</p>
+  </div>
+
+</div>
+
+<script type="module" src="js/chat-studente.js"></script>
+</body>
+</html>

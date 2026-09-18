@@ -5,6 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyberbullismo: quando la violenza passa attraverso uno schermo — Mirafiori</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  .attivita { background: var(--bianco-2); padding: 4rem 1.6rem; }
+  .attivita-interno { max-width: 1240px; margin: 0 auto; }
+  .attivita .sottotitolo { color: var(--grigio); margin: 0 auto 2.5rem; }
+  .marchio-attivita { font-family: var(--font-display); font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; margin-bottom: 0.4rem; color: var(--blu); }
+
+  .pannello-docente { background: #fff; border-radius: 18px; padding: 2rem 1.6rem; box-shadow: 0 6px 24px rgba(14,42,82,0.07); }
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 1.6rem; }
+  .controlli .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+  .btn-anteprima { text-decoration: none; display: inline-block; }
+
+  .riga-sessione { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; margin-bottom: 2rem; }
+  .codice-grande { font-family: var(--font-display); font-size: 3rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; }
+  .meta-sessione { font-size: 0.9rem; color: var(--grigio); }
+  #qr-chat { background: #fff; padding: 1rem; display: inline-block; border-radius: 12px; }
+  #url-studente-chat { font-size: 0.8rem; color: var(--grigio); word-break: break-all; display: block; margin-top: 0.6rem; }
+
+  .contatori { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; padding: 1.1rem 0.7rem; text-align: center; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.2rem; color: var(--accento); display: block; line-height: 1; }
+  .contatore .etichetta { font-size: 0.78rem; color: #cfe0f5; }
+
+  .titolo-live { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.04em; text-align: center; color: var(--grigio); margin-bottom: 1.2rem; }
+  .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.8rem; }
+  .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
+  .tab.attivo { background: var(--blu); color: #fff; }
+  .tab:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .sotto-titolo { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; font-weight: 700; margin: 2.2rem auto 0.9rem; }
+
+  /* timeline del limite: la visualizzazione principale */
+  .timeline-regia { display: grid; gap: 0.9rem; margin-top: 1.2rem; }
+  .tappa { display: flex; gap: 1rem; align-items: flex-start; background: var(--bianco-2); border-radius: 14px; padding: 1rem 1.1rem; text-align: left; }
+  .tappa-numero { width: 2rem; height: 2rem; flex: none; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1rem; color: var(--blu); }
+  .tappa-corpo { flex: 1; min-width: 0; }
+  .tappa-etichetta { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--grigio); font-weight: 700; }
+  .tappa-testo { display: block; font-size: 0.95rem; color: var(--nero); margin-bottom: 0.5rem; }
+
+  .card-nodo { background: var(--bianco-2); border-radius: 14px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; text-align: left; }
+  .tag-stadio { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: #fff; color: var(--blu); padding: 0.15rem 0.6rem; border-radius: 999px; margin-bottom: 0.5rem; }
+  .messaggio-nodo { font-size: 0.98rem; color: var(--blu); font-weight: 600; margin: 0 0 0.2rem; }
+
+  .confronto-varianti { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+  .colonna-variante { background: var(--bianco-2); border-radius: 14px; padding: 1.2rem; text-align: left; }
+  .colonna-variante h4 { font-family: var(--font-testo); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--grigio); margin: 0 0 1rem; }
+
+  .barra-riga { margin-bottom: 0.7rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.8rem; align-items: baseline; font-size: 0.88rem; margin-bottom: 0.25rem; }
+  .barra-etichetta .primo { font-weight: 700; color: var(--blu); }
+  .barra-valore { white-space: nowrap; font-weight: 600; font-size: 0.84rem; }
+  .barra-traccia { height: 11px; background: #fff; border: 1px solid var(--linea); border-radius: 6px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+  .barra-fill.evidenza { background: var(--accento); }
+  .barra-fill.cat-protettiva { background: #1d7a4c; }
+  .barra-fill.cat-chiedere_aiuto { background: var(--blu-chiaro); }
+  .barra-fill.cat-escalation { background: var(--accento); }
+  .barra-fill.cat-passiva { background: #9aa4b8; }
+
+  .tag-cat { display: inline-block; margin-top: 0.3rem; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 999px; }
+  .tag-cat.protettiva { background: #e3f3ea; color: #1d7a4c; }
+  .tag-cat.chiedere_aiuto { background: #e5edfb; color: var(--blu-chiaro); }
+  .tag-cat.escalation { background: #fde9eb; color: var(--accento); }
+  .tag-cat.passiva { background: #eef0f4; color: #6b7280; }
+
+  .nota-lettura { font-size: 0.85rem; color: var(--grigio); max-width: 62ch; margin: 1.4rem auto 0; }
+  .avviso-docente { background: #fff8e6; border: 1px solid #f0d99b; border-radius: 12px; padding: 1.1rem 1.3rem; font-size: 0.9rem; color: #6b5310; max-width: 70ch; margin: 0 auto 2rem; text-align: left; }
+
+  .proiezione .tappa-testo { font-size: 1.2rem; }
+  .proiezione .barra-traccia { height: 17px; }
+  .proiezione .barra-etichetta { font-size: 1.05rem; }
+  .proiezione .tappa-numero { width: 2.6rem; height: 2.6rem; font-size: 1.3rem; }
+
+  .nascosto { display: none; }
+  @media (prefers-reduced-motion: reduce) { .barra-fill { transition: none; } }
+</style>
 </head>
 <body>
 
@@ -30,12 +105,67 @@
 <p>Il cyberbullismo è una forma di aggressione che utilizza strumenti digitali come social network, chat, videogiochi online e piattaforme di messaggistica. Può comprendere insulti ripetuti, minacce, diffusione di foto o video senza consenso, esclusione intenzionale, creazione di profili falsi, body shaming, diffusione di informazioni private o campagne collettive contro una persona.</p>
 <p>Rispetto al bullismo tradizionale ha alcune caratteristiche particolarmente gravi: può continuare 24 ore su 24, raggiungere rapidamente molte persone e lasciare contenuti difficili da eliminare completamente. Inoltre, dietro uno schermo è più facile sottovalutare il dolore provocato perché non si vede direttamente la reazione della vittima.</p>
 <p>Nel cyberbullismo hanno un ruolo anche gli spettatori: condividere, commentare, ridere o inoltrare un contenuto può aumentarne enormemente il danno. Contrastarlo significa quindi educare non solo chi aggredisce e chi subisce, ma tutta la comunità digitale.</p>
+<p>Una delle difficoltà maggiori è riconoscere il momento in cui il limite viene superato. Raramente si passa da una conversazione normale a un'aggressione evidente: più spesso il tono cambia poco per volta, e ogni singolo passaggio sembra ancora accettabile. È per questo che, quando si guarda indietro, è difficile dire con precisione dove sia iniziato.</p>
 
 </div>
 
-<section class="quiz-teaser">
-  <h2>Metti alla prova quello che hai letto</h2>
-  <p class="sub">Il test su questo tema — competenze acquisite e le tue opinioni — sarà presto disponibile qui, con un QR code da inquadrare in classe. I risultati compaiono in diretta durante la lezione, proprio come un televoto.</p>
+<!-- ============ SIMULAZIONE ============ -->
+<section class="attivita" id="attivita">
+  <div class="attivita-interno">
+
+    <p class="marchio-attivita">Quando la chat cambia tono</p>
+    <p class="sottotitolo">Una conversazione che comincia normale. Gli studenti scelgono cosa rispondere, dal proprio telefono.</p>
+
+    <div class="avviso-docente">
+      <strong>Prima di avviare.</strong> La simulazione mette lo studente nei panni di chi riceve i messaggi. Qualunque risposta scelga, la conversazione arriva allo stesso finale: è una scelta precisa, perché nessuno esca pensando di aver sbagliato a rispondere. Il messaggio è esplicito alla fine della chat. Se in classe c'è chi ha vissuto una situazione simile, vale la pena anticiparglielo e lasciargli la libertà di non partecipare.
+    </div>
+
+    <div class="pannello-docente">
+
+      <div class="controlli">
+        <button class="btn" id="btn-crea">Crea sessione</button>
+        <button class="btn" id="btn-avvia" disabled>Avvia</button>
+        <button class="btn" id="btn-qr" disabled>Nascondi QR</button>
+        <button class="btn" id="btn-blocca" disabled>Blocca risposte</button>
+        <button class="btn" id="btn-rivela" disabled>Rivela risultati</button>
+        <a class="btn btn-anteprima" href="gioco-chat.html?demo=1" target="_blank" rel="noopener">Vedi chat di esempio</a>
+        <button class="btn corallo" id="btn-termina" disabled>Termina</button>
+        <button class="btn corallo" id="btn-reset" disabled>Reset</button>
+      </div>
+
+      <div id="blocco-sessione-chat" class="nascosto">
+
+        <div class="riga-sessione">
+          <div>
+            <span class="codice-grande" id="codice-sessione-chat">——————</span>
+            <p class="meta-sessione">
+              Stato: <strong id="stato-sessione-chat">—</strong> ·
+              Connessione <span id="stato-realtime-chat">—</span>
+            </p>
+          </div>
+          <div id="blocco-qr-chat">
+            <div id="qr-chat"></div>
+            <span id="url-studente-chat"></span>
+          </div>
+        </div>
+
+        <div class="contatori">
+          <div class="contatore"><span class="numero" id="cn-collegati">0</span><span class="etichetta">Collegati</span></div>
+          <div class="contatore"><span class="numero" id="cn-in-chat">0</span><span class="etichetta">Nella simulazione</span></div>
+          <div class="contatore"><span class="numero" id="cn-debrief">0</span><span class="etichetta">Arrivati al debrief</span></div>
+          <div class="contatore"><span class="numero" id="cn-completati">0</span><span class="etichetta">Completati</span></div>
+        </div>
+
+        <div id="pannello-risultati-chat">
+          <h3 class="titolo-live">Cyberbullismo — simulazione live</h3>
+          <div class="tab-barra" id="tab-chat" role="group" aria-label="Scegli cosa visualizzare"></div>
+          <div id="contenuto-tab-chat"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <div style="text-align:center;">
@@ -47,9 +177,9 @@
     <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
     <img src="img/logo-stellantis.png" alt="Logo Stellantis">
   </div>
-  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
 </footer>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/chat-regia.js"></script>
 </body>
 </html>
