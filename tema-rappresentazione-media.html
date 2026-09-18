@@ -3,8 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Film, videogiochi e social: rappresentano la realtà o la costruiscono? — Mirafiori</title>
+<title>Social e realtà — Mirafiori</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  .attivita { background: var(--bianco-2); padding: 4rem 1.6rem; }
+  .attivita-interno { max-width: 1240px; margin: 0 auto; }
+  .attivita .sottotitolo { color: var(--grigio); margin: 0 auto 2.5rem; }
+  .marchio-attivita { font-family: var(--font-display); font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1; margin-bottom: 0.4rem; }
+  .marchio-attivita .yes { color: var(--blu); }
+  .marchio-attivita .but { color: var(--accento); }
+
+  .pannello-docente { background: #fff; border-radius: 18px; padding: 2rem 1.6rem; box-shadow: 0 6px 24px rgba(14,42,82,0.07); }
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 1.6rem; }
+  .controlli .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+
+  .riga-sessione { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; margin-bottom: 2rem; }
+  .codice-grande { font-family: var(--font-display); font-size: 3rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; }
+  .meta-sessione { font-size: 0.9rem; color: var(--grigio); }
+  #qr-social { background: #fff; padding: 1rem; display: inline-block; border-radius: 12px; }
+  #url-studente-social { font-size: 0.8rem; color: var(--grigio); word-break: break-all; display: block; margin-top: 0.6rem; }
+
+  .contatori { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; padding: 1.1rem 0.7rem; text-align: center; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.2rem; color: var(--accento); display: block; line-height: 1; }
+  .contatore .etichetta { font-size: 0.78rem; color: #cfe0f5; }
+
+  /* tab */
+  .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.8rem; }
+  .tab {
+    font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600;
+    padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer;
+    background: var(--bianco-2); color: var(--blu); border: 2px solid transparent;
+  }
+  .tab.attivo { background: var(--blu); color: #fff; }
+  .tab:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+
+  .sotto-titolo { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; font-weight: 700; margin: 2rem auto 0.9rem; }
+
+  /* momenti in regia */
+  .griglia-momenti-regia { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .card-momento-regia { margin: 0; background: var(--bianco-2); border-radius: 14px; overflow: hidden; border: 3px solid transparent; }
+  .card-momento-regia.vincente { border-color: var(--accento); }
+  .card-momento-regia img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
+  .card-momento-regia figcaption { padding: 0.7rem; text-align: center; }
+  .momento-testo { display: block; font-size: 0.85rem; color: var(--nero); margin-bottom: 0.3rem; }
+  .momento-pct { display: block; font-family: var(--font-display); font-size: 1.8rem; color: var(--blu); line-height: 1; }
+  .momento-n { display: block; font-size: 0.78rem; color: var(--grigio); }
+
+  /* medie prima/dopo */
+  .confronto-medie { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; }
+  .box-media { background: var(--bianco-2); border-radius: 14px; padding: 1.2rem; text-align: center; }
+  .box-media.delta { background: var(--blu); }
+  .box-media.delta .bm-etichetta, .box-media.delta .bm-n { color: #cfe0f5; }
+  .box-media.delta .bm-valore { color: var(--accento); }
+  .bm-etichetta { display: block; font-size: 0.8rem; color: var(--grigio); text-transform: uppercase; letter-spacing: 0.05em; }
+  .bm-valore { display: block; font-family: var(--font-display); font-size: 2.6rem; color: var(--blu); line-height: 1.1; }
+  .bm-n { display: block; font-size: 0.78rem; color: var(--grigio); }
+
+  /* istogrammi */
+  .confronto-istogrammi { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; margin-top: 1.4rem; }
+  .istogramma { background: var(--bianco-2); border-radius: 14px; padding: 1.1rem; }
+  .istogramma h4 { font-family: var(--font-testo); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--grigio); margin: 0 0 0.8rem; text-align: center; }
+  .isto-griglia { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; align-items: end; height: 130px; }
+  .isto-colonna { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+  .isto-barra { width: 100%; background: var(--blu); border-radius: 3px 3px 0 0; min-height: 2px; transition: height 0.4s ease; }
+  .isto-conteggio { font-size: 0.7rem; color: var(--grigio); line-height: 1; margin-bottom: 2px; }
+  .isto-voto { font-size: 0.7rem; color: var(--grigio); margin-top: 3px; }
+
+  /* riepilogo */
+  .riepilogo-lista { display: grid; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .riga-riepilogo { display: flex; justify-content: space-between; gap: 1rem; background: var(--bianco-2); border-radius: 10px; padding: 0.7rem 1rem; }
+  .rr-scenario { font-size: 0.92rem; }
+  .rr-valore { font-weight: 700; color: var(--blu); font-size: 0.92rem; }
+
+  .barra-riga { margin-bottom: 0.6rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.8rem; font-size: 0.85rem; margin-bottom: 0.25rem; }
+  .barra-etichetta .primo { font-weight: 700; color: var(--blu); }
+  .barra-traccia { height: 10px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+
+  .nota-lettura { font-size: 0.85rem; color: var(--grigio); max-width: 62ch; margin: 1.4rem auto 0; }
+
+  /* modalità proiezione */
+  .proiezione .momento-pct { font-size: 2.6rem; }
+  .proiezione .bm-valore { font-size: 3.4rem; }
+  .proiezione .barra-etichetta { font-size: 1.05rem; }
+  .proiezione .barra-traccia { height: 15px; }
+  .proiezione .isto-griglia { height: 190px; }
+  .proiezione .rr-scenario, .proiezione .rr-valore { font-size: 1.1rem; }
+
+  .nascosto { display: none; }
+  @media (prefers-reduced-motion: reduce) { .barra-fill, .isto-barra { transition: none; } }
+</style>
 </head>
 <body>
 
@@ -22,7 +113,7 @@
 
 <section class="hero-tema">
   <p class="eyebrow reveal">Approfondimento</p>
-  <h1 class="reveal">Film, videogiochi e social: rappresentano la realtà o la costruiscono?</h1>
+  <h1 class="reveal">Social e realtà</h1>
 </section>
 
 <div class="testo-tema reveal">
@@ -34,9 +125,58 @@
 
 </div>
 
-<section class="quiz-teaser">
-  <h2>Metti alla prova quello che hai letto</h2>
-  <p class="sub">Il test su questo tema — competenze acquisite e le tue opinioni — sarà presto disponibile qui, con un QR code da inquadrare in classe. I risultati compaiono in diretta durante la lezione, proprio come un televoto.</p>
+<!-- ============ ATTIVITÀ INTERATTIVA ============ -->
+<section class="attivita" id="attivita">
+  <div class="attivita-interno">
+
+    <p class="marchio-attivita"><span class="yes">YES,</span> <span class="but">BUT…</span></p>
+    <p class="sottotitolo">Una storia. Due versioni. Quello che pubblichi non racconta sempre tutto.</p>
+
+    <div class="pannello-docente">
+
+      <div class="controlli">
+        <button class="btn" id="btn-crea">Crea sessione</button>
+        <button class="btn" id="btn-avvia" disabled>Avvia</button>
+        <button class="btn" id="btn-qr" disabled>Nascondi QR</button>
+        <button class="btn" id="btn-blocca" disabled>Blocca risposte</button>
+        <button class="btn" id="btn-rivela" disabled>Mostra risultati</button>
+        <button class="btn corallo" id="btn-termina" disabled>Termina</button>
+        <button class="btn corallo" id="btn-reset" disabled>Reset</button>
+      </div>
+
+      <div id="blocco-sessione-social" class="nascosto">
+
+        <div class="riga-sessione">
+          <div>
+            <span class="codice-grande" id="codice-sessione-social">——————</span>
+            <p class="meta-sessione">
+              Stato: <strong id="stato-sessione-social">—</strong> ·
+              Connessione <span id="stato-realtime-social">—</span>
+            </p>
+          </div>
+          <div id="blocco-qr-social">
+            <div id="qr-social"></div>
+            <span id="url-studente-social"></span>
+          </div>
+        </div>
+
+        <div class="contatori">
+          <div class="contatore"><span class="numero" id="sn-collegati">0</span><span class="etichetta">Collegati</span></div>
+          <div class="contatore"><span class="numero" id="sn-attivi">0</span><span class="etichetta">Attivi</span></div>
+          <div class="contatore"><span class="numero" id="sn-completati">0</span><span class="etichetta">Completati</span></div>
+          <div class="contatore"><span class="numero" id="sn-risposte">0</span><span class="etichetta">Risposte</span></div>
+          <div class="contatore"><span class="numero" id="sn-scenario">—</span><span class="etichetta">Scenari medi</span></div>
+        </div>
+
+        <div id="pannello-risultati-social">
+          <div class="tab-barra" id="tab-social" role="group" aria-label="Scegli cosa visualizzare"></div>
+          <div id="contenuto-tab"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <div style="text-align:center;">
@@ -48,9 +188,9 @@
     <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
     <img src="img/logo-stellantis.png" alt="Logo Stellantis">
   </div>
-  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
 </footer>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/social-regia.js"></script>
 </body>
 </html>
