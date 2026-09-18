@@ -172,20 +172,3 @@ export function cambioPercezione(risposte, scenarioId = null) {
     pctDiminuita: pct(diminuita), pctInvariata: pct(invariata), pctAumentata: pct(aumentata)
   };
 }
-
-/** Percentuali di scelta dei momenti di uno scenario. */
-export function aggregaMomenti(momenti, risposte, scenarioId) {
-  const scelte = risposte.filter((r) => r.tipo === 'selected_moment' && r.scenario_id === scenarioId);
-  const totale = scelte.length;
-  return momenti.map((m) => {
-    const n = scelte.filter((s) => s.valore === m.id).length;
-    return {
-      id: m.id,
-      testo: m.testoBreve,
-      immagine: m.immagine,
-      alt: m.alt,
-      conteggio: n,
-      percentuale: totale === 0 ? 0 : Math.round((n / totale) * 100)
-    };
-  });
-}

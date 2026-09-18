@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js';
 import { ACTIVITY_KEY, SCENARI, OPZIONI_RIFLESSIONE } from './social-dati.js';
-import { generaCodiceSessione, aggregaMomenti, confrontaPrimaDopo, cambioPercezione, media } from './attivita-logica.js';
+import { generaCodiceSessione, confrontaPrimaDopo, cambioPercezione, media } from './attivita-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_social';
 const URL_STUDENTE = 'https://www.tobea.it/gioco-social.html';
@@ -186,40 +186,23 @@ function renderScenario(cont, scenario) {
   h.textContent = scenario.titolo;
   cont.appendChild(h);
 
-  // 1. cosa pubblicherebbe la classe
-  const sub1 = document.createElement('p');
-  sub1.className = 'grigio sotto-titolo';
-  sub1.textContent = 'Cosa pubblicherebbe la classe';
-  cont.appendChild(sub1);
+  // Immagine YES di riferimento: serve al docente per ricordare cosa hanno visto
+  const rif = document.createElement('div');
+  rif.className = 'riferimento-yes';
+  const img = document.createElement('img');
+  img.src = scenario.yes.immagine; img.alt = scenario.yes.alt;
+  img.onerror = () => { img.style.background = '#dde3ee'; };
+  const cap = document.createElement('div');
+  cap.className = 'rif-testo';
+  const tag = document.createElement('span'); tag.className = 'rif-tag'; tag.textContent = 'YES';
+  const txt = document.createElement('span'); txt.textContent = scenario.yes.testoBreve;
+  const but = document.createElement('span'); but.className = 'rif-but';
+  but.textContent = scenario.but.map((b) => b.testoBreve).join(' · ');
+  cap.append(tag, txt, but);
+  rif.append(img, cap);
+  cont.appendChild(rif);
 
-  const momenti = aggregaMomenti(scenario.momenti, risposte, scenario.id);
-  const maxPct = Math.max(...momenti.map((m) => m.percentuale));
-  const grigliaM = document.createElement('div');
-  grigliaM.className = 'griglia-momenti-regia';
-
-  momenti.forEach((m) => {
-    const card = document.createElement('figure');
-    card.className = 'card-momento-regia' + (m.percentuale === maxPct && m.conteggio > 0 ? ' vincente' : '');
-    const img = document.createElement('img');
-    img.src = m.immagine; img.alt = m.alt;
-    img.onerror = () => { img.style.background = '#dde3ee'; };
-    const cap = document.createElement('figcaption');
-    const testo = document.createElement('span');
-    testo.className = 'momento-testo';
-    testo.textContent = m.testo;
-    const pct = document.createElement('span');
-    pct.className = 'momento-pct';
-    pct.textContent = m.percentuale + '%';
-    const n = document.createElement('span');
-    n.className = 'momento-n';
-    n.textContent = m.conteggio === 1 ? '1 studente' : `${m.conteggio} studenti`;
-    cap.append(testo, pct, n);
-    card.append(img, cap);
-    grigliaM.appendChild(card);
-  });
-  cont.appendChild(grigliaM);
-
-  // 2. prima vs dopo
+  // 1. medie prima / dopo
   const c = confrontaPrimaDopo(risposte, scenario.id);
 
   const sub2 = document.createElement('p');
@@ -234,19 +217,24 @@ function renderScenario(cont, scenario) {
   confronto.appendChild(boxDelta(c.delta));
   cont.appendChild(confronto);
 
-  // 3. distribuzioni
-  const dist = document.createElement('div');
-  dist.className = 'confronto-istogrammi';
-  dist.appendChild(istogramma(c.distribuzionePrima, 'Prima', 'var(--blu)'));
-  dist.appendChild(istogramma(c.distribuzioneDopo, 'Dopo', 'var(--accento)'));
-  cont.appendChild(dist);
-
-  // 4. cambio di percezione
-  const cp = cambioPercezione(risposte, scenario.id);
+  // 2. distribuzioni
   const sub3 = document.createElement('p');
   sub3.className = 'grigio sotto-titolo';
-  sub3.textContent = `Come è cambiata la valutazione (${cp.totale} studenti con entrambe le risposte)`;
+  sub3.textContent = 'Distribuzione dei voti';
   cont.appendChild(sub3);
+
+  const dist = document.createElement('div');
+  dist.className = 'confronto-istogrammi';
+  dist.appendChild(istogramma(c.distribuzionePrima, 'Prima (YES)', 'var(--blu)'));
+  dist.appendChild(istogramma(c.distribuzioneDopo, 'Dopo (BUT)', 'var(--accento)'));
+  cont.appendChild(dist);
+
+  // 3. cambio di percezione
+  const cp = cambioPercezione(risposte, scenario.id);
+  const sub4 = document.createElement('p');
+  sub4.className = 'grigio sotto-titolo';
+  sub4.textContent = `Come è cambiata la valutazione (${cp.totale} studenti con entrambi i voti)`;
+  cont.appendChild(sub4);
 
   const barre = document.createElement('div');
   barre.appendChild(barraOrizzontale('Percezione diminuita', cp.pctDiminuita, cp.diminuita));
@@ -256,7 +244,7 @@ function renderScenario(cont, scenario) {
 
   const nota = document.createElement('p');
   nota.className = 'nota-lettura';
-  nota.textContent = 'Distribuzione osservata in questa sessione. I dati mostrano cosa è successo nel gruppo, non perché sia successo: l\u2019interpretazione spetta al docente.';
+  nota.textContent = 'Distribuzione osservata in questa sessione. I dati mostrano cosa \u00e8 successo nel gruppo, non perch\u00e9 sia successo: l\u2019interpretazione spetta al docente.';
   cont.appendChild(nota);
 }
 
@@ -287,25 +275,6 @@ function boxDelta(delta) {
 
 function renderRiepilogo(cont) {
   const { risposte } = ultimiDati;
-
-  const h1 = document.createElement('h3');
-  h1.textContent = 'Contenuti più pubblicati';
-  cont.appendChild(h1);
-
-  const lista = document.createElement('div');
-  lista.className = 'riepilogo-lista';
-  SCENARI.forEach((s) => {
-    const momenti = aggregaMomenti(s.momenti, risposte, s.id);
-    const top = [...momenti].sort((a, b) => b.conteggio - a.conteggio)[0];
-    const riga = document.createElement('div');
-    riga.className = 'riga-riepilogo';
-    const nome = document.createElement('span'); nome.className = 'rr-scenario'; nome.textContent = s.titolo;
-    const scelto = document.createElement('span'); scelto.className = 'rr-valore';
-    scelto.textContent = top && top.conteggio > 0 ? `${top.testo} — ${top.percentuale}%` : 'nessuna risposta';
-    riga.append(nome, scelto);
-    lista.appendChild(riga);
-  });
-  cont.appendChild(lista);
 
   const h2 = document.createElement('h3');
   h2.textContent = 'Variazione media per scenario';

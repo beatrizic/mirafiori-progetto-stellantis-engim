@@ -10,67 +10,47 @@
   body { text-align: left; }
   .gioco { max-width: 540px; margin: 0 auto; padding: 1.2rem 1.1rem 4rem; }
 
-  /* avanzamento a pallini */
   .pallini { display: flex; gap: 0.45rem; justify-content: center; margin-bottom: 0.5rem; }
   .pallino { width: 10px; height: 10px; border-radius: 50%; background: var(--linea); }
   .pallino.attivo { background: var(--blu); }
   .pallino.fatto { background: var(--accento); }
-  .etichetta-avanzamento { display: block; text-align: center; font-size: 0.82rem; color: var(--grigio); margin-bottom: 1.2rem; }
+  .etichetta-avanzamento { display: block; text-align: center; font-size: 0.82rem; color: var(--grigio); margin-bottom: 1.4rem; }
 
-  .titolo-scenario { font-family: var(--font-display); font-size: 1.6rem; color: var(--blu); text-align: center; line-height: 1.15; margin: 0 auto 0.4rem; }
-  .intro-scenario { text-align: center; font-size: 0.95rem; color: var(--grigio); margin: 0 auto 1.4rem; max-width: 34ch; }
+  .titolo-scenario { font-family: var(--font-display); font-size: 1.9rem; color: var(--blu); text-align: center; line-height: 1.15; margin: 0 auto 0.5rem; }
+  .intro-scenario { text-align: center; font-size: 0.98rem; color: var(--grigio); margin: 0 auto 2rem; max-width: 32ch; }
   .domanda { font-family: var(--font-display); font-size: 1.3rem; color: var(--blu); text-align: center; line-height: 1.2; margin: 0 auto 1.2rem; max-width: 24ch; }
+  .sottotesto { text-align: center; color: var(--grigio); font-size: 0.96rem; margin: 0 auto 1.4rem; max-width: 32ch; }
 
-  /* griglia dei 4 momenti */
-  .griglia-momenti { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1.4rem; list-style: none; padding: 0; }
-  .card-momento {
-    display: block; width: 100%; padding: 0; overflow: hidden; cursor: pointer;
-    background: var(--bianco-2); border: 3px solid transparent; border-radius: 16px;
-    font-family: var(--font-testo); text-align: left;
-    transition: border-color 0.15s ease, transform 0.15s ease;
-  }
-  .card-momento:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
-  .card-momento[aria-pressed="true"] { border-color: var(--blu); transform: translateY(-3px); }
-  .card-momento img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; margin: 0; background: #dde3ee; }
-  .card-momento .didascalia { display: block; padding: 0.6rem 0.7rem; font-size: 0.88rem; color: var(--nero); font-weight: 500; }
-  .card-momento[aria-pressed="true"] .didascalia { color: var(--blu); font-weight: 700; }
-
-  /* schermata YES */
-  .yes-but-titolo { font-family: var(--font-display); font-size: clamp(3rem, 18vw, 5rem); line-height: 1; text-align: center; margin: 0 0 0.8rem; }
+  .yes-but-titolo { font-family: var(--font-display); font-size: clamp(3rem, 18vw, 5rem); line-height: 1; text-align: center; margin: 0 0 0.6rem; }
   .yes-but-titolo.yes { color: var(--blu); }
   .yes-but-titolo.but { color: var(--accento); }
-  .scelta-grande { max-width: 300px; margin: 0 auto 1.2rem; border-radius: 18px; overflow: hidden; background: var(--bianco-2); }
-  .scelta-grande img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; }
-  .scelta-grande .didascalia { display: block; padding: 0.7rem; text-align: center; font-weight: 600; color: var(--blu); }
-  .sottotesto { text-align: center; color: var(--grigio); font-size: 0.98rem; margin: 0 auto 1.6rem; max-width: 32ch; }
 
-  /* scala 1-10 */
+  .foto-yes { max-width: 330px; margin: 0 auto 1.4rem; border-radius: 18px; overflow: hidden; background: var(--bianco-2); box-shadow: 0 10px 28px rgba(14,42,82,0.14); }
+  .foto-yes img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
+  .foto-yes .didascalia { display: block; padding: 0.7rem; text-align: center; font-weight: 600; color: var(--blu); }
+
+  /* schermata di transizione YES → BUT */
+  .transizione { text-align: center; padding: 5rem 1rem; }
+
+  /* BUT: la YES resta in evidenza in alto, sotto i tre retroscena */
+  .yes-in-evidenza { max-width: 240px; margin: 0 auto 0.5rem; border-radius: 14px; overflow: hidden; background: var(--bianco-2); outline: 3px solid var(--blu); outline-offset: -3px; position: relative; }
+  .yes-in-evidenza img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
+  .yes-in-evidenza .didascalia { display: block; padding: 0.5rem; text-align: center; font-size: 0.85rem; font-weight: 600; color: var(--blu); }
+  .tag-yes { position: absolute; top: 0.5rem; left: 0.5rem; background: var(--blu); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; letter-spacing: 0.04em; }
+  .separatore-but { text-align: center; font-size: 0.8rem; color: var(--grigio); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.1rem auto; }
+
+  .griglia-but { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.6rem; list-style: none; padding: 0; }
+  .card-but { background: var(--bianco-2); border-radius: 12px; overflow: hidden; }
+  .card-but img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
+  .card-but .didascalia { display: block; padding: 0.45rem 0.4rem; font-size: 0.74rem; line-height: 1.25; text-align: center; }
+
   .scala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 0.8rem; list-style: none; padding: 0; }
-  .voto {
-    padding: 0.9rem 0; font-family: var(--font-display); font-size: 1.3rem;
-    background: var(--bianco-2); color: var(--blu); border: 2px solid transparent;
-    border-radius: 12px; cursor: pointer; width: 100%;
-  }
+  .voto { padding: 0.9rem 0; font-family: var(--font-display); font-size: 1.3rem; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; border-radius: 12px; cursor: pointer; width: 100%; }
   .voto:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
   .voto[aria-pressed="true"] { background: var(--blu); color: #fff; border-color: var(--blu); }
   .estremi-scala { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--grigio); margin-bottom: 1.4rem; }
 
-  /* contesto completo (BUT) */
-  .griglia-contesto { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; margin-bottom: 1.4rem; list-style: none; padding: 0; }
-  .card-contesto { background: var(--bianco-2); border-radius: 14px; overflow: hidden; position: relative; }
-  .card-contesto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
-  .card-contesto .didascalia { display: block; padding: 0.5rem 0.6rem; font-size: 0.82rem; }
-  .card-contesto.scelta { outline: 3px solid var(--blu); outline-offset: -3px; }
-  .card-contesto .tag-scelta {
-    position: absolute; top: 0.5rem; left: 0.5rem; background: var(--blu); color: #fff;
-    font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 999px;
-  }
-
-  .btn-azione {
-    display: block; width: 100%; padding: 1rem;
-    font-family: var(--font-testo); font-weight: 700; font-size: 1.05rem;
-    background: var(--blu); color: #fff; border: none; border-radius: 999px; cursor: pointer;
-  }
+  .btn-azione { display: block; width: 100%; padding: 1rem; font-family: var(--font-testo); font-weight: 700; font-size: 1.05rem; background: var(--blu); color: #fff; border: none; border-radius: 999px; cursor: pointer; }
   .btn-azione:disabled { opacity: 0.35; cursor: not-allowed; }
   .btn-azione:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
 
@@ -84,10 +64,11 @@
 
   .anim-entrata { animation: entrata 550ms ease both; }
   @keyframes entrata { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .anim-but { animation: esplode 650ms cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes esplode { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .anim-entrata { animation: none; }
-    .card-momento { transition: none; }
+    .anim-entrata, .anim-but { animation: none; }
   }
 </style>
 </head>
@@ -104,46 +85,48 @@
     <div class="pallini" id="pallini" role="presentation"></div>
     <span class="etichetta-avanzamento" id="etichetta-avanzamento">Scenario 1 di 5</span>
 
-    <!-- FASE 1: scelta -->
-    <section id="fase-scelta" class="nascosto">
+    <!-- FASE 1: intro scenario -->
+    <section id="fase-intro" class="nascosto" style="text-align:center; padding:2.5rem 0;">
       <h1 class="titolo-scenario" id="titolo-scenario"></h1>
       <p class="intro-scenario" id="intro-scenario"></p>
-      <p class="domanda" id="domanda-scelta"></p>
-      <ul class="griglia-momenti" id="griglia-momenti" role="group" aria-label="Scegli il momento da pubblicare"></ul>
-      <button type="button" class="btn-azione" id="btn-scelta" disabled>Conferma</button>
-      <p class="grigio" style="text-align:center; font-size:0.85rem; margin-top:0.9rem;">Vai con la prima scelta.</p>
+      <button type="button" class="btn-azione" id="btn-inizia">Inizia</button>
     </section>
 
-    <!-- FASE 2-3: YES + valutazione prima -->
+    <!-- FASE 2-3: YES + primo voto -->
     <section id="fase-prima" class="nascosto">
       <p class="yes-but-titolo yes">YES</p>
-      <p class="sottotesto">Questo è quello che hai scelto di pubblicare.</p>
-      <div class="scelta-grande" id="scelta-grande"></div>
+      <p class="sottotesto" id="testo-yes"></p>
+      <div class="foto-yes" id="foto-yes"></div>
       <p class="domanda" id="domanda-prima"></p>
       <ul class="scala" id="scala-prima" role="group" aria-label="Valutazione da 1 a 10"></ul>
       <div class="estremi-scala"><span>1 = per niente positiva</span><span>10 = molto positiva</span></div>
       <button type="button" class="btn-azione" id="btn-prima" disabled>Conferma</button>
     </section>
 
-    <!-- FASE 4-5: BUT + valutazione dopo -->
-    <section id="fase-dopo" class="nascosto">
+    <!-- FASE 4: transizione -->
+    <section id="fase-transizione" class="transizione nascosto" role="status" aria-live="polite">
       <p class="yes-but-titolo but">BUT…</p>
-      <p class="sottotesto">Gli altri momenti della stessa situazione.</p>
-      <ul class="griglia-contesto" id="griglia-contesto"></ul>
+      <p class="sottotesto" id="testo-transizione"></p>
+    </section>
+
+    <!-- FASE 5-6: retroscena + secondo voto -->
+    <section id="fase-dopo" class="nascosto">
+      <div class="yes-in-evidenza" id="yes-evidenza"></div>
+      <p class="separatore-but">e anche</p>
+      <ul class="griglia-but" id="griglia-but"></ul>
       <p class="domanda" id="domanda-dopo"></p>
       <ul class="scala" id="scala-dopo" role="group" aria-label="Nuova valutazione da 1 a 10"></ul>
       <div class="estremi-scala"><span>1 = per niente positiva</span><span>10 = molto positiva</span></div>
       <button type="button" class="btn-azione" id="btn-dopo" disabled>Conferma</button>
     </section>
 
-    <!-- FASE 6: micro-debrief -->
+    <!-- FASE 7: micro-debrief -->
     <section id="fase-debrief" class="debrief nascosto">
       <p id="testo-debrief"></p>
       <button type="button" class="btn-azione" id="btn-continua">Continua</button>
     </section>
   </main>
 
-  <!-- schermata finale -->
   <div id="schermo-fine" class="schermo nascosto">
     <p class="yes-but-titolo yes" style="font-size:clamp(2.2rem,12vw,3.4rem);">YES, BUT…</p>
     <div id="fine-testo"></div>
@@ -151,7 +134,7 @@
       <p class="domanda" id="domanda-riflessione"></p>
       <ul class="scala" id="opzioni-riflessione" style="grid-template-columns:repeat(3,1fr);" role="group" aria-label="Risposta finale"></ul>
     </div>
-    <p class="grigio" id="chiusura-fine" style="margin-top:2rem; font-size:0.9rem;">Puoi appoggiare il telefono. Si continua insieme.</p>
+    <p class="grigio" style="margin-top:2rem; font-size:0.9rem;">Puoi appoggiare il telefono. Si continua insieme.</p>
   </div>
 
 </div>

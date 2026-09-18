@@ -1,37 +1,39 @@
 import { supabase } from './supabase-client.js';
 import {
   ACTIVITY_KEY, SCENARI, SCALA,
-  DOMANDA_SCELTA, DOMANDA_PRIMA, DOMANDA_DOPO,
+  TESTO_YES, TESTO_TRANSIZIONE, DOMANDA_PRIMA, DOMANDA_DOPO,
   TESTO_FINALE, DOMANDA_RIFLESSIONE, OPZIONI_RIFLESSIONE
 } from './social-dati.js';
 import { generaAnonymousId } from './attivita-logica.js';
 
 const CHIAVE_ANON = 'mirafiori_anon_id';
+const DURATA_TRANSIZIONE = 1400; // ms: il tempo di leggere "BUT…" prima dei retroscena
 
 const el = (id) => document.getElementById(id);
 const schermi = () => [el('schermo-stato'), el('schermo-gioco'), el('schermo-fine')];
-const fasi = () => [el('fase-scelta'), el('fase-prima'), el('fase-dopo'), el('fase-debrief')];
+const fasi = () => [el('fase-intro'), el('fase-prima'), el('fase-transizione'), el('fase-dopo'), el('fase-debrief')];
 
 let sessione = null;
 let partecipante = null;
 let indiceScenario = 0;
-let fase = 'scelta';           // scelta | prima | dopo | debrief
-let momentoScelto = null;
+let fase = 'intro';            // intro | prima | dopo | debrief
 let votoCorrente = null;
 let riflessioneInviata = false;
+
+const motoRidotto = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function mostraSchermo(s) {
   schermi().forEach((x) => x.classList.add('nascosto'));
   s.classList.remove('nascosto');
 }
 
-function mostraFase(f) {
+function mostraFase(f, classeAnim = 'anim-entrata') {
   fasi().forEach((x) => x.classList.add('nascosto'));
   f.classList.remove('nascosto');
-  f.classList.remove('anim-entrata');
-  void f.offsetWidth;            // forza il restart dell'animazione
-  f.classList.add('anim-entrata');
-  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  f.classList.remove('anim-entrata', 'anim-but');
+  void f.offsetWidth;                     // forza il restart dell'animazione
+  if (!motoRidotto()) f.classList.add(classeAnim);
+  window.scrollTo(0, 0);
 }
 
 function messaggio(titolo, testo, errore = false) {
@@ -70,7 +72,7 @@ async function avvia() {
 
 async function sincronizza() {
   if (sessione.stato === 'waiting')   { messaggio('Quasi pronti', 'La sessione non è ancora iniziata.'); return; }
-  if (sessione.stato === 'completed') { messaggio('Attività conclusa', 'Questa attività è terminata.'); return; }
+  if (sessione.stato === 'completed') { messaggio('Sessione terminata', 'Questa attività è terminata.'); return; }
 
   if (!partecipante && !(await registraPartecipante())) return;
 
@@ -82,10 +84,10 @@ async function sincronizza() {
 
   mostraSchermo(el('schermo-gioco'));
   renderAvanzamento();
-  if (fase === 'scelta')      renderScelta();
-  else if (fase === 'prima')  renderPrima();
-  else if (fase === 'dopo')   renderDopo();
-  else                        renderDebrief();
+  if (fase === 'intro')      renderIntro();
+  else if (fase === 'prima') renderPrima();
+  else if (fase === 'dopo')  renderDopo();
+  else                       renderDebrief();
 }
 
 async function registraPartecipante() {
@@ -107,7 +109,7 @@ async function registraPartecipante() {
   return true;
 }
 
-/** Ricarica: riprende esattamente dal punto in cui si era interrotto. */
+/** Ricarica: riprende da scenario e fase esatti, senza duplicare voti. */
 async function ripristina() {
   const { data } = await supabase
     .from('attivita_risposte_generiche').select('scenario_id, tipo, valore')
@@ -117,15 +119,12 @@ async function ripristina() {
   riflessioneInviata = risposte.some((r) => r.tipo === 'final_reflection');
 
   for (let i = 0; i < SCENARI.length; i++) {
-    const s = SCENARI[i];
-    const perScenario = risposte.filter((r) => r.scenario_id === s.id);
-    const scelta = perScenario.find((r) => r.tipo === 'selected_moment');
-    const prima  = perScenario.find((r) => r.tipo === 'rating_before');
-    const dopo   = perScenario.find((r) => r.tipo === 'rating_after');
+    const perScenario = risposte.filter((r) => r.scenario_id === SCENARI[i].id);
+    const prima = perScenario.find((r) => r.tipo === 'rating_before');
+    const dopo  = perScenario.find((r) => r.tipo === 'rating_after');
 
-    if (!scelta) { indiceScenario = i; fase = 'scelta'; return; }
-    if (!prima)  { indiceScenario = i; fase = 'prima'; momentoScelto = scelta.valore; return; }
-    if (!dopo)   { indiceScenario = i; fase = 'dopo';  momentoScelto = scelta.valore; return; }
+    if (!prima) { indiceScenario = i; fase = 'intro'; return; }
+    if (!dopo)  { indiceScenario = i; fase = 'dopo';  return; }
   }
   indiceScenario = SCENARI.length;
 }
@@ -141,7 +140,7 @@ async function salva(tipo, valore) {
     tipo,
     valore: String(valore)
   });
-  // 23505 = già registrata (doppio tap): si prosegue.
+  // 23505 = voto già registrato (doppio tap): si prosegue senza duplicare.
   return !error || error.code === '23505';
 }
 
@@ -158,67 +157,20 @@ function renderAvanzamento() {
   el('etichetta-avanzamento').textContent = `Scenario ${indiceScenario + 1} di ${SCENARI.length}`;
 }
 
-// ---------- FASE 1: scelta ----------
+// ---------- FASE 1: intro ----------
 
-function renderScelta() {
+function renderIntro() {
   const s = SCENARI[indiceScenario];
-  momentoScelto = null;
-
   el('titolo-scenario').textContent = s.titolo;
   el('intro-scenario').textContent = s.intro || '';
-  el('domanda-scelta').textContent = DOMANDA_SCELTA;
-
-  const griglia = el('griglia-momenti');
-  griglia.innerHTML = '';
-  s.momenti.forEach((m) => {
-    const li = document.createElement('li');
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'card-momento';
-    btn.setAttribute('aria-pressed', 'false');
-    btn.setAttribute('aria-label', `${m.alt}. Didascalia: ${m.testoBreve}`);
-
-    const img = document.createElement('img');
-    img.src = m.immagine; img.alt = m.alt; img.loading = 'lazy';
-    img.onerror = () => { img.style.background = '#dde3ee'; img.alt = 'Immagine non disponibile'; };
-
-    const cap = document.createElement('span');
-    cap.className = 'didascalia';
-    cap.textContent = m.testoBreve;
-
-    btn.append(img, cap);
-    btn.addEventListener('click', () => {
-      momentoScelto = m.id;
-      [...griglia.querySelectorAll('.card-momento')].forEach((b, i) =>
-        b.setAttribute('aria-pressed', s.momenti[i].id === m.id ? 'true' : 'false'));
-      el('btn-scelta').disabled = false;
-    });
-
-    li.appendChild(btn);
-    griglia.appendChild(li);
-  });
-
-  el('btn-scelta').disabled = true;
-  el('btn-scelta').textContent = 'Conferma';
-  mostraFase(el('fase-scelta'));
+  mostraFase(el('fase-intro'));
 }
 
-el('btn-scelta').addEventListener('click', async () => {
-  if (!momentoScelto) return;
-  el('btn-scelta').disabled = true;
-  el('btn-scelta').textContent = 'Un attimo…';
-  if (!(await salva('selected_moment', momentoScelto))) {
-    el('btn-scelta').disabled = false;
-    el('btn-scelta').textContent = 'Riprova';
-    return;
-  }
-  fase = 'prima';
-  renderPrima();
-});
+el('btn-inizia').addEventListener('click', () => { fase = 'prima'; renderPrima(); });
 
 // ---------- scala 1-10 riutilizzabile ----------
 
-function costruisciScala(contenitore, bottone, onScelta) {
+function costruisciScala(contenitore, bottone) {
   contenitore.innerHTML = '';
   votoCorrente = null;
   for (let v = SCALA.min; v <= SCALA.max; v++) {
@@ -234,7 +186,6 @@ function costruisciScala(contenitore, bottone, onScelta) {
       [...contenitore.querySelectorAll('.voto')].forEach((b) =>
         b.setAttribute('aria-pressed', Number(b.textContent) === v ? 'true' : 'false'));
       bottone.disabled = false;
-      if (onScelta) onScelta(v);
     });
     li.appendChild(btn);
     contenitore.appendChild(li);
@@ -243,21 +194,29 @@ function costruisciScala(contenitore, bottone, onScelta) {
   bottone.textContent = 'Conferma';
 }
 
-// ---------- FASE 2-3: YES + valutazione prima ----------
+function cardImmagine(dato, classeCss) {
+  const box = document.createElement('div');
+  box.className = classeCss;
+  const img = document.createElement('img');
+  img.src = dato.immagine; img.alt = dato.alt; img.loading = 'lazy';
+  img.onerror = () => { img.alt = 'Immagine non disponibile'; img.style.background = '#dde3ee'; };
+  const cap = document.createElement('span');
+  cap.className = 'didascalia';
+  cap.textContent = dato.testoBreve;
+  box.append(img, cap);
+  return box;
+}
+
+// ---------- FASE 2-3: YES + primo voto ----------
 
 function renderPrima() {
   const s = SCENARI[indiceScenario];
-  const m = s.momenti.find((x) => x.id === momentoScelto) || s.momenti[0];
+  el('testo-yes').textContent = TESTO_YES;
 
-  const box = el('scelta-grande');
+  const box = el('foto-yes');
   box.innerHTML = '';
-  const img = document.createElement('img');
-  img.src = m.immagine; img.alt = m.alt;
-  img.onerror = () => { img.alt = 'Immagine non disponibile'; };
-  const cap = document.createElement('span');
-  cap.className = 'didascalia';
-  cap.textContent = m.testoBreve;
-  box.append(img, cap);
+  const card = cardImmagine(s.yes, '');
+  while (card.firstChild) box.appendChild(card.firstChild);
 
   el('domanda-prima').textContent = DOMANDA_PRIMA;
   costruisciScala(el('scala-prima'), el('btn-prima'));
@@ -270,45 +229,48 @@ el('btn-prima').addEventListener('click', async () => {
   el('btn-prima').textContent = 'Un attimo…';
   if (!(await salva('rating_before', votoCorrente))) {
     el('btn-prima').disabled = false;
-    el('btn-prima').textContent = 'Riprova';
+    el('btn-prima').textContent = 'Impossibile inviare il voto. Riprova.';
     return;
   }
   fase = 'dopo';
-  renderDopo();
+  mostraTransizione();
 });
 
-// ---------- FASE 4-5: BUT + valutazione dopo ----------
+// ---------- FASE 4: transizione ----------
+
+function mostraTransizione() {
+  el('testo-transizione').textContent = TESTO_TRANSIZIONE;
+  mostraFase(el('fase-transizione'), 'anim-but');
+  setTimeout(renderDopo, motoRidotto() ? 300 : DURATA_TRANSIZIONE);
+}
+
+// ---------- FASE 5-6: retroscena + secondo voto ----------
 
 function renderDopo() {
   const s = SCENARI[indiceScenario];
-  const griglia = el('griglia-contesto');
+
+  const evidenza = el('yes-evidenza');
+  evidenza.innerHTML = '';
+  const card = cardImmagine(s.yes, '');
+  while (card.firstChild) evidenza.appendChild(card.firstChild);
+  const tag = document.createElement('span');
+  tag.className = 'tag-yes';
+  tag.textContent = 'YES';
+  evidenza.appendChild(tag);
+
+  const griglia = el('griglia-but');
   griglia.innerHTML = '';
-
-  s.momenti.forEach((m) => {
+  s.but.forEach((b) => {
     const li = document.createElement('li');
-    li.className = 'card-contesto' + (m.id === momentoScelto ? ' scelta' : '');
-
-    const img = document.createElement('img');
-    img.src = m.immagine; img.alt = m.alt; img.loading = 'lazy';
-    img.onerror = () => { img.alt = 'Immagine non disponibile'; };
-
-    const cap = document.createElement('span');
-    cap.className = 'didascalia';
-    cap.textContent = m.testoBreve;
-
-    li.append(img, cap);
-    if (m.id === momentoScelto) {
-      const tag = document.createElement('span');
-      tag.className = 'tag-scelta';
-      tag.textContent = 'Il tuo';
-      li.appendChild(tag);
-    }
+    li.className = 'card-but';
+    const card = cardImmagine(b, '');
+    while (card.firstChild) li.appendChild(card.firstChild);
     griglia.appendChild(li);
   });
 
   el('domanda-dopo').textContent = DOMANDA_DOPO;
   costruisciScala(el('scala-dopo'), el('btn-dopo'));
-  mostraFase(el('fase-dopo'));
+  mostraFase(el('fase-dopo'), 'anim-but');
 }
 
 el('btn-dopo').addEventListener('click', async () => {
@@ -317,14 +279,14 @@ el('btn-dopo').addEventListener('click', async () => {
   el('btn-dopo').textContent = 'Un attimo…';
   if (!(await salva('rating_after', votoCorrente))) {
     el('btn-dopo').disabled = false;
-    el('btn-dopo').textContent = 'Riprova';
+    el('btn-dopo').textContent = 'Impossibile inviare il voto. Riprova.';
     return;
   }
   fase = 'debrief';
   renderDebrief();
 });
 
-// ---------- FASE 6: micro-debrief ----------
+// ---------- FASE 7: micro-debrief ----------
 
 function renderDebrief() {
   el('testo-debrief').textContent = SCENARI[indiceScenario].debrief;
@@ -333,8 +295,7 @@ function renderDebrief() {
 
 el('btn-continua').addEventListener('click', async () => {
   indiceScenario++;
-  fase = 'scelta';
-  momentoScelto = null;
+  fase = 'intro';
 
   if (indiceScenario >= SCENARI.length) {
     await supabase.from('attivita_partecipanti')
@@ -344,7 +305,7 @@ el('btn-continua').addEventListener('click', async () => {
     return;
   }
   renderAvanzamento();
-  renderScelta();
+  renderIntro();
 });
 
 // ---------- schermata finale ----------
@@ -359,7 +320,6 @@ function renderFine() {
   });
 
   el('domanda-riflessione').textContent = DOMANDA_RIFLESSIONE;
-
   const cont = el('opzioni-riflessione');
   cont.innerHTML = '';
 
@@ -378,7 +338,7 @@ function renderFine() {
       btn.addEventListener('click', async () => {
         [...cont.querySelectorAll('.voto')].forEach((b) => { b.disabled = true; });
         btn.setAttribute('aria-pressed', 'true');
-        // Salvata fuori dal ciclo scenari: nessun punteggio, nessuna classifica.
+        // Risposta facoltativa: nessun punteggio, nessuna classifica.
         await supabase.from('attivita_risposte_generiche').insert({
           sessione_id: sessione.id,
           partecipante_id: partecipante.id,

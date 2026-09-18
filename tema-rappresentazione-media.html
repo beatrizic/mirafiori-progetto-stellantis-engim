@@ -41,15 +41,13 @@
 
   .sotto-titolo { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; font-weight: 700; margin: 2rem auto 0.9rem; }
 
-  /* momenti in regia */
-  .griglia-momenti-regia { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-  .card-momento-regia { margin: 0; background: var(--bianco-2); border-radius: 14px; overflow: hidden; border: 3px solid transparent; }
-  .card-momento-regia.vincente { border-color: var(--accento); }
-  .card-momento-regia img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin: 0; background: #dde3ee; }
-  .card-momento-regia figcaption { padding: 0.7rem; text-align: center; }
-  .momento-testo { display: block; font-size: 0.85rem; color: var(--nero); margin-bottom: 0.3rem; }
-  .momento-pct { display: block; font-family: var(--font-display); font-size: 1.8rem; color: var(--blu); line-height: 1; }
-  .momento-n { display: block; font-size: 0.78rem; color: var(--grigio); }
+  /* riferimento visivo dello scenario */
+  .titolo-live { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.04em; text-align: center; color: var(--grigio); margin-bottom: 1.2rem; }
+  .riferimento-yes { display: flex; gap: 1rem; align-items: center; background: var(--bianco-2); border-radius: 14px; padding: 0.9rem; margin-bottom: 0.6rem; text-align: left; }
+  .riferimento-yes img { width: 82px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; margin: 0; flex: none; background: #dde3ee; }
+  .rif-testo { display: flex; flex-direction: column; gap: 0.2rem; }
+  .rif-tag { align-self: flex-start; background: var(--blu); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 999px; letter-spacing: 0.05em; }
+  .rif-but { font-size: 0.8rem; color: var(--grigio); }
 
   /* medie prima/dopo */
   .confronto-medie { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; }
@@ -86,7 +84,7 @@
   .nota-lettura { font-size: 0.85rem; color: var(--grigio); max-width: 62ch; margin: 1.4rem auto 0; }
 
   /* modalità proiezione */
-  .proiezione .momento-pct { font-size: 2.6rem; }
+  .proiezione .riferimento-yes img { width: 120px; }
   .proiezione .bm-valore { font-size: 3.4rem; }
   .proiezione .barra-etichetta { font-size: 1.05rem; }
   .proiezione .barra-traccia { height: 15px; }
@@ -130,7 +128,7 @@
   <div class="attivita-interno">
 
     <p class="marchio-attivita"><span class="yes">YES,</span> <span class="but">BUT…</span></p>
-    <p class="sottotitolo">Una storia. Due versioni. Quello che pubblichi non racconta sempre tutto.</p>
+    <p class="sottotitolo">Una foto, poi il contesto. Quello che vedi non è sempre tutta la storia.</p>
 
     <div class="pannello-docente">
 
@@ -168,6 +166,7 @@
           <div class="contatore"><span class="numero" id="sn-scenario">—</span><span class="etichetta">Scenari medi</span></div>
         </div>
 
+        <h3 class="titolo-live">YES, BUT… — risultati live</h3>
         <div id="pannello-risultati-social">
           <div class="tab-barra" id="tab-social" role="group" aria-label="Scegli cosa visualizzare"></div>
           <div id="contenuto-tab"></div>
