@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stereotipi di genere: quanto influenzano le nostre scelte? — Mirafiori</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ---------- sezione attività ---------- */
+  .attivita { background: var(--bianco-2); padding: 4rem 1.6rem; }
+  .attivita-interno { max-width: 1200px; margin: 0 auto; }
+  .attivita h2 { margin-bottom: 0.6rem; }
+  .attivita .sottotitolo { color: var(--grigio); margin: 0 auto 2.5rem; }
+
+  .pannello-docente { background: #fff; border-radius: 18px; padding: 2rem 1.6rem; box-shadow: 0 6px 24px rgba(14,42,82,0.07); }
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 1.6rem; }
+  .controlli .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+
+  .riga-sessione { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; margin-bottom: 2rem; }
+  .codice-grande { font-family: var(--font-display); font-size: 3rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; }
+  .meta-sessione { font-size: 0.9rem; color: var(--grigio); }
+
+  #blocco-qr { text-align: center; }
+  #qr-attivita { background: #fff; padding: 1rem; display: inline-block; border-radius: 12px; }
+  #url-studente { font-size: 0.8rem; color: var(--grigio); word-break: break-all; display: block; margin-top: 0.6rem; }
+
+  .contatori { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; padding: 1.2rem 0.8rem; text-align: center; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.4rem; color: var(--accento); display: block; line-height: 1; }
+  .contatore .etichetta { font-size: 0.82rem; color: #cfe0f5; }
+
+  .griglia-quesiti { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.2rem; }
+  .card-quesito { background: var(--bianco-2); border-radius: 14px; padding: 1.2rem; text-align: left; }
+  .testata-quesito { display: flex; gap: 0.9rem; align-items: center; margin-bottom: 1rem; }
+  .mini-ritratto { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: #dde3ee; flex: none; margin: 0; }
+  .mini-ritratto.vuoto { display: block; }
+  .testata-quesito h3 { margin: 0; font-size: 1.05rem; }
+  .testata-quesito p { margin: 0; font-size: 0.82rem; }
+
+  .barra-riga { margin-bottom: 0.6rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.8rem; font-size: 0.82rem; margin-bottom: 0.25rem; }
+  .barra-etichetta .primo { font-weight: 700; color: var(--blu); }
+  .barra-traccia { height: 9px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+
+  .confronto-retribuzione { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 1.4rem; }
+  .colonna-retr { background: var(--bianco-2); border-radius: 14px; padding: 1.4rem; text-align: left; }
+  .colonna-retr h3 { margin-bottom: 0.2rem; }
+  .colonna-retr .sintesi { font-size: 0.85rem; color: var(--blu); font-weight: 600; margin-top: 0.9rem; }
+  .nota-lettura { font-size: 0.85rem; color: var(--grigio); max-width: 60ch; margin: 1.2rem auto 0; }
+
+  #blocco-conclusione { background: var(--blu); color: #fff; border-radius: 18px; padding: 2.5rem 1.6rem; margin-top: 2rem; }
+  #blocco-conclusione p { color: #fff; font-size: 1.2rem; margin: 0 auto 1rem; max-width: 52ch; }
+  #blocco-conclusione p:last-child { margin-bottom: 0; }
+
+  /* modalità proiezione: attiva quando il docente rivela i risultati */
+  .proiezione .card-quesito { padding: 1.6rem; }
+  .proiezione .barra-etichetta { font-size: 1.05rem; }
+  .proiezione .barra-traccia { height: 14px; }
+  .proiezione .mini-ritratto { width: 86px; height: 86px; }
+  .proiezione .testata-quesito h3 { font-size: 1.3rem; }
+
+  .nascosto { display: none; }
+
+  @media (prefers-reduced-motion: reduce) { .barra-fill { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="loghi">
+    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
+    <div class="separatore"></div>
+    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
+  </div>
+  <nav>
+    <a href="index.html#progetto">Il progetto</a>
+    <a href="index.html#temi">Temi</a>
+  </nav>
+</header>
+
+<section class="hero-tema">
+  <p class="eyebrow reveal">Approfondimento</p>
+  <h1 class="reveal">Stereotipi di genere: quanto influenzano le nostre scelte?</h1>
+</section>
+
+<div class="testo-tema reveal">
+
+<p>Gli stereotipi di genere sono idee generalizzate su come uomini e donne "dovrebbero" essere, comportarsi o scegliere. Frasi come "i ragazzi sono più portati per la matematica", "le ragazze sono più sensibili" o "un uomo non deve mostrare fragilità" sembrano semplici opinioni, ma possono influenzare realmente il modo in cui costruiamo la nostra identità.</p>
+<p>Fin dall'infanzia, famiglia, scuola, pubblicità e società trasmettono aspettative diverse a bambini e bambine. Questi messaggi possono condizionare interessi, autostima, scelta degli studi e perfino professione futura.</p>
+<p>Lo stereotipo diventa particolarmente pericoloso quando viene interiorizzato: una persona può rinunciare a qualcosa non perché non ne sia capace, ma perché ha imparato a considerarla "non adatta" al proprio genere.</p>
+<p>Ridurre gli stereotipi non significa eliminare le differenze individuali, ma permettere a ciascuno di scegliere senza ruoli già decisi dagli altri.</p>
+
+<h3 style="margin-top:2.5rem;">Un esempio concreto: le materie STEM</h3>
+<p>Solo il 15% delle laureate italiane nel 2024 ha scelto una materia STEM (Scienza, Tecnologia, Ingegneria, Matematica), contro il 36,9% dei laureati — e il divario si registra già a 15 anni, secondo le indagini OCSE-PISA. Non è un problema di capacità: chi sceglie le STEM, tra le ragazze, si laurea più spesso in corso e con voti più alti dei colleghi uomini. Il 51% di chi rinuncia a un percorso STEM viene scoraggiata proprio dalla propria famiglia. E in discipline come Scienze naturali, Statistica e Matematica la parità è già realtà (50,6%): la prova che il divario non è inevitabile, ma culturale.</p>
+<p class="grigio" style="font-size:0.85rem;">Fonti: Istat 2024, indagine Fondazione Deloitte, rapporto Talents Venture 2026</p>
+
+</div>
+
+<!-- ============ ATTIVITÀ INTERATTIVA ============ -->
+<section class="attivita" id="attivita">
+  <div class="attivita-interno">
+
+    <h2>Che lavoro fa?</h2>
+    <p class="sottotitolo">Vai con la prima impressione. Sei ritratti, una domanda sola: nessun punteggio, nessuna classifica. Le risposte sono anonime.</p>
+
+    <div class="pannello-docente">
+
+      <div class="controlli">
+        <button class="btn" id="btn-crea">Crea sessione</button>
+        <button class="btn" id="btn-avvia" disabled>Avvia sessione</button>
+        <button class="btn" id="btn-qr" disabled>Nascondi QR</button>
+        <button class="btn" id="btn-blocca" disabled>Blocca risposte</button>
+        <button class="btn" id="btn-rivela" disabled>Rivela risultati</button>
+        <button class="btn" id="btn-retribuzione" disabled>Avvia test retribuzione</button>
+        <button class="btn" id="btn-conclusione" disabled>Rivela conclusione</button>
+        <button class="btn corallo" id="btn-termina" disabled>Termina sessione</button>
+        <button class="btn corallo" id="btn-reset" disabled>Reset sessione</button>
+      </div>
+
+      <div id="blocco-sessione" class="nascosto">
+
+        <div class="riga-sessione">
+          <div>
+            <span class="codice-grande" id="codice-sessione">——————</span>
+            <p class="meta-sessione">
+              Stato: <strong id="stato-sessione">—</strong> ·
+              Connessione <span id="stato-realtime">—</span>
+            </p>
+          </div>
+          <div id="blocco-qr">
+            <div id="qr-attivita"></div>
+            <span id="url-studente"></span>
+          </div>
+        </div>
+
+        <div class="contatori">
+          <div class="contatore"><span class="numero" id="n-collegati">0</span><span class="etichetta">Collegati</span></div>
+          <div class="contatore"><span class="numero" id="n-iniziati">0</span><span class="etichetta">Hanno iniziato</span></div>
+          <div class="contatore"><span class="numero" id="n-completati">0</span><span class="etichetta">Hanno completato</span></div>
+          <div class="contatore"><span class="numero" id="n-risposte">0</span><span class="etichetta">Risposte ricevute</span></div>
+        </div>
+
+        <div id="pannello-risultati">
+          <div class="griglia-quesiti" id="griglia-quesiti"></div>
+
+          <div id="blocco-retribuzione" class="nascosto">
+            <h3 style="margin-top:2.5rem;">Test retribuzione</h3>
+            <div class="confronto-retribuzione">
+              <div class="colonna-retr" id="retr-A"></div>
+              <div class="colonna-retr" id="retr-B"></div>
+            </div>
+            <p class="nota-lettura">Distribuzione osservata in questa sessione. La fascia "3.000 € o più" è aperta: la mediana è indicativa e non corrisponde a una media reale. L'interpretazione dei dati spetta al docente.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="blocco-conclusione" class="nascosto">
+      <div id="testo-conclusione"></div>
+    </div>
+
+  </div>
+</section>
+
+<div style="text-align:center;">
+  <a class="link-indietro" href="index.html#temi">&larr; Torna a tutti i temi</a>
+</div>
+
+<footer>
+  <div class="loghi-footer">
+    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
+    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script type="module" src="js/stereotipi-regia.js"></script>
+</body>
+</html>
