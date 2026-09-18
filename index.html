@@ -25,7 +25,6 @@
   .logo-brand { height: 80px; width: auto; }
   .segno-per { font-family: var(--font-display); font-size: 2.4rem; color: var(--accento); }
 
-  /* titolo + motto inglese: stesso font display, stesso colore */
   .hero h1 { margin-bottom: 0.3rem; }
   .motto-en {
     font-family: var(--font-display);
@@ -93,11 +92,34 @@
   .testo-progetto p:last-child { margin-bottom: 0; }
   .testo-progetto .chiusura { font-weight: 600; color: var(--blu); }
 
-  .griglia-tecnologie { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem; max-width: 1000px; margin: 2rem auto 0; text-align: center; }
-  .tecnologia-item { padding: 1.8rem 1.2rem; background: var(--bianco-2); border-radius: 14px; }
-  .tecnologia-item .cerchio-icona { margin: 0 auto 1rem; }
-  .tecnologia-item h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
-  .tecnologia-item p { font-size: 0.92rem; margin: 0 auto; }
+  /* ---------- tecnologie: righe a piena larghezza ---------- */
+  .lista-tecnologie { max-width: 940px; margin: 2.5rem auto 0; display: grid; gap: 1.2rem; }
+  .riga-tecnologia {
+    display: flex; gap: 1.6rem; align-items: flex-start; text-align: left;
+    background: var(--bianco-2); border-radius: 18px; padding: 1.8rem 1.8rem;
+  }
+  .icona-tecnologia {
+    flex: none; width: 4rem; height: 4rem; border-radius: 18px; background: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    box-shadow: 0 4px 14px rgba(14,42,82,0.08);
+  }
+  .corpo-tecnologia { flex: 1; min-width: 0; }
+  .corpo-tecnologia h3 { font-size: 1.35rem; margin: 0 0 0.15rem; }
+  .modello {
+    display: inline-block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--blu-chiaro); background: #e5edfb; padding: 0.15rem 0.6rem;
+    border-radius: 999px; margin-bottom: 0.8rem;
+  }
+  .corpo-tecnologia p { font-size: 0.98rem; margin: 0 0 0.7rem; max-width: none; }
+  .corpo-tecnologia p:last-child { margin-bottom: 0; }
+  .uso {
+    display: block; font-size: 0.92rem; color: var(--blu); font-weight: 600;
+    border-left: 3px solid var(--accento); padding-left: 0.8rem; margin-top: 0.9rem;
+  }
+  @media (max-width: 640px) {
+    .riga-tecnologia { flex-direction: column; gap: 1rem; padding: 1.4rem; }
+    .icona-tecnologia { width: 3.2rem; height: 3.2rem; font-size: 1.6rem; }
+  }
 </style>
 </head>
 <body>
@@ -112,7 +134,7 @@
 <section class="hero">
   <div class="lockup-brand reveal">
     <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte" class="logo-brand">
-    <span class="segno-per"> </span>
+    <span class="segno-per">×</span>
     <img src="img/logo-stellantis.png" alt="Logo Stellantis" class="logo-brand">
   </div>
   <h1 class="reveal">Mirafiori</h1>
@@ -170,34 +192,62 @@
   </div>
 </section>
 
-<section class="sezione sezione-centrata">
+<section class="sezione sezione-centrata" id="tecnologie">
   <div class="intestazione-sezione reveal">
     <h2>Le tecnologie che abbiamo acquistato</h2>
-    <p>Non solo teoria: ecco gli strumenti che troverete nei laboratori pratici.</p>
+    <p>Non solo teoria: ecco gli strumenti che troverete nei laboratori, cosa sono e come li useremo.</p>
   </div>
-  <div class="griglia-tecnologie reveal">
-    <div class="tecnologia-item">
-      <div class="cerchio-icona">🖨️</div>
-      <h3>Stampanti 3D</h3>
-      <p>Per trasformare un'idea in un oggetto reale, strato dopo strato.</p>
-    </div>
-    <div class="tecnologia-item">
-      <div class="cerchio-icona">🥽</div>
-      <h3>Visori AR/VR</h3>
-      <p>Per provare un ambiente o un prodotto prima di realizzarlo davvero.</p>
-    </div>
-    <div class="tecnologia-item">
-      <div class="cerchio-icona">🎥</div>
-      <h3>Attrezzatura video</h3>
-      <p>Le stesse tecniche di ripresa e montaggio usate dai creator.</p>
-    </div>
-    <div class="tecnologia-item">
-      <div class="cerchio-icona">💻</div>
-      <h3>Postazioni con IA generativa</h3>
-      <p>Per scrivere, progettare e verificare contenuti insieme a un'IA.</p>
-    </div>
+
+  <div class="lista-tecnologie reveal">
+
+    <article class="riga-tecnologia">
+      <div class="icona-tecnologia">🖨️</div>
+      <div class="corpo-tecnologia">
+        <h3>Due stampanti 3D</h3>
+        <span class="modello">Bambu Lab A1 · CampusPrint</span>
+        <p>Una stampante 3D costruisce un oggetto reale partendo da un disegno fatto al computer. Non lo scava da un blocco: lo costruisce dal nulla, aggiungendo materiale strato su strato.</p>
+        <p>Funziona così: un programma "affetta" il modello 3D in centinaia di livelli sottilissimi e li traduce in istruzioni per la macchina. Un ugello riscaldato a oltre 200 °C scioglie un filo di plastica e lo deposita seguendo il contorno di ogni strato. Man mano che si raffredda, la plastica solidifica e regge lo strato successivo. Un oggetto piccolo richiede una decina di minuti, uno complesso anche diverse ore.</p>
+        <p>Il materiale si chiama <strong>filamento</strong>: bobine di plastica da 1,75 mm di diametro. Il più usato è il <strong>PLA</strong>, che deriva dall'amido di mais, si stampa a bassa temperatura ed è il più semplice da gestire. Esistono anche il PETG, più resistente agli urti e al calore, e materiali caricati con fibra di carbonio per pezzi tecnici. Ogni bobina è un colore diverso, e con l'accessorio che monta quattro bobine insieme si stampa in più colori nello stesso oggetto.</p>
+        <p>Abbiamo scelto due macchine diverse apposta: la Bambu Lab A1 è veloce, si calibra da sola e permette la stampa multicolore; la CampusPrint è pensata per l'uso scolastico, con struttura chiusa e comandi più semplici, quindi adatta a chi la usa per la prima volta.</p>
+        <span class="uso">Nei laboratori: prototipi di prodotto, packaging per un cosmetico, fermagli e accessori, segnaposto per la mise en place, gadget e badge per le campagne social.</span>
+      </div>
+    </article>
+
+    <article class="riga-tecnologia">
+      <div class="icona-tecnologia">🥽</div>
+      <div class="corpo-tecnologia">
+        <h3>Visori per la realtà virtuale</h3>
+        <span class="modello">Pico · licenze Mozaik</span>
+        <p>Un visore VR è un piccolo computer che si indossa. Dentro ha due schermi, uno per occhio, che mostrano la stessa scena da due angolazioni leggermente diverse: è lo stesso meccanismo con cui i nostri occhi percepiscono la profondità, e il cervello la interpreta come spazio reale. Dei sensori seguono i movimenti della testa, così girandosi si guarda davvero intorno.</p>
+        <p>I visori Pico funzionano da soli, senza bisogno di essere collegati a un computer: si indossano e si parte. Insieme ai visori abbiamo acquistato le licenze <strong>Mozaik</strong>, una piattaforma didattica con oltre 1300 scene tridimensionali già pronte, con narrazione ed esercizi integrati. Molte si possono attraversare camminando, come in un videogioco.</p>
+        <span class="uso">Nei laboratori: lezioni immersive, e la possibilità di provare un ambiente prima di realizzarlo davvero — l'allestimento di un tavolo, lo showroom di un punto vendita, la simulazione di un trattamento.</span>
+      </div>
+    </article>
+
+    <article class="riga-tecnologia">
+      <div class="icona-tecnologia">🎥</div>
+      <div class="corpo-tecnologia">
+        <h3>Attrezzatura video</h3>
+        <span class="modello">Camera e postazione di montaggio</span>
+        <p>Una videocamera e gli strumenti per montare quello che si riprende. Girare è solo metà del lavoro: il montaggio digitale è dove si decide il ritmo, cosa tenere e cosa tagliare, quali immagini accostare. È la stessa competenza che usano i creator, e si impara facendola.</p>
+        <span class="uso">Nei laboratori: micro-tutorial, video promozionali, pitch di presentazione, campagne social — e la sperimentazione del digital editing come competenza a sé.</span>
+      </div>
+    </article>
+
+    <article class="riga-tecnologia">
+      <div class="icona-tecnologia">💻</div>
+      <div class="corpo-tecnologia">
+        <h3>Postazioni PC e tablet</h3>
+        <span class="modello">Il centro di tutto il resto</span>
+        <p>Sono la parte meno appariscente e la più importante. Senza un computer, una stampante 3D non ha niente da stampare: il modello va prima disegnato, poi preparato con il programma che lo traduce in istruzioni. Lo stesso vale per il video, che va montato, e per i contenuti da pubblicare, che vanno scritti e impaginati.</p>
+        <p>Le postazioni servono anche per lavorare con i sistemi di intelligenza artificiale generativa: scrivere richieste, valutare i risultati, correggerli, verificarli. I tablet affiancano i PC dove serve muoversi — per riprendere, fotografare, mostrare qualcosa a qualcuno.</p>
+        <span class="uso">Nei laboratori: modellazione 3D, preparazione delle stampe, montaggio video, scrittura e verifica dei contenuti, uso guidato dell'IA generativa.</span>
+      </div>
+    </article>
+
   </div>
-  <p class="reveal" style="margin-top:2rem;"><a href="percorso.html">Scopri come funziona il percorso e i 5 laboratori →</a></p>
+
+  <p class="reveal" style="margin-top:2.5rem;"><a href="percorso.html">Scopri come funziona il percorso e i 5 laboratori →</a></p>
 </section>
 
 <footer>
