@@ -3,8 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gender pay gap: perché esistono ancora differenze nei guadagni? — Mirafiori</title>
+<title>Prompt e Intelligenza Artificiale — Mirafiori</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  .attivita { background: var(--bianco-2); padding: 4rem 1.6rem; }
+  .attivita-interno { max-width: 1240px; margin: 0 auto; }
+  .attivita .sottotitolo { color: var(--grigio); margin: 0 auto 2.5rem; }
+  .marchio-attivita { font-family: var(--font-display); font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1; margin-bottom: 0.4rem; color: var(--blu); }
+
+  .pannello-docente { background: #fff; border-radius: 18px; padding: 2rem 1.6rem; box-shadow: 0 6px 24px rgba(14,42,82,0.07); }
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 1.6rem; }
+  .controlli .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+
+  .riga-sessione { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; margin-bottom: 2rem; }
+  .codice-grande { font-family: var(--font-display); font-size: 3rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; }
+  .meta-sessione { font-size: 0.9rem; color: var(--grigio); }
+  #qr-prompt { background: #fff; padding: 1rem; display: inline-block; border-radius: 12px; }
+  #url-studente-prompt { font-size: 0.8rem; color: var(--grigio); word-break: break-all; display: block; margin-top: 0.6rem; }
+
+  .contatori { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; padding: 1.1rem 0.7rem; text-align: center; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.2rem; color: var(--accento); display: block; line-height: 1; }
+  .contatore .etichetta { font-size: 0.78rem; color: #cfe0f5; }
+
+  .titolo-live { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.04em; text-align: center; color: var(--grigio); margin-bottom: 1.2rem; }
+
+  .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.8rem; }
+  .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
+  .tab.attivo { background: var(--blu); color: #fff; }
+  .tab:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+
+  .sotto-titolo { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.78rem; font-weight: 700; margin: 2rem auto 0.9rem; }
+  .obiettivo-regia { background: var(--bianco-2); border-left: 4px solid var(--accento); border-radius: 0 10px 10px 0; padding: 0.8rem 1rem; font-size: 0.92rem; text-align: left; max-width: 70ch; margin: 0 auto 1.6rem; }
+
+  .confronto-scelte { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.4rem; }
+  .colonna-scelte { background: var(--bianco-2); border-radius: 14px; padding: 1.2rem; text-align: left; }
+  .colonna-scelte h4 { font-family: var(--font-testo); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--grigio); margin: 0 0 1rem; }
+
+  .barra-riga { margin-bottom: 0.9rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.8rem; align-items: flex-start; font-size: 0.84rem; margin-bottom: 0.3rem; }
+  .prompt-testo { line-height: 1.35; }
+  .prompt-testo.primo { font-weight: 700; color: var(--blu); }
+  .barra-valore { white-space: nowrap; font-weight: 600; }
+  .barra-traccia { height: 10px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+  .barra-fill.q-forte { background: #1d7a4c; }
+  .barra-fill.q-medio { background: var(--blu-chiaro); }
+  .barra-fill.q-debole { background: #9aa4b8; }
+  .barra-fill.q-trappola { background: var(--accento); }
+
+  .tag-qualita { display: inline-block; margin-top: 0.3rem; font-size: 0.7rem; font-weight: 700; padding: 0.12rem 0.5rem; border-radius: 999px; letter-spacing: 0.03em; }
+  .tag-qualita.q-forte { background: #e3f3ea; color: #1d7a4c; }
+  .tag-qualita.q-medio { background: #e5edfb; color: var(--blu-chiaro); }
+  .tag-qualita.q-debole { background: #eef0f4; color: #6b7280; }
+  .tag-qualita.q-trappola { background: #fde9eb; color: var(--accento); }
+
+  .riepilogo-lista { display: grid; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .riga-riepilogo { display: flex; justify-content: space-between; gap: 1rem; background: var(--bianco-2); border-radius: 10px; padding: 0.7rem 1rem; text-align: left; }
+  .rr-scenario { font-size: 0.92rem; }
+  .rr-valore { font-weight: 700; color: var(--blu); font-size: 0.92rem; white-space: nowrap; }
+
+  .nota-lettura { font-size: 0.85rem; color: var(--grigio); max-width: 62ch; margin: 1.4rem auto 0; }
+
+  .proiezione .prompt-testo { font-size: 1.05rem; }
+  .proiezione .barra-traccia { height: 15px; }
+  .proiezione .rr-scenario, .proiezione .rr-valore { font-size: 1.1rem; }
+  .proiezione .colonna-scelte h4 { font-size: 1rem; }
+
+  .nascosto { display: none; }
+  @media (prefers-reduced-motion: reduce) { .barra-fill { transition: none; } }
+</style>
 </head>
 <body>
 
@@ -22,21 +91,71 @@
 
 <section class="hero-tema">
   <p class="eyebrow reveal">Approfondimento</p>
-  <h1 class="reveal">Gender pay gap: perché esistono ancora differenze nei guadagni?</h1>
+  <h1 class="reveal">Prompt e Intelligenza Artificiale</h1>
 </section>
 
 <div class="testo-tema reveal">
 
-<p>Il gender pay gap indica la differenza media tra i guadagni di uomini e donne. Non significa semplicemente che una donna venga sempre pagata meno di un uomo per lo stesso identico lavoro: il fenomeno è più complesso.</p>
-<p>Il divario può dipendere anche dalla maggiore presenza delle donne in settori meno retribuiti, dal lavoro part-time, dalle interruzioni della carriera, dalla maternità, dalla distribuzione ancora diseguale del lavoro familiare e dalla minore presenza femminile nelle posizioni dirigenziali.</p>
-<p>Si parla inoltre di "soffitto di cristallo" per descrivere ostacoli non sempre visibili che possono rendere più difficile raggiungere i livelli più alti della carriera. Il problema non riguarda quindi soltanto lo stipendio mensile, ma l'intero percorso professionale.</p>
-<p>Ridurre il divario significa lavorare su pari opportunità, trasparenza salariale, condivisione delle responsabilità familiari e accesso alle posizioni decisionali.</p>
+<p>Un'intelligenza artificiale generativa non capisce cosa vuoi: capisce cosa scrivi. Non sa chi sei, che scuola frequenti, a cosa ti serve quello che stai chiedendo. Tutto quello che ha è la tua richiesta, e da quella prova a indovinare il resto.</p>
+<p>Il prompt è la richiesta che scrivi. Scriverlo bene non significa scriverlo lungo o usare parole difficili: significa dare le informazioni che servono. Chi sei, in che contesto ti trovi, che tipo di risposta ti aspetta, quanto deve essere lunga, cosa non deve contenere. Più cose lasci implicite, più l'IA riempie i vuoti a modo suo — e il risultato è generico, o semplicemente non è quello che ti serviva.</p>
+<p>C'è poi un secondo aspetto, meno intuitivo. Questi sistemi sono costruiti per essere utili e collaborativi, e questo li rende accomodanti: se fai una domanda che dà per scontata una cosa falsa, spesso provano comunque a risponderti. Possono citare studi che non esistono, attribuire frasi a persone che non le hanno mai dette, produrre immagini realistiche di eventi mai accaduti. Non stanno mentendo: stanno completando un testo nel modo che sembra più probabile.</p>
+<p>Per questo saper scrivere un prompt è solo metà del lavoro. L'altra metà è sapere quando fidarsi e quando verificare. Chiedere all'IA di darti ragione è facile. Chiederle di dirti come controllare da solo è più utile.</p>
 
 </div>
 
-<section class="quiz-teaser">
-  <h2>Metti alla prova quello che hai letto</h2>
-  <p class="sub">Il test su questo tema — competenze acquisite e le tue opinioni — sarà presto disponibile qui, con un QR code da inquadrare in classe. I risultati compaiono in diretta durante la lezione, proprio come un televoto.</p>
+<!-- ============ ATTIVITÀ INTERATTIVA ============ -->
+<section class="attivita" id="attivita">
+  <div class="attivita-interno">
+
+    <p class="marchio-attivita">Scrivi meglio</p>
+    <p class="sottotitolo">Cinque situazioni, quattro modi di chiedere la stessa cosa. Scegli, poi guarda cosa succede davvero.</p>
+
+    <div class="pannello-docente">
+
+      <div class="controlli">
+        <button class="btn" id="btn-crea">Crea sessione</button>
+        <button class="btn" id="btn-avvia" disabled>Avvia</button>
+        <button class="btn" id="btn-qr" disabled>Nascondi QR</button>
+        <button class="btn" id="btn-blocca" disabled>Blocca risposte</button>
+        <button class="btn" id="btn-rivela" disabled>Mostra risultati</button>
+        <button class="btn corallo" id="btn-termina" disabled>Termina</button>
+        <button class="btn corallo" id="btn-reset" disabled>Reset</button>
+      </div>
+
+      <div id="blocco-sessione-prompt" class="nascosto">
+
+        <div class="riga-sessione">
+          <div>
+            <span class="codice-grande" id="codice-sessione-prompt">——————</span>
+            <p class="meta-sessione">
+              Stato: <strong id="stato-sessione-prompt">—</strong> ·
+              Connessione <span id="stato-realtime-prompt">—</span>
+            </p>
+          </div>
+          <div id="blocco-qr-prompt">
+            <div id="qr-prompt"></div>
+            <span id="url-studente-prompt"></span>
+          </div>
+        </div>
+
+        <div class="contatori">
+          <div class="contatore"><span class="numero" id="pn-collegati">0</span><span class="etichetta">Collegati</span></div>
+          <div class="contatore"><span class="numero" id="pn-attivi">0</span><span class="etichetta">Attivi</span></div>
+          <div class="contatore"><span class="numero" id="pn-completati">0</span><span class="etichetta">Completati</span></div>
+          <div class="contatore"><span class="numero" id="pn-risposte">0</span><span class="etichetta">Risposte</span></div>
+          <div class="contatore"><span class="numero" id="pn-cambiati">—</span><span class="etichetta">Hanno cambiato idea</span></div>
+        </div>
+
+        <div id="pannello-risultati-prompt">
+          <h3 class="titolo-live">Scrivi meglio — risultati live</h3>
+          <div class="tab-barra" id="tab-prompt" role="group" aria-label="Scegli cosa visualizzare"></div>
+          <div id="contenuto-tab-prompt"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <div style="text-align:center;">
@@ -48,9 +167,9 @@
     <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
     <img src="img/logo-stellantis.png" alt="Logo Stellantis">
   </div>
-  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
 </footer>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/prompt-regia.js"></script>
 </body>
 </html>
