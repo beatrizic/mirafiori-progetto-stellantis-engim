@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 :root {
   --bianco: #ffffff;
@@ -9,14 +9,14 @@
   --grigio: #6b7280;
   --linea: #e2e6ee;
   --accento: #e63946;
-  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-display: 'Anton', 'Impact', sans-serif;
   --font-testo: 'IBM Plex Sans', system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bianco); color: var(--nero); font-family: var(--font-testo); line-height: 1.65; text-align: center; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 800; color: var(--blu); line-height: 1.03; margin: 0 0 0.5em; }
-h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); font-weight: 900; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; color: var(--blu); line-height: 1.1; letter-spacing: 0.01em; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); font-weight: 400; }
 h2 { font-size: clamp(1.7rem, 3.6vw, 2.6rem); }
 p { max-width: 62ch; font-size: 1.08rem; margin-left: auto; margin-right: auto; }
 .grigio { color: var(--grigio); }
@@ -68,7 +68,7 @@ ul, ol { padding-left: 0; list-style-position: inside; }
 /* ---------- statistiche gender gap ---------- */
 .statistiche { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.4rem; margin-bottom: 2.6rem; }
 .stat-card { background: var(--blu); color: var(--bianco); border-radius: 14px; padding: 1.8rem; text-align: center; }
-.stat-card .numero { font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; color: var(--accento); display: block; line-height: 1; margin-bottom: 0.5rem; }
+.stat-card .numero { font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; color: var(--accento); display: block; line-height: 1; margin-bottom: 0.5rem; }
 .stat-card .didascalia { font-size: 0.88rem; color: #cfe0f5; }
 .stat-fonte { text-align: center; font-size: 0.8rem; color: var(--grigio); margin-top: -1.4rem; margin-bottom: 2.6rem; }
 
@@ -80,7 +80,7 @@ ul, ol { padding-left: 0; list-style-position: inside; }
   background: var(--bianco-2); display: flex; align-items: center; justify-content: center;
   font-size: 1.5rem;
 }
-.riga-icona h3 { font-family: var(--font-testo); font-weight: 700; font-size: 1.15rem; margin: 0 0 0.35rem; color: var(--blu); }
+.riga-icona h3 { font-family: var(--font-testo); font-weight: 700; font-size: 1.15rem; margin: 0 0 0.35rem; color: var(--blu); letter-spacing: 0; }
 .riga-icona p { margin: 0; font-size: 1rem; color: var(--nero); }
 
 /* ---------- griglia percorso (fasi) ---------- */
@@ -88,7 +88,7 @@ ul, ol { padding-left: 0; list-style-position: inside; }
 .fase { padding: 2rem 1.2rem; background: var(--bianco-2); border-radius: 14px; }
 .fase .cerchio-icona { margin: 0 auto 1rem; }
 .fase h3 { color: var(--blu); font-size: 1.15rem; margin-bottom: 0.2rem; }
-.fase .tag-fase { color: var(--accento); font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; display: block; margin-bottom: 0.6rem; }
+.fase .tag-fase { color: var(--accento); font-family: var(--font-display); font-weight: 400; font-size: 1.05rem; display: block; margin-bottom: 0.6rem; }
 .fase p { font-size: 0.95rem; margin: 0 auto; }
 
 /* ---------- griglia percorsi (5) ---------- */
