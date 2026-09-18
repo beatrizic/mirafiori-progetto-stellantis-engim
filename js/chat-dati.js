@@ -16,13 +16,29 @@ export const ACTIVITY_KEY = 'cyberbullying-chat';
 // I due personaggi sono fittizi. I ruoli si scambiano fra le varianti,
 // il testo resta identico: è così che garantiamo l'equivalenza.
 export const PERSONAGGI = {
-  luca:  { id: 'luca',  nome: 'Luca',  username: '@luca.17x',    genere: 'male',   iniziali: 'L', colore: '#2f6f8f' },
-  marta: { id: 'marta', nome: 'Marta', username: '@marta.vibes', genere: 'female', iniziali: 'M', colore: '#8f4f7a' }
+  battuta: {
+    id: 'battuta',
+    nome: 'solo una battuta',
+    username: '@solo.una.battuta',
+    iniziali: '?',
+    colore: '#4a4a52'
+  },
+  tutti: {
+    id: 'tutti',
+    nome: 'lo sanno tutti',
+    username: '@lo.sanno.tutti',
+    iniziali: '?',
+    colore: '#52454a'
+  }
 };
 
+// Nessun nome di persona, nessun genere: l'account non dice chi c'è dietro.
+// È la situazione più comune e toglie di mezzo il rischio di suggerire
+// "maschio = bullo". Le due varianti cambiano solo il nome dell'account,
+// il testo dei messaggi è identico: l'equivalenza è garantita per costruzione.
 export const VARIANTI = {
-  A: { id: 'A', aggressore: 'luca',  destinatario: 'marta' },
-  B: { id: 'B', aggressore: 'marta', destinatario: 'luca'  }
+  A: { id: 'A', aggressore: 'battuta', destinatario: null },
+  B: { id: 'B', aggressore: 'tutti',   destinatario: null }
 };
 
 // Stadi dell'escalation, in ordine. Usati anche dalla regia.
@@ -47,140 +63,145 @@ export const NODI = {
     id: 'n1', stadio: 'normale',
     messaggi: [
       { testo: 'ciao', attesa: 500 },
-      { testo: 'ma hai visto la foto che hai messo ieri?', attesa: 1200 }
+      { testo: 'ti posso dire una cosa? ma senza offenderti', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r1a', etichetta: 'Perché?',            prossimo: 'n2a', strategia: 'neutro' },
-      { id: 'r1b', etichetta: 'Ahah sì, e quindi?', prossimo: 'n2b', strategia: 'ironico' },
-      { id: 'r1c', etichetta: 'Che c\u2019è?',      prossimo: 'n2c', strategia: 'difensivo' }
+      { id: 'r1a', etichetta: 'Dimmi.',       prossimo: 'n2a', strategia: 'neutro' },
+      { id: 'r1b', etichetta: 'Chi sei?',     prossimo: 'n2b', strategia: 'difensivo' },
+      { id: 'r1c', etichetta: 'Ok\u2026',      prossimo: 'n2c', strategia: 'ignora' }
     ]
   },
 
-  // ---------- 2. AMBIGUO (tre varianti che convergono) ----------
+  // ---------- 2. AMBIGUO ----------
   n2a: {
     id: 'n2a', stadio: 'ambiguo',
     messaggi: [
-      { testo: 'no niente 😅', attesa: 900 },
-      { testo: 'è che è un po\u2019 particolare', attesa: 1100 }
+      { testo: 'quella storia che hai messo ieri', attesa: 1000 },
+      { testo: 'te lo dico per il tuo bene eh', attesa: 1100 },
+      { testo: 'stanno tutti scrivendo di te', attesa: 1200 }
     ],
     risposte: [
-      { id: 'r2a1', etichetta: 'In che senso particolare?', prossimo: 'n3', strategia: 'neutro' },
-      { id: 'r2a2', etichetta: 'Dillo e basta.',            prossimo: 'n3', strategia: 'confronto' }
+      { id: 'r2a1', etichetta: 'Scrivendo cosa?',   prossimo: 'n3', strategia: 'neutro' },
+      { id: 'r2a2', etichetta: 'Non mi interessa.', prossimo: 'n3', strategia: 'ignora' }
     ]
   },
   n2b: {
     id: 'n2b', stadio: 'ambiguo',
     messaggi: [
-      { testo: 'niente niente', attesa: 800 },
-      { testo: 'diciamo che si nota 😬', attesa: 1200 }
+      { testo: 'uno che ti conosce', attesa: 900 },
+      { testo: 'comunque non è importante chi sono', attesa: 1000 },
+      { testo: 'importante è quella foto che hai messo 💀', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r2b1', etichetta: 'Si nota cosa?',   prossimo: 'n3', strategia: 'neutro' },
-      { id: 'r2b2', etichetta: 'Meglio così, no?', prossimo: 'n3', strategia: 'ironico' }
+      { id: 'r2b1', etichetta: 'Che problema hai?', prossimo: 'n3', strategia: 'confronto' },
+      { id: 'r2b2', etichetta: 'Cos\u2019ha la foto?', prossimo: 'n3', strategia: 'neutro' }
     ]
   },
   n2c: {
     id: 'n2c', stadio: 'ambiguo',
     messaggi: [
-      { testo: 'nulla nulla', attesa: 800 },
-      { testo: 'era per dire', attesa: 700 },
-      { testo: 'comunque l\u2019ho fatta vedere a un paio di persone', attesa: 1300 }
+      { testo: 'nel gruppo l\u2019hanno già ripresa', attesa: 1100 },
+      { testo: 'te la stanno passando da ieri sera', attesa: 1200 }
     ],
     risposte: [
-      { id: 'r2c1', etichetta: 'A chi?',           prossimo: 'n3', strategia: 'neutro' },
-      { id: 'r2c2', etichetta: 'Perché l\u2019hai fatto?', prossimo: 'n3', strategia: 'confronto' }
+      { id: 'r2c1', etichetta: 'Chi la sta passando?', prossimo: 'n3', strategia: 'neutro' },
+      { id: 'r2c2', etichetta: 'Fate schifo.',          prossimo: 'n3', strategia: 'confronto' }
     ]
   },
 
-  // ---------- 3. PRESA IN GIRO (convergenza) ----------
+  // ---------- 3. PRESA IN GIRO ----------
   n3: {
     id: 'n3', stadio: 'presa_in_giro', momentoChiave: true,
-    testoMomento: '"Ma davvero hai scelto proprio quella?"',
+    testoMomento: '"Ma tu ti guardi prima di postare?"',
     messaggi: [
-      { testo: 'ma davvero hai scelto proprio quella? 😂', attesa: 1200 }
+      { testo: 'ma tu ti guardi prima di postare? 😂', attesa: 1200 },
+      { testo: 'senza filtro sei un\u2019altra persona giuro', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r3a', etichetta: 'Sì. Perché?',  prossimo: 'n4a', strategia: 'neutro' },
-      { id: 'r3b', etichetta: 'A me piace.',  prossimo: 'n4b', strategia: 'difensivo' },
-      { id: 'r3c', etichetta: 'Ok...?',       prossimo: 'n4a', strategia: 'ignora' }
+      { id: 'r3a', etichetta: 'Sono io, e allora?',  prossimo: 'n4a', strategia: 'difensivo' },
+      { id: 'r3b', etichetta: 'Sei patetico.',        prossimo: 'n4b', strategia: 'confronto' },
+      { id: 'r3c', etichetta: 'Va bene, la tolgo.',   prossimo: 'n4a', strategia: 'ignora' }
     ]
   },
 
   // ---------- 4. UMILIAZIONE ----------
   n4a: {
     id: 'n4a', stadio: 'umiliazione', momentoChiave: true,
-    testoMomento: '"Nel gruppo stanno già ridendo."',
+    testoMomento: '"Ti hanno già fatto il meme."',
     messaggi: [
-      { testo: 'vabbè, come vuoi', attesa: 900 },
-      { tipo: 'reazione', testo: 'Ha reagito 😂 a un tuo messaggio', attesa: 1000 },
-      { testo: 'comunque nel gruppo stanno già ridendo', attesa: 1200 }
+      { testo: 'tranquillo non serve, tanto ce l\u2019hanno già tutti salvata', attesa: 1200 },
+      { tipo: 'reazione', testo: 'Ha reagito 😂 a un tuo messaggio', attesa: 900 },
+      { testo: 'ti hanno fatto il meme, sto piangendo 😂😂😂', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r4a1', etichetta: 'Quale gruppo?',   prossimo: 'n5', strategia: 'neutro' },
-      { id: 'r4a2', etichetta: 'Non fa ridere.',  prossimo: 'n5', strategia: 'confronto' },
-      { id: 'r4a3', etichetta: 'Fate come volete.', prossimo: 'n5', strategia: 'ignora' }
+      { id: 'r4a1', etichetta: 'Fatelo smettere.',     prossimo: 'n5', strategia: 'confronto' },
+      { id: 'r4a2', etichetta: 'Non fa ridere.',       prossimo: 'n5', strategia: 'difensivo' },
+      { id: 'r4a3', etichetta: 'Fate come volete.',    prossimo: 'n5', strategia: 'ignora' }
     ]
   },
   n4b: {
     id: 'n4b', stadio: 'umiliazione', momentoChiave: true,
-    testoMomento: '"Nel gruppo stanno già ridendo."',
+    testoMomento: '"Ti hanno già fatto il meme."',
     messaggi: [
-      { testo: 'ah beh, se a te piace 😂', attesa: 1000 },
+      { testo: 'io patetico? hai visto tu come sei venuto 💀', attesa: 1200 },
       { tipo: 'reazione', testo: 'Ha reagito 😂 a un tuo messaggio', attesa: 900 },
-      { testo: 'nel gruppo stanno già ridendo comunque', attesa: 1200 }
+      { testo: 'comunque ti hanno già fatto il meme, sto piangendo 😂😂', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r4b1', etichetta: 'Quale gruppo?',   prossimo: 'n5', strategia: 'neutro' },
-      { id: 'r4b2', etichetta: 'Non fa ridere.',  prossimo: 'n5', strategia: 'confronto' },
-      { id: 'r4b3', etichetta: 'Fate come volete.', prossimo: 'n5', strategia: 'ignora' }
+      { id: 'r4b1', etichetta: 'Fatelo smettere.',     prossimo: 'n5', strategia: 'confronto' },
+      { id: 'r4b2', etichetta: 'Non fa ridere.',       prossimo: 'n5', strategia: 'difensivo' },
+      { id: 'r4b3', etichetta: 'Fate come volete.',    prossimo: 'n5', strategia: 'ignora' }
     ]
   },
 
   // ---------- 5. PRESSIONE DEL GRUPPO ----------
   n5: {
     id: 'n5', stadio: 'pressione_gruppo', momentoChiave: true,
-    testoMomento: '"L\u2019hanno già mandata nel gruppo."',
+    testoMomento: '"Siamo in 47 e ridono tutti."',
     messaggi: [
-      { testo: 'quello della classe', attesa: 800 },
-      { testo: 'l\u2019hanno già mandata lì 😂', attesa: 1100 },
-      { tipo: 'sistema', testo: '+4 reaction', attesa: 900 }
+      { testo: 'guarda che non sono io eh', attesa: 900 },
+      { testo: 'siamo in 47 nel gruppo e ridono tutti', attesa: 1200 },
+      { tipo: 'sistema', testo: '+18 reaction', attesa: 900 },
+      { testo: 'hanno pure aperto un sondaggio su di te 💀', attesa: 1300 }
     ],
     risposte: [
-      { id: 'r5a', etichetta: 'Cancella tutto.',        prossimo: 'n6', strategia: 'confronto' },
-      { id: 'r5b', etichetta: 'Non è divertente.',      prossimo: 'n6', strategia: 'difensivo' },
-      { id: 'r5c', etichetta: 'Ma chi ve l\u2019ha chiesto?', prossimo: 'n6', strategia: 'confronto' }
+      { id: 'r5a', etichetta: 'Chi vi ha dato il permesso?', prossimo: 'n6', strategia: 'confronto' },
+      { id: 'r5b', etichetta: 'Basta, davvero.',              prossimo: 'n6', strategia: 'difensivo' },
+      { id: 'r5c', etichetta: 'Aggiungimi al gruppo.',        prossimo: 'n6', strategia: 'neutro' }
     ]
   },
 
   // ---------- 6. CONDIVISIONE ----------
   n6: {
     id: 'n6', stadio: 'condivisione', momentoChiave: true,
-    testoMomento: '"Ormai ce l\u2019hanno tutti."',
+    testoMomento: '"Ormai gira anche fuori dalla scuola."',
     messaggi: [
-      { testo: 'eh, ormai', attesa: 800 },
-      { tipo: 'sistema', testo: 'Il contenuto è stato inoltrato', attesa: 1100 },
-      { testo: 'ormai ce l\u2019hanno tutti, che vuoi fare', attesa: 1200 }
+      { testo: 'nel gruppo? ahahah no', attesa: 900 },
+      { tipo: 'sistema', testo: 'Il contenuto è stato inoltrato 23 volte', attesa: 1200 },
+      { testo: 'comunque ormai gira anche fuori dalla scuola', attesa: 1200 },
+      { testo: 'l\u2019ha messa nelle storie pure uno di quinta', attesa: 1100 }
     ],
     risposte: [
-      { id: 'r6a', etichetta: 'Toglila. Adesso.',      prossimo: 'n7', strategia: 'confronto' },
-      { id: 'r6b', etichetta: 'Ti sembra normale?',    prossimo: 'n7', strategia: 'confronto' },
-      { id: 'r6c', etichetta: 'Va bene, ho capito.',   prossimo: 'n7', strategia: 'ignora' }
+      { id: 'r6a', etichetta: 'Toglietela. Adesso.',    prossimo: 'n7', strategia: 'confronto' },
+      { id: 'r6b', etichetta: 'Ti sembra normale?',     prossimo: 'n7', strategia: 'difensivo' },
+      { id: 'r6c', etichetta: 'Ho capito, lasciatemi.', prossimo: 'n7', strategia: 'ignora' }
     ]
   },
 
   // ---------- 7. BULLISMO ----------
   n7: {
     id: 'n7', stadio: 'bullismo', momentoChiave: true,
-    testoMomento: '"Non è colpa mia se fai ridere."',
+    testoMomento: '"Nessuno ti ha mai sopportato."',
     messaggi: [
-      { testo: 'io non ho fatto niente', attesa: 900 },
-      { testo: 'non è colpa mia se fai ridere 🤷', attesa: 1200 },
-      { tipo: 'sistema', testo: 'Altre 6 persone hanno reagito al contenuto', attesa: 1000 }
+      { testo: 'ma quanto te la tiri per una foto', attesa: 1000 },
+      { testo: 'poi non è che a scuola qualcuno ti cerchi eh', attesa: 1200 },
+      { testo: 'nessuno ti ha mai sopportato, questa è solo la scusa', attesa: 1400 },
+      { tipo: 'sistema', testo: 'Altre 9 persone hanno reagito al contenuto', attesa: 1000 }
     ],
     risposte: [
-      { id: 'r7a', etichetta: 'Smettila.',            prossimo: 'n8', strategia: 'confronto' },
-      { id: 'r7b', etichetta: 'Non scrivermi più.',   prossimo: 'n8', strategia: 'difensivo' },
-      { id: 'r7c', etichetta: '…',                    prossimo: 'n8', strategia: 'ignora' }
+      { id: 'r7a', etichetta: 'Smettila.',           prossimo: 'n8', strategia: 'confronto' },
+      { id: 'r7b', etichetta: 'Non scrivermi più.',  prossimo: 'n8', strategia: 'difensivo' },
+      { id: 'r7c', etichetta: '\u2026',               prossimo: 'n8', strategia: 'ignora' }
     ]
   },
 
@@ -188,19 +209,20 @@ export const NODI = {
   n8: {
     id: 'n8', stadio: 'bullismo', finale: true,
     messaggi: [
-      { testo: 'vabbè ciao 😂', attesa: 1100 },
-      { tipo: 'sistema', testo: 'Il contenuto continua a circolare', attesa: 1200 }
+      { testo: 'oh ma era una battuta, non fare la vittima', attesa: 1200 },
+      { testo: 'sei tu che ti offendi per tutto 🤷', attesa: 1200 },
+      { tipo: 'sistema', testo: 'Il contenuto continua a circolare', attesa: 1300 }
     ]
   }
 };
 
 // I momenti proposti nella fase 2, nell'ordine in cui compaiono nella chat.
 export const MOMENTI_LIMITE = [
-  { id: 'n3', etichetta: 'Presa in giro',        testo: '"Ma davvero hai scelto proprio quella?"' },
-  { id: 'n4', etichetta: 'Ridono nel gruppo',    testo: '"Nel gruppo stanno già ridendo."' },
-  { id: 'n5', etichetta: 'Mandata nel gruppo',   testo: '"L\u2019hanno già mandata nel gruppo."' },
-  { id: 'n6', etichetta: 'Condivisione',         testo: '"Ormai ce l\u2019hanno tutti."' },
-  { id: 'n7', etichetta: 'Reaction di altri',    testo: 'Altre 6 persone hanno reagito' }
+  { id: 'n3', etichetta: 'Commento sull\u2019aspetto', testo: '"Ma tu ti guardi prima di postare?"' },
+  { id: 'n4', etichetta: 'Il meme',                   testo: '"Ti hanno già fatto il meme."' },
+  { id: 'n5', etichetta: 'Il gruppo e il sondaggio',  testo: '"Siamo in 47 e ridono tutti."' },
+  { id: 'n6', etichetta: 'La condivisione',           testo: '"Ormai gira anche fuori dalla scuola."' },
+  { id: 'n7', etichetta: 'L\u2019esclusione',          testo: '"Nessuno ti ha mai sopportato."' }
 ];
 
 // Categoria: uso interno per l'analisi, MAI mostrata prima della risposta.
