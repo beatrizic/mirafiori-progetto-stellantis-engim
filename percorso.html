@@ -3,111 +3,354 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Il percorso e i laboratori — Mirafiori</title>
+<title>Il tuo percorso — Mirafiori</title>
+<meta name="description" content="Il percorso del progetto Mirafiori: tre incontri insieme, un laboratorio nel tuo settore, un progetto vero da presentare alla fine.">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .barra nav { gap: 2rem; }
+
+  /* ---------- hero ---------- */
+  .hero-percorso { padding: 4.5rem 1.6rem 3rem; text-align: center; background: linear-gradient(180deg, var(--bianco-2), var(--bianco)); }
+  .hero-percorso .eyebrow { color: var(--accento); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.6rem; }
+  .hero-percorso h1 { margin-bottom: 0.8rem; }
+  .hero-percorso .sub { font-size: 1.15rem; color: var(--blu); max-width: 46ch; margin: 0 auto; }
+
+  /* ---------- le tre tappe ---------- */
+  .tappe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 1000px; margin: 0 auto; }
+  .tappa { background: var(--bianco-2); border-radius: 18px; padding: 1.8rem 1.4rem; text-align: center; position: relative; }
+  .tappa .numero-tappa { font-family: var(--font-display); font-size: 3rem; line-height: 1; color: var(--accento); display: block; margin-bottom: 0.4rem; }
+  .tappa h3 { font-size: 1.35rem; margin-bottom: 0.4rem; }
+  .tappa p { font-size: 0.95rem; margin: 0 auto; }
+  @media (max-width: 760px) { .tappe { grid-template-columns: 1fr; } }
+
+  /* ---------- i tre incontri di teoria ---------- */
+  .incontri { max-width: 820px; margin: 0 auto; display: grid; gap: 1rem; }
+  .incontro { display: flex; gap: 1.4rem; align-items: flex-start; text-align: left; background: #fff; border: 1px solid var(--linea); border-radius: 16px; padding: 1.5rem 1.6rem; }
+  .incontro .cerchio-icona { flex: none; width: 3.4rem; height: 3.4rem; font-size: 1.6rem; }
+  .incontro .etichetta { display: block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; color: var(--accento); margin-bottom: 0.2rem; }
+  .incontro h3 { font-size: 1.3rem; margin-bottom: 0.4rem; }
+  .incontro p { font-size: 0.98rem; margin: 0; max-width: none; }
+  .incontro .link-interno { display: inline-block; margin-top: 0.7rem; font-size: 0.92rem; font-weight: 600; }
+  .mini-temi { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+  .mini-temi a { font-size: 0.82rem; font-weight: 600; text-decoration: none; background: var(--bianco-2); color: var(--blu); padding: 0.3rem 0.75rem; border-radius: 999px; }
+  .mini-temi a:hover { background: var(--blu); color: #fff; }
+  @media (max-width: 640px) { .incontro { flex-direction: column; gap: 0.9rem; } }
+
+  /* ---------- scelta del settore ---------- */
+  .scelta-settore { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin-bottom: 2.4rem; }
+  .scelta-settore a { text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 0.65rem 1.3rem; border-radius: 999px; background: #fff; color: var(--blu); border: 2px solid var(--blu); }
+  .scelta-settore a:hover { background: var(--blu); color: #fff; }
+
+  /* ---------- i tre progetti ---------- */
+  .progetti { max-width: 1000px; margin: 0 auto; display: grid; gap: 1.6rem; }
+  .progetto { background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 34px rgba(14,42,82,0.09); text-align: left; scroll-margin-top: 90px; }
+  .testata-progetto { background: var(--blu); color: #fff; padding: 2rem 2rem 1.8rem; display: flex; gap: 1.2rem; align-items: center; }
+  .testata-progetto .icona { flex: none; width: 4.2rem; height: 4.2rem; border-radius: 18px; background: rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-size: 2.1rem; }
+  .testata-progetto .settore { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: #cfe0f5; }
+  .testata-progetto h3 { color: #fff; font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0.1rem 0 0.3rem; }
+  .testata-progetto p { color: #dbe6f5; font-size: 1rem; margin: 0; max-width: none; }
+
+  .corpo-progetto { padding: 1.8rem 2rem 2rem; }
+  .fase-progetto { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.2rem; padding: 1.2rem 0; border-top: 1px solid var(--linea); }
+  .fase-progetto:first-child { border-top: 0; padding-top: 0; }
+  .nome-fase { font-family: var(--font-display); font-size: 1.25rem; color: var(--blu); line-height: 1.1; }
+  .nome-fase small { display: block; font-family: var(--font-testo); font-size: 0.76rem; font-weight: 600; color: var(--grigio); margin-top: 0.3rem; letter-spacing: 0.02em; }
+  .lista-azioni { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+  .lista-azioni li { font-size: 0.97rem; line-height: 1.5; padding-left: 1.4rem; position: relative; }
+  .lista-azioni li::before { content: '\2192'; position: absolute; left: 0; color: var(--accento); font-weight: 700; }
+  .lista-azioni strong { color: var(--blu); }
+  .strumento { display: inline-block; font-size: 0.72rem; font-weight: 700; background: #e5edfb; color: var(--blu-chiaro); padding: 0.08rem 0.5rem; border-radius: 999px; margin-left: 0.3rem; vertical-align: middle; white-space: nowrap; }
+
+  .risultato { margin-top: 1.4rem; background: var(--bianco-2); border-left: 4px solid var(--accento); border-radius: 0 12px 12px 0; padding: 1rem 1.2rem; }
+  .risultato strong { color: var(--blu); display: block; margin-bottom: 0.2rem; }
+  .risultato p { margin: 0; font-size: 0.95rem; max-width: none; }
+
+  @media (max-width: 640px) {
+    .testata-progetto { flex-direction: column; align-items: flex-start; padding: 1.6rem; }
+    .corpo-progetto { padding: 1.4rem 1.4rem 1.6rem; }
+    .fase-progetto { grid-template-columns: 1fr; gap: 0.6rem; }
+  }
+
+  /* ---------- trasversali ---------- */
+  .trasversali { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 1000px; margin: 0 auto; }
+  .card-trasversale { background: #fff; border-radius: 18px; padding: 1.8rem; text-align: left; border: 1px solid var(--linea); }
+  .card-trasversale .cerchio-icona { margin-bottom: 0.9rem; }
+  .card-trasversale h3 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+  .card-trasversale p { font-size: 0.97rem; margin: 0 0 0.8rem; max-width: none; }
+  .card-trasversale p:last-child { margin-bottom: 0; }
+  @media (max-width: 760px) { .trasversali { grid-template-columns: 1fr; } }
+
+  /* ---------- restituzione ---------- */
+  .restituzione { background: var(--blu); color: #fff; padding: 4.5rem 1.6rem; text-align: center; }
+  .restituzione h2 { color: #fff; }
+  .restituzione p { color: #dbe6f5; max-width: 58ch; margin: 0 auto 1rem; }
+  .restituzione .nota-classi { display: inline-block; margin-top: 1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; padding: 0.9rem 1.2rem; font-size: 0.95rem; color: #fff; max-width: 58ch; }
+</style>
 </head>
 <body>
 
 <header class="barra">
-  <div class="loghi">
-    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
-    <div class="separatore"></div>
-    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
-  </div>
   <nav>
     <a href="index.html">Home</a>
+    <a href="index.html#temi">Temi</a>
   </nav>
 </header>
 
-<section class="hero-tema">
-  <p class="eyebrow reveal">Il percorso</p>
-  <h1 class="reveal">Come funziona, e i cinque laboratori</h1>
+<section class="hero-percorso">
+  <p class="eyebrow reveal">Il tuo percorso</p>
+  <h1 class="reveal">Da un'idea a un progetto vero</h1>
+  <p class="sub reveal">Tre incontri tutti insieme, un laboratorio nel tuo settore, e alla fine qualcosa che hai costruito tu, da mostrare a tutti.</p>
 </section>
 
-<section class="sezione">
+<!-- ============ IL PERCORSO IN TRE TAPPE ============ -->
+<section class="sezione sezione-centrata">
   <div class="intestazione-sezione reveal">
-    <h2>Come funziona il percorso</h2>
+    <h2>Come funziona</h2>
   </div>
-  <div class="fasi reveal">
-    <div class="fase">
-      <div class="cerchio-icona">🎓</div>
-      <h3>Teoria comune</h3>
-      <span class="tag-fase">Tutti insieme</span>
-      <p>Tre incontri nel salone per capire di cosa parliamo, prima di mettere le mani in pasta.</p>
+  <div class="tappe reveal">
+    <div class="tappa">
+      <span class="numero-tappa">1</span>
+      <h3>Si parte insieme</h3>
+      <p>Tre incontri con tutte le classi, per capire di cosa parliamo e scoprire cosa costruirai.</p>
     </div>
-    <div class="fase">
-      <div class="cerchio-icona">🛠️</div>
-      <h3>Laboratori pratici</h3>
-      <span class="tag-fase">Il vostro percorso</span>
-      <p>Tre incontri sul laboratorio che avete scelto tra i cinque.</p>
+    <div class="tappa">
+      <span class="numero-tappa">2</span>
+      <h3>Si costruisce</h3>
+      <p>Il laboratorio del tuo settore: stampanti 3D, visori, video. Lavori in gruppo sul tuo progetto.</p>
     </div>
-    <div class="fase">
-      <div class="cerchio-icona">🏆</div>
-      <h3>Restituzione finale</h3>
-      <span class="tag-fase">Il gran finale</span>
-      <p>Ogni gruppo mostra a tutti cosa ha costruito davvero.</p>
+    <div class="tappa">
+      <span class="numero-tappa">3</span>
+      <h3>Si presenta</h3>
+      <p>Ogni gruppo mostra a tutti il progetto finito. Quello che hai fatto tu, dal vivo.</p>
     </div>
   </div>
 </section>
 
-<section class="sezione" style="background:var(--bianco-2); max-width:none;">
-  <div style="max-width:1120px; margin:0 auto; padding:0 1.6rem;">
+<!-- ============ I TRE INCONTRI DI TEORIA ============ -->
+<section class="sezione sezione-centrata" style="background:var(--bianco-2); max-width:none;">
+  <div style="max-width:1000px; margin:0 auto; padding:0 1.6rem;">
     <div class="intestazione-sezione reveal">
-      <h2>I cinque percorsi tra cui scegliere</h2>
+      <h2>I tre incontri insieme</h2>
+      <p>Prima di mettere le mani sulle tecnologie, ci ritroviamo tutti nel salone.</p>
     </div>
-    <div class="percorsi reveal">
-      <div class="percorso-card">
-        <div class="cerchio-icona">🎨</div>
-        <h3>Estetica</h3>
-        <p>Dal trattamento pensato in classe a un mini-prodotto reale, pronto da mostrare.</p>
-        <ul>
-          <li><strong>Mini-kit prodotto</strong> (stampa 3D) — packaging o vasetto per un cosmetico ideato dal gruppo, etichetta progettata al PC</li>
-          <li><strong>Trattamento in anteprima</strong> (AR/VR) — simulazione digitale di un trattamento viso o nail art su modello virtuale</li>
-          <li><strong>Moodboard di linea</strong> (foto/editing) — nome, palette colori e target di una linea cosmetica immaginaria</li>
-        </ul>
+
+    <div class="incontri reveal">
+
+      <article class="incontro">
+        <div class="cerchio-icona">🚀</div>
+        <div>
+          <span class="etichetta">Primo incontro</span>
+          <h3>Il progetto, e da dove partiamo</h3>
+          <p>Ti raccontiamo cos'è Mirafiori e perché lo facciamo. Poi un quiz veloce dal telefono, anonimo, per capire cosa sai già di tecnologia, intelligenza artificiale e STEM. Lo rifaremo alla fine: sarà interessante vedere cosa è cambiato.</p>
+        </div>
+      </article>
+
+      <article class="incontro">
+        <div class="cerchio-icona">🎮</div>
+        <div>
+          <span class="etichetta">Secondo incontro</span>
+          <h3>Quattro temi, quattro giochi</h3>
+          <p>Affrontiamo quattro argomenti che riguardano la vita di tutti i giorni, online e fuori. Per ognuno c'è un gioco da fare dal telefono: le risposte di tutta la classe compaiono in diretta sullo schermo, e da lì si discute.</p>
+          <div class="mini-temi">
+            <a href="tema-stereotipi.html">Stereotipi di genere</a>
+            <a href="tema-rappresentazione-media.html">Social e realtà</a>
+            <a href="tema-gender-pay-gap.html">Prompt e IA</a>
+            <a href="tema-cyberbullismo.html">Cyberbullismo</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="incontro">
+        <div class="cerchio-icona">🎯</div>
+        <div>
+          <span class="etichetta">Terzo incontro</span>
+          <h3>Il tuo progetto</h3>
+          <p>Ogni settore scopre cosa dovrà costruire nel laboratorio e presentare alla fine. Vediamo le tecnologie che userai, cosa si può fare con ciascuna, e iniziamo a pensare alle prime idee di gruppo.</p>
+          <a class="link-interno" href="#progetti">Scopri i tre progetti &darr;</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ I TRE PROGETTI ============ -->
+<section class="sezione sezione-centrata" id="progetti">
+  <div class="intestazione-sezione reveal">
+    <h2>Cosa costruirai</h2>
+    <p>Un progetto per ogni settore. Scegli il tuo.</p>
+  </div>
+
+  <nav class="scelta-settore reveal" aria-label="Vai al progetto del tuo settore">
+    <a href="#estetica">💅 Estetica</a>
+    <a href="#acconciatura">✂️ Acconciatura</a>
+    <a href="#ristorazione">🍽️ Ristorazione</a>
+  </nav>
+
+  <div class="progetti">
+
+    <!-- ESTETICA -->
+    <article class="progetto reveal" id="estetica">
+      <header class="testata-progetto">
+        <div class="icona" aria-hidden="true">💅</div>
+        <div>
+          <span class="settore">Estetica</span>
+          <h3>Lancia la tua linea cosmetica</h3>
+          <p>Inventate un prodotto, costruitelo, e convincete gli altri a sceglierlo.</p>
+        </div>
+      </header>
+      <div class="corpo-progetto">
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Crei<small>il prodotto</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il packaging</strong> — il vasetto o la confezione del vostro cosmetico, disegnato al computer e stampato davvero, con l'etichetta progettata da voi. <span class="strumento">stampa 3D</span></li>
+            <li><strong>Il trattamento in anteprima</strong> — provate un trattamento viso o una nail art su un modello virtuale, prima di farlo per davvero. <span class="strumento">realtà virtuale</span></li>
+            <li><strong>La moodboard</strong> — il nome della linea, i colori, a chi si rivolge. È l'identità del prodotto, tutta in un'immagine. <span class="strumento">foto e editing</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Racconti<small>la comunicazione</small></div>
+          <ul class="lista-azioni">
+            <li><strong>La campagna di lancio</strong> — tre post e un reel per far conoscere la linea, con foto del packaging vero.</li>
+            <li><strong>Il filtro social</strong> — un filtro in realtà aumentata a tema, o lo storyboard per realizzarlo. <span class="strumento">AR</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Presenti<small>l'idea d'impresa</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il pitch</strong> — un video breve in cui presentate la linea come a un investitore: cos'è, per chi è, perché dovrebbero comprarla. <span class="strumento">video</span></li>
+          </ul>
+        </div>
+
+        <div class="risultato">
+          <strong>Cosa porterai alla fine</strong>
+          <p>Un cosmetico con il suo packaging stampato, la sua identità visiva, una campagna social e un pitch video.</p>
+        </div>
       </div>
-      <div class="percorso-card">
-        <div class="cerchio-icona">✂️</div>
-        <h3>Acconciatura</h3>
-        <p>Un video-tutorial che unisce tecnica, accessorio stampato e comunicazione.</p>
-        <ul>
-          <li><strong>Prova virtuale del taglio</strong> (AR) — due o tre tagli o colori su una foto reale, confronto prima/dopo</li>
-          <li><strong>Micro-tutorial</strong> (video) — 60-90 secondi che documentano un'acconciatura semplice</li>
-          <li><strong>Accessorio per capelli</strong> (stampa 3D) — fermaglio o pettine decorativo disegnato dal gruppo</li>
-        </ul>
+    </article>
+
+    <!-- ACCONCIATURA -->
+    <article class="progetto reveal" id="acconciatura">
+      <header class="testata-progetto">
+        <div class="icona" aria-hidden="true">✂️</div>
+        <div>
+          <span class="settore">Acconciatura</span>
+          <h3>Il tuo look, in un video</h3>
+          <p>Create un'acconciatura, un accessorio per completarla, e il tutorial per insegnarla.</p>
+        </div>
+      </header>
+      <div class="corpo-progetto">
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Crei<small>il prodotto</small></div>
+          <ul class="lista-azioni">
+            <li><strong>La prova virtuale</strong> — provate due o tre tagli o colori sulla foto di qualcuno del gruppo, e confrontate il prima e il dopo. <span class="strumento">realtà aumentata</span></li>
+            <li><strong>L'accessorio</strong> — un fermaglio, un pettine decorativo o un ornamento per capelli, disegnato da voi e stampato. <span class="strumento">stampa 3D</span></li>
+            <li><strong>Il micro-tutorial</strong> — un video di un minuto, un minuto e mezzo, che mostra passo per passo come realizzare l'acconciatura. Lo girate e lo montate voi. <span class="strumento">video</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Racconti<small>la comunicazione</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il tutorial diventa contenuto</strong> — il video si trasforma in un reel, accompagnato da due o tre post che mostrano l'accessorio.</li>
+            <li><strong>Il marchio</strong> — un nome e un logo per il vostro salone immaginario, magari stampato anche su un piccolo gadget. <span class="strumento">stampa 3D</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Presenti<small>l'idea d'impresa</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il servizio</strong> — a chi si rivolge il vostro salone, cosa offre di diverso, e un piccolo listino.</li>
+            <li><strong>Il pitch</strong> — la presentazione finale del vostro salone, con l'accessorio in mano e il tutorial come prova di quello che sapete fare.</li>
+          </ul>
+        </div>
+
+        <div class="risultato">
+          <strong>Cosa porterai alla fine</strong>
+          <p>Un'acconciatura documentata in video, un accessorio stampato, un marchio e la presentazione del vostro salone.</p>
+        </div>
       </div>
-      <div class="percorso-card">
-        <div class="cerchio-icona">🍽️</div>
-        <h3>Ristorazione</h3>
-        <p>Un concept di servizio completo, dal menu all'allestimento del tavolo.</p>
-        <ul>
-          <li><strong>Menu digitale interattivo</strong> (QR code) — per un piatto o un drink immaginato dal gruppo</li>
-          <li><strong>Allestimento virtuale</strong> (VR) — mise en place o atmosfera di un evento, esplorabile col visore</li>
-          <li><strong>Elemento di allestimento</strong> (stampa 3D) — segnaposto o decorazione per il tavolo</li>
-        </ul>
+    </article>
+
+    <!-- RISTORAZIONE -->
+    <article class="progetto reveal" id="ristorazione">
+      <header class="testata-progetto">
+        <div class="icona" aria-hidden="true">🍽️</div>
+        <div>
+          <span class="settore">Ristorazione</span>
+          <h3>Il tuo locale, dal menu al tavolo</h3>
+          <p>Progettate un piatto o un drink, e tutto quello che serve per servirlo come si deve.</p>
+        </div>
+      </header>
+      <div class="corpo-progetto">
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Crei<small>il prodotto</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il menu digitale</strong> — un menu che si apre inquadrando un QR code, con il piatto o il drink inventato dal gruppo. <span class="strumento">QR code</span></li>
+            <li><strong>L'allestimento virtuale</strong> — la mise en place o l'atmosfera di una serata, da esplorare camminandoci dentro con il visore. <span class="strumento">realtà virtuale</span></li>
+            <li><strong>L'elemento per il tavolo</strong> — un segnaposto, una decorazione per il drink o un piccolo supporto per il menu, stampato da voi. <span class="strumento">stampa 3D</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Racconti<small>la comunicazione</small></div>
+          <ul class="lista-azioni">
+            <li><strong>La campagna di lancio</strong> — i post e il reel per far conoscere il locale e il suo piatto forte. <span class="strumento">foto e video</span></li>
+          </ul>
+        </div>
+
+        <div class="fase-progetto">
+          <div class="nome-fase">Presenti<small>l'idea d'impresa</small></div>
+          <ul class="lista-azioni">
+            <li><strong>Il concept</strong> — che tipo di locale è, per chi, in quale zona, e perché qualcuno dovrebbe sceglierlo.</li>
+            <li><strong>Il pitch</strong> — un video breve che presenta il locale, mostrando il menu e l'allestimento. <span class="strumento">video</span></li>
+          </ul>
+        </div>
+
+        <div class="risultato">
+          <strong>Cosa porterai alla fine</strong>
+          <p>Un menu digitale funzionante, un ambiente virtuale da esplorare, un oggetto per il tavolo e la presentazione del vostro locale.</p>
+        </div>
       </div>
-      <div class="percorso-card">
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ COMUNICAZIONE E IMPRESA ============ -->
+<section class="sezione sezione-centrata" style="background:var(--bianco-2); max-width:none;">
+  <div style="max-width:1000px; margin:0 auto; padding:0 1.6rem;">
+    <div class="intestazione-sezione reveal">
+      <h2>In ogni progetto, due cose in più</h2>
+      <p>Qualunque sia il tuo settore, costruire qualcosa non basta: bisogna anche saperlo raccontare e presentare.</p>
+    </div>
+
+    <div class="trasversali reveal">
+      <div class="card-trasversale">
         <div class="cerchio-icona">📣</div>
         <h3>Comunicazione</h3>
-        <p>Dal progetto immaginato a una vera mini-campagna social, pronta da pubblicare.</p>
-        <ul>
-          <li><strong>Campagna di lancio</strong> (foto/video) — 3 post + 1 reel per promuovere lo scenario del gruppo</li>
-          <li><strong>Gadget del brand</strong> (stampa 3D) — badge, portachiavi o spilla come prop fotografico</li>
-          <li><strong>Filtro o sticker</strong> (AR) — progettazione di un filtro AR o del suo storyboard</li>
-        </ul>
+        <p>Come si fa conoscere un prodotto? Imparerai a scegliere le immagini giuste, a scrivere un post che si legga davvero, a montare un reel. Sono le stesse competenze che usa chi lavora sui social, e servono a qualunque mestiere.</p>
       </div>
-      <div class="percorso-card">
+      <div class="card-trasversale">
         <div class="cerchio-icona">💼</div>
         <h3>Impresa</h3>
-        <p>Da un'idea di business a un piccolo pitch completo, con un oggetto reale a supporto.</p>
-        <ul>
-          <li><strong>Prototipo di prodotto</strong> (stampa 3D) — versione fisica, anche solo simbolica, dell'idea del gruppo</li>
-          <li><strong>Showroom virtuale</strong> (VR) — ambientazione del punto vendita, esplorabile col visore</li>
-          <li><strong>Pitch video</strong> — breve presentazione stile elevator pitch, con il prototipo stampato</li>
-        </ul>
+        <p>Ogni progetto parte da una domanda: chi lo comprerebbe, e perché? Proverai a rispondere come farebbe chi apre un'attività, e a presentare la tua idea in pochi minuti, in modo convincente.</p>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ============ RESTITUZIONE ============ -->
+<section class="restituzione">
+  <h2 class="reveal">Alla fine, lo mostri a tutti</h2>
+  <p class="reveal">L'ultimo incontro è la restituzione: ogni gruppo presenta il proprio progetto finito davanti alle altre classi. Gli oggetti stampati si toccano, gli ambienti virtuali si esplorano, i video si guardano.</p>
+  <p class="reveal">È il momento in cui si vede quanta strada c'è fra un'idea e una cosa che esiste davvero.</p>
+  <span class="nota-classi reveal">Se sei in terza o in quarta, il progetto diventa anche il lavoro da portare all'esame finale.</span>
 </section>
 
 <div style="text-align:center; padding: 0 1.6rem;">
@@ -119,7 +362,6 @@
     <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
     <img src="img/logo-stellantis.png" alt="Logo Stellantis">
   </div>
-  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
 </footer>
 
 <script src="js/main.js"></script>
