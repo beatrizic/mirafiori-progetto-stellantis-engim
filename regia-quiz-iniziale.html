@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  body { padding: 1.6rem 1.6rem 4rem; }
+  body { padding: 0 0 4rem; }
+  .interno { padding: 1.6rem 1.6rem 0; }
   .interno { max-width: 1240px; margin: 0 auto; }
   .link-home { display: inline-block; margin-bottom: 1.2rem; color: var(--grigio); font-size: 0.9rem; text-decoration: none; }
   .link-home:hover { color: var(--accento); }
@@ -23,6 +24,15 @@
   .pulsante-scelta { padding: 0.9rem; border: 2px solid var(--linea); background: #fff; border-radius: 12px; cursor: pointer; font-family: var(--font-testo); font-weight: 600; font-size: 0.98rem; color: var(--blu); }
   .pulsante-scelta[aria-pressed="true"] { border-color: var(--blu); background: var(--blu); color: #fff; }
   .pulsante-scelta:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .campo { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--linea); border-radius: 12px; font-family: var(--font-testo); font-size: 1rem; color: var(--nero); background: #fff; }
+  .campo:focus { outline: none; border-color: var(--blu); }
+  .campo.errore { border-color: var(--accento); }
+  .aiuto { display: block; font-size: 0.8rem; color: var(--grigio); margin-top: 0.4rem; }
+  .messaggio-errore { display: block; font-size: 0.85rem; color: var(--accento); font-weight: 600; margin-top: 0.4rem; }
+  .facoltativo { text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .azioni-secondarie { display: flex; justify-content: center; margin-top: 1rem; }
+  .btn-testo { background: none; border: 0; color: var(--blu-chiaro); font-family: var(--font-testo); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0.4rem; }
+  .btn-testo:disabled { color: var(--grigio); cursor: default; }
   .riepilogo-domande { font-size: 0.85rem; color: var(--grigio); margin: 0.8rem 0 1.4rem; }
 
   /* testata sessione */
@@ -88,6 +98,8 @@
 </style>
 </head>
 <body>
+<header class="barra" id="barra"></header>
+<script src="js/nav.js"></script>
 <div class="interno">
 
   <a class="link-home" href="index.html">&larr; Torna alla home</a>
@@ -106,8 +118,25 @@
       <div class="pulsanti-scelta" id="scelta-momento" role="group" aria-label="Momento"></div>
     </div>
 
+    <div class="scelta-gruppo nascosto" id="gruppo-scuola">
+      <label class="etichetta" for="campo-scuola">Nome della scuola</label>
+      <input class="campo" id="campo-scuola" list="elenco-scuole" autocomplete="off" placeholder="Es. IIS Pininfarina">
+      <datalist id="elenco-scuole"></datalist>
+      <span class="aiuto">Se la scuola compare nell'elenco, sceglila da lì: scritta sempre allo stesso modo, i suoi dati iniziali e finali si potranno confrontare.</span>
+      <span class="messaggio-errore nascosto" id="errore-scuola" role="alert">Inserisci il nome della scuola.</span>
+    </div>
+
+    <div class="scelta-gruppo">
+      <label class="etichetta" for="campo-classe">Classe <span class="facoltativo">(facoltativa)</span></label>
+      <input class="campo" id="campo-classe" autocomplete="off" placeholder="Es. 2A, oppure 3B Estetica">
+      <span class="aiuto">Solo la sigla della classe: niente nomi di studenti o docenti.</span>
+    </div>
+
     <p class="riepilogo-domande" id="riepilogo-domande"></p>
     <button class="btn" id="btn-crea" style="width:100%;">Crea sessione</button>
+    <div class="azioni-secondarie">
+      <button class="btn-testo" id="btn-esporta-config" type="button">Scarica tutti i dati del quiz (CSV)</button>
+    </div>
   </section>
 
   <!-- 2. sessione attiva -->
@@ -119,6 +148,8 @@
         <div class="etichette-sessione">
           <span class="pillola" id="pillola-contesto"></span>
           <span class="pillola chiara" id="pillola-momento"></span>
+          <span class="pillola chiara" id="pillola-scuola"></span>
+          <span class="pillola chiara nascosto" id="pillola-classe"></span>
         </div>
         <span class="codice-grande" id="codice-sessione"></span>
       </div>
@@ -140,6 +171,7 @@
       <button class="btn" id="btn-proietta">Modalità proiezione</button>
       <button class="btn corallo" id="btn-termina">Termina</button>
       <button class="btn corallo" id="btn-reset">Reset</button>
+      <button class="btn" id="btn-esporta">Scarica dati (CSV)</button>
       <span class="stato">Stato: <strong id="stato-sessione">—</strong> · <span id="stato-realtime">—</span></span>
     </div>
 

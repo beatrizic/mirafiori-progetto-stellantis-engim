@@ -5,6 +5,8 @@ import { esplosioneParticelle } from './particelle.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_quiz';
 const URL_STUDENTE = 'https://www.tobea.it/quiz-iniziale.html';
+const NOME_ENGIM = 'ENGIM San Luca';
+let scuoleNote = [];
 
 const el = (id) => document.getElementById(id);
 let sessione = null;
@@ -32,6 +34,7 @@ function pulsantiScelta(contenitoreId, voci, chiave) {
       scelta[chiave] = v.id;
       [...cont.children].forEach((x) => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
       aggiornaRiepilogo();
+      aggiornaCampoScuola();
     });
     cont.appendChild(b);
   });
@@ -44,9 +47,47 @@ function aggiornaRiepilogo() {
     `${d.length} domande, di cui ${conoscenza} di conoscenza con risposta corretta, più il riquadro finale di accettazione.`;
 }
 
+// ---------- scuola e classe ----------
+
+/** Spazi ripuliti; se la scuola esiste già con altre maiuscole, si usa la grafia già registrata. */
+function normalizzaScuola(testo) {
+  const pulito = (testo || '').replace(/\s+/g, ' ').trim();
+  if (!pulito) return '';
+  const esistente = scuoleNote.find((x) => x.toLowerCase() === pulito.toLowerCase());
+  return esistente || pulito;
+}
+
+async function caricaScuoleNote() {
+  const { data } = await supabase
+    .from('attivita_sessioni').select('scuola')
+    .eq('activity_key', ACTIVITY_KEY).eq('contesto', 'esterna').not('scuola', 'is', null);
+  scuoleNote = [...new Set((data || []).map((r) => r.scuola).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'));
+  const lista = el('elenco-scuole');
+  lista.innerHTML = '';
+  scuoleNote.forEach((n) => { const o = document.createElement('option'); o.value = n; lista.appendChild(o); });
+}
+
+function aggiornaCampoScuola() {
+  const esterna = scelta.contesto === 'esterna';
+  el('gruppo-scuola').classList.toggle('nascosto', !esterna);
+  if (!esterna) { el('errore-scuola').classList.add('nascosto'); el('campo-scuola').classList.remove('errore'); }
+}
+
 // ---------- ciclo di vita ----------
 
 async function creaSessione() {
+  let scuola = NOME_ENGIM;
+  if (scelta.contesto === 'esterna') {
+    scuola = normalizzaScuola(el('campo-scuola').value);
+    if (!scuola) {
+      el('errore-scuola').classList.remove('nascosto');
+      el('campo-scuola').classList.add('errore');
+      el('campo-scuola').focus();
+      return;
+    }
+  }
+  const classe = (el('campo-classe').value || '').replace(/\s+/g, ' ').trim() || null;
+
   el('btn-crea').disabled = true;
   const { data, error } = await supabase
     .from('attivita_sessioni')
@@ -55,7 +96,9 @@ async function creaSessione() {
       activity_key: ACTIVITY_KEY,
       stato: 'waiting',
       contesto: scelta.contesto,
-      momento: scelta.momento
+      momento: scelta.momento,
+      scuola,
+      classe
     })
     .select().single();
 
@@ -112,6 +155,9 @@ function renderTestata() {
   el('titolo-sessione').textContent = `Quiz ${momento.toLowerCase()}`;
   el('pillola-contesto').textContent = contesto;
   el('pillola-momento').textContent = momento;
+  el('pillola-scuola').textContent = sessione.scuola || contesto;
+  el('pillola-classe').textContent = sessione.classe ? 'Classe ' + sessione.classe : '';
+  el('pillola-classe').classList.toggle('nascosto', !sessione.classe);
   el('codice-sessione').textContent = sessione.codice;
   el('stato-sessione').textContent = statoLeggibile(sessione.stato);
   el('btn-apri').disabled = sessione.stato === 'running';
@@ -207,10 +253,11 @@ async function renderConfronto() {
   const cont = el('confronto');
   cont.innerHTML = '<p class="nota">Caricamento…</p>';
 
-  // Tutte le sessioni dello stesso contesto, iniziali e finali.
-  const { data: sessioni } = await supabase
-    .from('attivita_sessioni').select('id, momento')
+  // Stessa scuola: confrontare l'iniziale di una scuola col finale di un'altra darebbe un risultato falso.
+  let q = supabase.from('attivita_sessioni').select('id, momento')
     .eq('activity_key', ACTIVITY_KEY).eq('contesto', sessione.contesto);
+  q = sessione.scuola ? q.eq('scuola', sessione.scuola) : q.is('scuola', null);
+  const { data: sessioni } = await q;
 
   const ids = (sessioni || []).map((s) => s.id);
   if (!ids.length) { cont.innerHTML = '<p class="nota">Nessuna sessione disponibile.</p>'; return; }
@@ -226,7 +273,7 @@ async function renderConfronto() {
   const intro = document.createElement('p');
   intro.className = 'nota';
   intro.style.marginTop = '0';
-  intro.textContent = `Risposte corrette nelle domande di conoscenza, sommando tutte le sessioni ${CONTESTI[sessione.contesto].etichetta}.`;
+  intro.textContent = `Risposte corrette nelle domande di conoscenza, sommando tutte le sessioni di ${sessione.scuola || CONTESTI[sessione.contesto].etichetta}.`;
   cont.appendChild(intro);
 
   conoscenza.forEach((d) => {
@@ -274,9 +321,90 @@ async function renderConfronto() {
   cont.appendChild(nota);
 }
 
+// ---------- esportazione dei dati ----------
+
+/** Legge tutte le righe paginando: Supabase restituisce al massimo 1000 righe per richiesta. */
+async function leggiTutto(costruisci) {
+  const PAGINA = 1000;
+  let righe = [], da = 0;
+  for (;;) {
+    const { data, error } = await costruisci().range(da, da + PAGINA - 1);
+    if (error) throw error;
+    righe = righe.concat(data || []);
+    if (!data || data.length < PAGINA) return righe;
+    da += PAGINA;
+  }
+}
+
+const cellaCsv = (v) => {
+  const t = v === null || v === undefined ? '' : String(v);
+  return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+};
+
+async function esportaCsv(bottone) {
+  const testoOriginale = bottone.textContent;
+  bottone.disabled = true;
+  bottone.textContent = 'Preparo il file…';
+  try {
+    const sessioni = await leggiTutto(() => supabase.from('attivita_sessioni')
+      .select('id, codice, contesto, momento, scuola, classe, created_at')
+      .eq('activity_key', ACTIVITY_KEY).order('created_at'));
+    if (!sessioni.length) { alert('Non ci sono ancora dati da scaricare.'); return; }
+
+    const perId = new Map(sessioni.map((x) => [x.id, x]));
+    const ids = sessioni.map((x) => x.id);
+    let risposte = [];
+    for (let i = 0; i < ids.length; i += 100) {
+      const blocco = ids.slice(i, i + 100);
+      risposte = risposte.concat(await leggiTutto(() => supabase.from('attivita_risposte_generiche')
+        .select('sessione_id, partecipante_id, scenario_id, valore, created_at')
+        .in('sessione_id', blocco).order('created_at')));
+    }
+
+    const domande = new Map([...DOMANDE, ACCETTAZIONE].map((d) => [d.id, d]));
+    const intestazione = ['data', 'codice_sessione', 'contesto', 'momento', 'scuola', 'classe',
+      'studente_anonimo', 'id_domanda', 'tipo_domanda', 'domanda', 'id_risposta', 'risposta', 'corretta'];
+
+    const righe = risposte.map((r) => {
+      const s = perId.get(r.sessione_id) || {};
+      const d = domande.get(r.scenario_id);
+      const o = d?.opzioni.find((x) => x.id === r.valore);
+      const corretta = d?.corretta ? (r.valore === d.corretta ? 'si' : 'no') : '';
+      return [
+        (s.created_at || '').slice(0, 10), s.codice, s.contesto, s.momento, s.scuola, s.classe,
+        r.partecipante_id.slice(0, 8), r.scenario_id, d?.tipo || (r.scenario_id === ACCETTAZIONE.id ? 'accettazione' : ''),
+        d?.testo || (r.scenario_id === ACCETTAZIONE.id ? 'Accettazione finale' : ''), r.valore, o?.testo || '', corretta
+      ].map(cellaCsv).join(';');
+    });
+
+    // BOM e punto e virgola: Excel in italiano lo apre correttamente con un doppio clic.
+    const contenuto = '\ufeff' + [intestazione.join(';'), ...righe].join('\r\n');
+    const url = URL.createObjectURL(new Blob([contenuto], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `quiz-mirafiori-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    console.error(e);
+    alert('Non sono riuscita a scaricare i dati. Riprova.');
+  } finally {
+    bottone.disabled = false;
+    bottone.textContent = testoOriginale;
+  }
+}
+
 // ---------- controlli ----------
 
 el('btn-crea').addEventListener('click', creaSessione);
+el('btn-esporta').addEventListener('click', () => esportaCsv(el('btn-esporta')));
+el('btn-esporta-config').addEventListener('click', () => esportaCsv(el('btn-esporta-config')));
+el('campo-scuola').addEventListener('input', () => {
+  el('errore-scuola').classList.add('nascosto');
+  el('campo-scuola').classList.remove('errore');
+});
 el('btn-apri').addEventListener('click', () => aggiornaSessione({ stato: 'running', started_at: sessione.started_at || new Date().toISOString() }));
 el('btn-chiudi').addEventListener('click', () => aggiornaSessione({ stato: 'locked' }));
 el('btn-qr').addEventListener('click', () => {
@@ -306,6 +434,7 @@ el('btn-reset').addEventListener('click', async () => {
   sessione = null;
   el('blocco-sessione').classList.add('nascosto');
   el('blocco-configura').classList.remove('nascosto');
+  caricaScuoleNote();
 });
 
 document.querySelectorAll('#tab-barra .tab').forEach((t) => {
@@ -321,4 +450,6 @@ document.querySelectorAll('#tab-barra .tab').forEach((t) => {
 pulsantiScelta('scelta-contesto', CONTESTI, 'contesto');
 pulsantiScelta('scelta-momento', MOMENTI, 'momento');
 aggiornaRiepilogo();
+aggiornaCampoScuola();
+caricaScuoleNote();
 riprendiSessione();
