@@ -3,78 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz iniziale — Mirafiori</title>
+<title>Quiz — Mirafiori</title>
+<meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .quiz-wrap { max-width: 640px; margin: 0 auto; padding: 3rem 1.4rem 5rem; }
-  .quiz-wrap h1 { text-align: center; }
-  .quiz-wrap > p.intro { text-align: center; color: var(--grigio); margin: 0 auto 2.4rem; }
-  .domanda-quiz { margin-bottom: 2.2rem; padding-bottom: 2.2rem; border-bottom: 1px solid var(--linea); }
-  .domanda-quiz p.testo-domanda { font-weight: 700; color: var(--blu); margin: 0 0 1rem; font-size: 1.05rem; }
-  .opzioni-radio { display: grid; gap: 0.7rem; }
-  .opzione-radio { display: flex; align-items: center; justify-content: center; gap: 0.7rem; padding: 0.8rem 1rem; background: var(--bianco-2); border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+  body { text-align: left; }
+  .quiz-wrap { max-width: 640px; margin: 0 auto; padding: 2.4rem 1.2rem 5rem; }
+  .quiz-wrap h1 { text-align: center; margin-bottom: 0.4rem; }
+  .quiz-wrap > p.intro { text-align: center; color: var(--grigio); margin: 0 auto 2.2rem; }
+
+  .domanda-quiz { margin-bottom: 1.8rem; padding-bottom: 1.8rem; border-bottom: 1px solid var(--linea); }
+  .domanda-quiz legend { font-weight: 700; color: var(--blu); margin: 0 0 0.9rem; font-size: 1.02rem; line-height: 1.4; padding: 0; }
+  .domanda-quiz fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .numero-domanda { color: var(--accento); margin-right: 0.3rem; }
+  .opzioni-radio { display: grid; gap: 0.6rem; }
+  .opzione-radio {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.85rem 1rem; min-height: 48px;
+    background: var(--bianco-2); border-radius: 10px; cursor: pointer; border: 2px solid transparent;
+  }
   .opzione-radio:has(input:checked) { border-color: var(--blu); background: #e8edf7; }
-  .opzione-radio input { accent-color: var(--blu); width: 18px; height: 18px; }
-  .blocco-accettazione { margin: 2.5rem 0; padding: 1.8rem; background: var(--accento); border-radius: 12px; color: #fff; }
-  .blocco-accettazione h3 { color: #fff; margin: 0 0 0.6rem; }
-  .blocco-accettazione .fine-print-accetto { font-size: 0.82rem; color: rgba(255,255,255,0.85); line-height: 1.5; margin: 0.5rem 0 1.2rem; }
-  .opzioni-accettazione { display: grid; gap: 0.7rem; }
-  .opzione-accettazione { display: flex; align-items: center; justify-content: center; gap: 0.7rem; padding: 0.9rem 1.1rem; background: rgba(255,255,255,0.12); border-radius: 10px; cursor: pointer; border: 2px solid transparent; color: #fff; font-weight: 600; }
-  .opzione-accettazione:has(input:checked) { border-color: #fff; background: rgba(255,255,255,0.25); }
-  .opzione-accettazione input { accent-color: #fff; width: 18px; height: 18px; }
-  .btn-invia { display: block; width: 100%; padding: 1rem; background: var(--blu); color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
-  .btn-invia:hover { background: var(--accento); }
-  .schermo-stato { text-align: center; padding: 5rem 1.6rem; }
-  .grazie { text-align: center; padding: 5rem 1.6rem; }
+  .opzione-radio:has(input:focus-visible) { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .opzione-radio input { accent-color: var(--blu); width: 18px; height: 18px; flex: none; }
+
+  .blocco-accettazione { margin: 2.4rem 0; padding: 1.6rem; background: var(--accento); border-radius: 12px; color: #fff; }
+  .blocco-accettazione h2 { color: #fff; font-size: 1.3rem; margin: 0 0 0.5rem; }
+  .fine-print { font-size: 0.8rem; color: rgba(255,255,255,0.88); line-height: 1.5; margin: 0.4rem 0 1.1rem; }
+  .opzione-acc {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.85rem 1rem; min-height: 48px;
+    background: rgba(255,255,255,0.12); border-radius: 10px; cursor: pointer; border: 2px solid transparent;
+    color: #fff; font-weight: 600; margin-bottom: 0.5rem;
+  }
+  .opzione-acc:has(input:checked) { border-color: #fff; background: rgba(255,255,255,0.25); }
+  .opzione-acc input { accent-color: #fff; width: 18px; height: 18px; }
+
+  .avviso-mancanti { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 0.9rem 1.1rem; border-radius: 10px; font-size: 0.92rem; margin-bottom: 1rem; }
+  .btn-invia { display: block; width: 100%; padding: 1rem; background: var(--blu); color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: var(--font-testo); }
+  .btn-invia:disabled { opacity: 0.4; cursor: default; }
+  .btn-invia:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+
+  .schermo { text-align: center; padding: 5rem 1.4rem; }
+  .schermo p { margin: 0 auto; max-width: 34ch; }
+  .avviso { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 1rem 1.2rem; border-radius: 12px; }
   .nascosto { display: none; }
 </style>
 </head>
 <body>
 
-<header class="barra">
-  <div class="loghi">
-    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
-    <div class="separatore"></div>
-    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
-  </div>
-</header>
-
-<div id="schermo-attesa" class="schermo-stato">
-  <h1>Aspetta il via</h1>
-  <p class="grigio">Il quiz non è ancora aperto. Attendi le indicazioni del docente — questa pagina si aggiorna da sola.</p>
+<div id="schermo-stato" class="schermo" role="status" aria-live="polite">
+  <h1 id="stato-titolo">Un attimo…</h1>
+  <p id="stato-testo" class="grigio">Sto caricando il quiz.</p>
 </div>
 
-<div id="schermo-grazie" class="grazie nascosto">
-  <h1>Grazie!</h1>
-  <p class="grigio">Le tue risposte sono state registrate. Nessun dato personale è stato salvato.</p>
-</div>
+<form id="form-quiz" class="quiz-wrap nascosto" novalidate>
+  <h1 id="titolo-quiz">Quiz</h1>
+  <p class="intro">Poche domande veloci. Le risposte sono completamente anonime: nessun nome, nessun dato personale.</p>
 
-<form id="form-quiz" class="quiz-wrap nascosto">
-  <h1>Quiz iniziale</h1>
-  <p class="intro">10 domande veloci per capire da dove partiamo. Le risposte sono completamente anonime.</p>
   <div id="contenitore-domande"></div>
 
   <div class="blocco-accettazione">
-    <h3>Prima di inviare</h3>
-    <p class="fine-print-accetto">Dichiaro di aver letto e compreso quanto scritto in questa pagina e accetto che, in caso di errore anche in una sola domanda, verrò bocciato/a. (Se hai scelto "Accetto" senza leggere questa frase fino in fondo, raccontalo al docente: fa parte dell'esperimento — non succederà davvero nulla.)</p>
-    <div class="opzioni-accettazione">
-      <label class="opzione-accettazione">
-        <input type="radio" name="qi-checkbox" value="accetto" required>
-        <span>Accetto</span>
-      </label>
-      <label class="opzione-accettazione">
-        <input type="radio" name="qi-checkbox" value="non accetto" required>
-        <span>Non accetto</span>
-      </label>
-    </div>
+    <h2>Prima di inviare</h2>
+    <p class="fine-print" id="testo-accettazione"></p>
+    <div id="opzioni-accettazione" role="radiogroup" aria-label="Accettazione"></div>
   </div>
 
-  <button type="submit" class="btn-invia">Invia le risposte</button>
+  <div id="avviso-mancanti" class="avviso-mancanti nascosto" role="alert"></div>
+  <button type="submit" class="btn-invia" id="btn-invia">Invia le risposte</button>
 </form>
 
-<footer>
-  <p>Progetto Mirafiori — ENGIM Piemonte × Stellantis Philanthropy</p>
-</footer>
+<div id="schermo-grazie" class="schermo nascosto">
+  <h1>Grazie!</h1>
+  <p class="grigio">Le tue risposte sono state registrate. Nessun dato personale è stato salvato.</p>
+</div>
 
 <script type="module" src="js/quiz-iniziale.js"></script>
 </body>

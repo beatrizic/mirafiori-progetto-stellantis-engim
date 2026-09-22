@@ -3,61 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regia — Quiz iniziale — Mirafiori</title>
+<title>Regia quiz — Mirafiori</title>
+<meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  body { padding: 2rem 1.6rem 4rem; }
-  .link-home-regia { display: inline-block; margin-bottom: 1.5rem; color: var(--grigio); font-size: 0.9rem; text-decoration: none; }
-  .link-home-regia:hover { color: var(--accento); }
-  .testata-regia { max-width: 1200px; margin: 0 auto 1.5rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: center; }
-  .blocco-qr { text-align: center; }
-  .blocco-qr #qr-quiz { background: #fff; padding: 1rem; display: inline-block; border-radius: 8px; }
-  .contatore-completati {
-    max-width: 1200px; margin: 0 auto 2rem; padding: 1.4rem 2rem; background: var(--blu); color: #fff;
-    border-radius: 14px; text-align: center;
-  }
-  .contatore-completati .numero-grande { font-family: var(--font-display); font-size: 2.6rem; font-weight: 900; color: var(--accento); display: block; line-height: 1; }
-  .riga-controlli-master { display: flex; gap: 1rem; align-items: center; justify-content: center; margin: 0 auto 2.5rem; max-width: 1200px; flex-wrap: wrap; }
-  .griglia-risultati { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-  .card-domanda { background: var(--bianco-2); border-radius: 12px; padding: 1.1rem 1.2rem; }
-  .card-domanda h3 { font-size: 0.88rem; margin-bottom: 0.7rem; line-height: 1.3; }
-  .barra-risultato-r { margin-bottom: 0.55rem; }
-  .etichetta-riga-r { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.2rem; }
-  .barra-contenitore-r { height: 8px; background: #fff; border: 1px solid var(--linea); border-radius: 4px; overflow: hidden; }
-  .barra-riempimento-r { height: 100%; width: 0%; background: var(--blu); transition: width 0.6s ease; }
-  .card-checkbox { background: var(--accento); color: #fff; }
-  .card-checkbox h3 { color: #fff; }
+  body { padding: 1.6rem 1.6rem 4rem; }
+  .interno { max-width: 1240px; margin: 0 auto; }
+  .link-home { display: inline-block; margin-bottom: 1.2rem; color: var(--grigio); font-size: 0.9rem; text-decoration: none; }
+  .link-home:hover { color: var(--accento); }
+
+  /* configurazione iniziale */
+  .configura { background: var(--bianco-2); border-radius: 18px; padding: 1.8rem; max-width: 720px; margin: 0 auto 2rem; }
+  .configura h1 { font-size: 2rem; margin-bottom: 0.3rem; }
+  .configura .sotto { color: var(--grigio); margin: 0 auto 1.6rem; }
+  .scelta-gruppo { margin-bottom: 1.3rem; text-align: left; }
+  .scelta-gruppo .etichetta { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--grigio); margin-bottom: 0.5rem; }
+  .pulsanti-scelta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .pulsante-scelta { padding: 0.9rem; border: 2px solid var(--linea); background: #fff; border-radius: 12px; cursor: pointer; font-family: var(--font-testo); font-weight: 600; font-size: 0.98rem; color: var(--blu); }
+  .pulsante-scelta[aria-pressed="true"] { border-color: var(--blu); background: var(--blu); color: #fff; }
+  .pulsante-scelta:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .riepilogo-domande { font-size: 0.85rem; color: var(--grigio); margin: 0.8rem 0 1.4rem; }
+
+  /* testata sessione */
+  .testata { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .testata h1 { font-size: 2rem; margin: 0; }
+  .etichette-sessione { display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
+  .pillola { font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--blu); color: #fff; }
+  .pillola.chiara { background: #e5edfb; color: var(--blu-chiaro); }
+  .codice-grande { font-family: var(--font-display); font-size: 2.6rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; display: block; margin-top: 0.4rem; }
+  #qr-quiz { background: #fff; padding: 1rem; display: inline-block; border-radius: 10px; }
+  #url-studente { font-size: 0.78rem; color: var(--grigio); display: block; margin-top: 0.4rem; word-break: break-all; text-align: center; }
+
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; text-align: center; padding: 1.2rem; margin-bottom: 1.6rem; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.6rem; color: var(--accento); display: block; line-height: 1; }
+
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; align-items: center; margin-bottom: 2rem; }
+  .controlli .btn { font-size: 0.88rem; padding: 0.6rem 1.1rem; }
+  .stato { color: var(--grigio); font-size: 0.9rem; }
+
+  .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.6rem; }
+  .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
+  .tab.attivo { background: var(--blu); color: #fff; }
+
+  .griglia { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
+  .card { background: var(--bianco-2); border-radius: 12px; padding: 1.1rem 1.2rem; text-align: left; }
+  .card h3 { font-family: var(--font-testo); font-weight: 700; font-size: 0.9rem; line-height: 1.35; margin: 0 0 0.3rem; color: var(--blu); }
+  .card .meta { font-size: 0.74rem; color: var(--grigio); margin-bottom: 0.8rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+  .badge { font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 999px; }
+  .badge.conoscenza { background: #e3f3ea; color: #1d7a4c; }
+  .badge.nuova { background: #fff1d6; color: #8a5a00; }
+  .badge.corrette { background: #1d7a4c; color: #fff; }
+  .card.accettazione { background: var(--accento); }
+  .card.accettazione h3, .card.accettazione .meta, .card.accettazione .barra-etichetta { color: #fff; }
+
+  .barra-riga { margin-bottom: 0.55rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.6rem; font-size: 0.8rem; margin-bottom: 0.2rem; }
+  .barra-etichetta .corretta::after { content: ' \2713'; color: #1d7a4c; font-weight: 700; }
+  .barra-traccia { height: 9px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+  .barra-fill.giusta { background: #1d7a4c; }
+
+  /* in proiezione durante l'iniziale le risposte corrette non si vedono */
+  .nascondi-corrette .barra-etichetta .corretta::after { content: ''; }
+  .nascondi-corrette .barra-fill.giusta { background: var(--blu); }
+  .nascondi-corrette .badge.corrette { display: none; }
+  .proiezione .card h3 { font-size: 1.1rem; }
+  .proiezione .barra-etichetta { font-size: 1rem; }
+  .proiezione .barra-traccia { height: 14px; }
+
+  /* confronto iniziale / finale */
+  .confronto { max-width: 900px; margin: 0 auto; }
+  .riga-confronto { background: var(--bianco-2); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; text-align: left; }
+  .riga-confronto h3 { font-family: var(--font-testo); font-weight: 700; font-size: 0.92rem; color: var(--blu); margin: 0 0 0.7rem; }
+  .coppia { display: grid; grid-template-columns: 90px 1fr 110px; gap: 0.8rem; align-items: center; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .delta { font-weight: 700; }
+  .delta.su { color: #1d7a4c; }
+  .delta.giu { color: var(--accento); }
+  .nota { font-size: 0.85rem; color: var(--grigio); max-width: 64ch; margin: 1.2rem auto 0; }
+  .avviso-giallo { background: #fff8e6; border: 1px solid #f0d99b; border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.88rem; color: #6b5310; margin: 0 auto 1.6rem; max-width: 900px; text-align: left; }
+
+  .nascosto { display: none; }
+  @media (prefers-reduced-motion: reduce) { .barra-fill { transition: none; } }
 </style>
 </head>
 <body>
+<div class="interno">
 
-<a class="link-home-regia" href="index.html">&larr; Torna alla home</a>
+  <a class="link-home" href="index.html">&larr; Torna alla home</a>
 
-<div class="testata-regia">
-  <div>
-    <p class="grigio" style="margin:0;">Regia — Quiz iniziale</p>
-    <h1 style="font-size:2rem; margin:0;">Livello di partenza</h1>
-  </div>
-  <div class="blocco-qr">
-    <div id="qr-quiz" data-url-quiz="https://tobea.it/quiz-iniziale.html"></div>
-    <p class="grigio" style="font-size:0.85rem;">Inquadra con i dati mobili</p>
-  </div>
+  <!-- 1. configurazione della sessione -->
+  <section id="blocco-configura" class="configura">
+    <h1>Nuovo quiz</h1>
+    <p class="sotto">Scegli per chi è e in che momento del percorso.</p>
+
+    <div class="scelta-gruppo">
+      <span class="etichetta">Contesto</span>
+      <div class="pulsanti-scelta" id="scelta-contesto" role="group" aria-label="Contesto"></div>
+    </div>
+    <div class="scelta-gruppo">
+      <span class="etichetta">Momento</span>
+      <div class="pulsanti-scelta" id="scelta-momento" role="group" aria-label="Momento"></div>
+    </div>
+
+    <p class="riepilogo-domande" id="riepilogo-domande"></p>
+    <button class="btn" id="btn-crea" style="width:100%;">Crea sessione</button>
+  </section>
+
+  <!-- 2. sessione attiva -->
+  <section id="blocco-sessione" class="nascosto">
+
+    <div class="testata">
+      <div>
+        <h1 id="titolo-sessione">Quiz</h1>
+        <div class="etichette-sessione">
+          <span class="pillola" id="pillola-contesto"></span>
+          <span class="pillola chiara" id="pillola-momento"></span>
+        </div>
+        <span class="codice-grande" id="codice-sessione"></span>
+      </div>
+      <div id="blocco-qr">
+        <div id="qr-quiz"></div>
+        <span id="url-studente"></span>
+      </div>
+    </div>
+
+    <div class="contatore">
+      <span class="numero" id="conteggio">0</span>
+      <span>ragazzi hanno completato il quiz</span>
+    </div>
+
+    <div class="controlli">
+      <button class="btn" id="btn-apri">Apri il quiz</button>
+      <button class="btn corallo" id="btn-chiudi">Chiudi il quiz</button>
+      <button class="btn" id="btn-qr">Nascondi QR</button>
+      <button class="btn" id="btn-proietta">Modalità proiezione</button>
+      <button class="btn corallo" id="btn-termina">Termina</button>
+      <button class="btn corallo" id="btn-reset">Reset</button>
+      <span class="stato">Stato: <strong id="stato-sessione">—</strong> · <span id="stato-realtime">—</span></span>
+    </div>
+
+    <div class="tab-barra" id="tab-barra" role="group" aria-label="Vista">
+      <button class="tab attivo" data-tab="risultati" type="button">Risultati</button>
+      <button class="tab" data-tab="confronto" type="button">Confronto iniziale / finale</button>
+    </div>
+
+    <div id="vista-risultati">
+      <div id="avviso-proiezione" class="avviso-giallo nascosto">
+        In proiezione le risposte corrette sono nascoste: se i ragazzi le vedessero adesso, il quiz finale misurerebbe la memoria e non l'apprendimento.
+      </div>
+      <div class="griglia" id="griglia"></div>
+    </div>
+
+    <div id="vista-confronto" class="nascosto">
+      <div class="confronto" id="confronto"></div>
+    </div>
+
+  </section>
+
 </div>
-
-<div class="contatore-completati">
-  <span class="numero-grande" id="conteggio-risposte">0</span>
-  <span>ragazzi hanno completato il quiz</span>
-</div>
-
-<div class="riga-controlli-master">
-  <button class="btn" id="btn-apri-quiz">Apri il quiz</button>
-  <button class="btn corallo" id="btn-chiudi-quiz">Chiudi il quiz</button>
-  <span class="grigio">Stato: <strong id="stato-master">—</strong></span>
-</div>
-
-<div class="griglia-risultati" id="griglia-risultati"></div>
-
 <script type="module" src="js/regia-quiz-iniziale.js"></script>
 </body>
 </html>
