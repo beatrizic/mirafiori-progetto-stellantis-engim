@@ -4,7 +4,7 @@ import { generaCodiceSessione } from './attivita-logica.js';
 import { esplosioneParticelle } from './particelle.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_quiz';
-const URL_STUDENTE = 'https://www.tobea.it/quiz-iniziale.html';
+const URL_STUDENTE = new URL('quiz-iniziale.html', window.location.href).href;
 const NOME_ENGIM = 'ENGIM San Luca';
 let scuoleNote = [];
 

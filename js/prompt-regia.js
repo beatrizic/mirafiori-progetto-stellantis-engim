@@ -3,7 +3,7 @@ import { ACTIVITY_KEY, SFIDE, OPZIONI_RIFLESSIONE } from './prompt-dati.js';
 import { generaCodiceSessione } from './attivita-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_prompt';
-const URL_STUDENTE = 'https://www.tobea.it/gioco-prompt.html';
+const URL_STUDENTE = new URL('gioco-prompt.html', window.location.href).href;
 const ETICHETTE_QUALITA = {
   debole: 'Troppo vago', medio: 'Discreto', forte: 'Completo', trappola: 'Con un problema'
 };

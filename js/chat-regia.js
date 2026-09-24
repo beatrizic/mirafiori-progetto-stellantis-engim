@@ -6,7 +6,7 @@ import {
 import { generaCodiceSessione } from './attivita-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_chat';
-const URL_STUDENTE = 'https://www.tobea.it/gioco-chat.html';
+const URL_STUDENTE = new URL('gioco-chat.html', window.location.href).href;
 const MIN_PER_CONFRONTO = 8;   // sotto questa soglia il confronto fra varianti non è leggibile
 
 const el = (id) => document.getElementById(id);

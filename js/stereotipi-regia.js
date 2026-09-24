@@ -3,7 +3,7 @@ import { QUESITI, FASCE_RETRIBUZIONE, PROFILO_RETRIBUZIONE, TESTO_CONCLUSIONE } 
 import { generaCodiceSessione, aggregaRisposte, aggregaRetribuzione } from './stereotipi-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_stereotipi';
-const URL_STUDENTE = 'https://www.tobea.it/gioco-stereotipi.html';
+const URL_STUDENTE = new URL('gioco-stereotipi.html', window.location.href).href;
 
 const el = (id) => document.getElementById(id);
 let sessione = null;

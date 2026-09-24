@@ -3,7 +3,7 @@ import { ACTIVITY_KEY, SCENARI, OPZIONI_RIFLESSIONE } from './social-dati.js';
 import { generaCodiceSessione, confrontaPrimaDopo, cambioPercezione, media } from './attivita-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_social';
-const URL_STUDENTE = 'https://www.tobea.it/gioco-social.html';
+const URL_STUDENTE = new URL('gioco-social.html', window.location.href).href;
 
 const el = (id) => document.getElementById(id);
 let sessione = null;
