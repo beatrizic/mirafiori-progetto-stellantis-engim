@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chat — Mirafiori · Progetto Stellantis ENGIM</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  html, body { height: 100%; }
+  body { text-align: left; background: #fff; overflow: hidden; }
+  .app { display: flex; flex-direction: column; height: 100dvh; max-width: 560px; margin: 0 auto; }
+
+  .testata { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--linea); background: #fff; flex: none; }
+  .freccia { font-size: 1.9rem; color: var(--nero); line-height: 1; text-decoration: none; padding: 0 0.4rem; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; margin-left: -0.5rem; }
+  .freccia:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; border-radius: 8px; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+  .info-utente { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+  .info-utente .nome { font-weight: 600; font-size: 0.95rem; color: var(--nero); }
+  .info-utente .stato { font-size: 0.75rem; color: var(--grigio); }
+
+  .messaggi { flex: 1; overflow-y: auto; padding: 1rem 0.9rem 0.5rem; display: flex; flex-direction: column; gap: 0.35rem; scroll-behavior: smooth; }
+  .bolla { max-width: 78%; padding: 0.6rem 0.85rem; border-radius: 20px; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; animation: entra 240ms ease both; }
+  .bolla.ricevuta { align-self: flex-start; background: #efefef; color: var(--nero); border-bottom-left-radius: 6px; }
+  .bolla.inviata { align-self: flex-end; background: var(--blu); color: #fff; border-bottom-right-radius: 6px; }
+  .evento { align-self: center; text-align: center; font-size: 0.78rem; color: var(--grigio); padding: 0.35rem 0.8rem; margin: 0.3rem 0; animation: entra 240ms ease both; }
+  .evento.riquadro { background: #f6f6f6; border-radius: 10px; }
+  .scrivendo { align-self: flex-start; background: #efefef; border-radius: 20px; border-bottom-left-radius: 6px; padding: 0.75rem 0.9rem; display: flex; gap: 4px; }
+  .scrivendo span { width: 7px; height: 7px; border-radius: 50%; background: #9a9a9a; animation: puntino 1.2s infinite; }
+  .scrivendo span:nth-child(2) { animation-delay: .2s; } .scrivendo span:nth-child(3) { animation-delay: .4s; }
+  @keyframes entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes puntino { 0%,60%,100% { opacity: .3; } 30% { opacity: 1; } }
+
+  .barra-invio { flex: none; border-top: 1px solid var(--linea); padding: 0.6rem 0.8rem 1rem; display: flex; gap: 0.5rem; align-items: flex-end; background: #fff; }
+  .barra-invio textarea { flex: 1; resize: none; font-family: var(--font-testo); font-size: 1rem; line-height: 1.4; padding: 0.7rem 1rem; border: 1px solid var(--linea); border-radius: 22px; max-height: 110px; min-height: 44px; color: var(--nero); }
+  .barra-invio textarea:focus { outline: none; border-color: var(--blu); }
+  .btn-invia { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--blu); color: #fff; font-size: 1.1rem; cursor: pointer; }
+  .btn-invia:disabled { opacity: .35; cursor: default; }
+  .btn-invia:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+
+  .pannello { flex: 1; overflow-y: auto; padding: 2.6rem 1.2rem 3rem; text-align: center; }
+  .pannello h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); margin-bottom: 1rem; }
+  .pannello p { font-size: 1rem; margin: 0 auto 0.9rem; max-width: 36ch; }
+  .riquadro-aiuto { background: var(--bianco-2); border-left: 4px solid var(--blu); border-radius: 0 12px 12px 0; padding: 1rem 1.2rem; text-align: left; margin: 1.8rem auto 0; max-width: 40ch; font-size: 0.95rem; }
+  .avviso { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 1rem 1.2rem; border-radius: 12px; font-size: 0.95rem; }
+  .nascosto { display: none !important; }
+  .sfumata { opacity: .25; transition: opacity .5s ease; pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) { .bolla, .evento { animation: none; } .scrivendo span { animation: none; opacity: .6; } .messaggi { scroll-behavior: auto; } .sfumata { transition: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div id="schermo-stato" class="pannello" role="status" aria-live="polite">
+    <h1 id="stato-titolo">Un attimo…</h1>
+    <p id="stato-testo" class="grigio">Sto caricando.</p>
+  </div>
+
+  <div id="schermo-chat" class="nascosto" style="flex-direction:column; flex:1; min-height:0;">
+    <header class="testata">
+      <a class="freccia" href="index.html" id="esci" aria-label="Esci dalla simulazione">&#8249;</a>
+      <div class="avatar" id="avatar" aria-hidden="true"></div>
+      <div class="info-utente">
+        <span class="nome" id="chat-username"></span>
+        <span class="stato">Attivo ora</span>
+      </div>
+    </header>
+
+    <div class="messaggi" id="messaggi" role="log" aria-live="polite" aria-label="Conversazione"></div>
+
+    <form class="barra-invio" id="form-invio">
+      <textarea id="campo" rows="1" placeholder="Scrivi quello che vuoi…" aria-label="Scrivi un messaggio"></textarea>
+      <button type="submit" class="btn-invia" id="btn-invia" aria-label="Invia">&#10148;</button>
+    </form>
+  </div>
+
+  <div id="schermo-fine" class="pannello nascosto">
+    <h1 id="titolo-fine">Fine della simulazione</h1>
+    <div id="testo-fine"></div>
+    <div class="riquadro-aiuto" id="riquadro-aiuto"></div>
+    <p class="grigio" style="margin-top:2rem; font-size:0.9rem;">Puoi appoggiare il telefono. Si continua insieme.</p>
+  </div>
+
+</div>
+<script type="module" src="js/libera-studente.js"></script>
+</body>
+</html>

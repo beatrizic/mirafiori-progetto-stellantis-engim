@@ -90,6 +90,13 @@
   .approfondimento { margin: 1.6rem auto 0; background: var(--bianco-2); border-radius: 12px; padding: 1rem 1.2rem; text-align: left; font-size: 0.92rem; }
   .approfondimento strong { color: var(--blu); }
   .approfondimento a { color: var(--blu-chiaro); font-weight: 600; }
+
+  /* ---------- seconda attività: chat a tastiera libera ---------- */
+  .blocco-libera { margin-top: 3rem; border-top: 3px solid var(--linea); padding-top: 3rem; }
+  .pannello-libera { background: #fff; border-radius: 18px; padding: 2rem 1.6rem; box-shadow: 0 6px 24px rgba(14,42,82,0.07); }
+  .avviso-rosso { background: #fff4f4; border: 1px solid #f3c7cb; border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.9rem; color: #8a2733; text-align: left; max-width: 70ch; margin: 1.2rem auto 0; }
+  #qr-libera { background: #fff; padding: 1rem; display: inline-block; border-radius: 12px; }
+  #url-studente-l { font-size: 0.78rem; color: var(--grigio); word-break: break-all; display: block; margin-top: 0.5rem; }
 </style>
 </head>
 <body>
@@ -190,6 +197,60 @@
       </div>
     </div>
 
+
+    <!-- ======== SECONDA ATTIVITÀ: TASTIERA LIBERA ======== -->
+    <div class="blocco-libera">
+      <p class="marchio-attivita">Scrivi quello che vuoi</p>
+      <p class="sottotitolo">Stessa chat, ma con la tastiera libera: i ragazzi scrivono quello che vogliono e l'altro risponde comunque. Serve a mostrare che l'escalation non dipende da come rispondi.</p>
+
+      <div class="avviso-docente">
+        <strong>Quando usarla.</strong> Dopo la simulazione guidata, non al posto suo. Prima si capisce il meccanismo, poi si verifica che nessuna risposta lo fermi.<br><br>
+        <strong>Cosa compare sullo schermo.</strong> Gli insulti sono mascherati con asterischi: nessuna parolaccia per intero. Le risposte non sono inventate sul momento ma scelte da un repertorio chiuso e verificato, quindi sai già cosa può apparire. Niente minacce, niente contenuti sessuali, niente riferimenti all'autolesionismo.<br><br>
+        <strong>Privacy.</strong> Quello che i ragazzi scrivono non viene mai salvato: resta solo sul loro telefono. Al sistema arrivano unicamente numeri — quanti messaggi e in che tono. Se qualcuno scrive qualcosa che segnala disagio reale, la chat si interrompe da sola, mostra il numero di Telefono Azzurro e qui compare un avviso per te, senza il testo.
+      </div>
+
+      <div class="pannello-libera">
+        <div class="controlli">
+          <button class="btn" id="btn-crea-l">Crea sessione</button>
+          <button class="btn" id="btn-avvia-l" disabled>Avvia</button>
+          <button class="btn" id="btn-qr-l" disabled>Nascondi QR</button>
+          <button class="btn" id="btn-blocca-l" disabled>Chiudi</button>
+          <button class="btn corallo" id="btn-termina-l" disabled>Termina</button>
+          <button class="btn corallo" id="btn-reset-l" disabled>Reset</button>
+        </div>
+
+        <div id="blocco-sessione-l" class="nascosto">
+          <div class="riga-sessione">
+            <div>
+              <span class="codice-grande" id="codice-sessione-l">——————</span>
+              <p class="meta-sessione">
+                Stato: <strong id="stato-sessione-l">—</strong> ·
+                Connessione <span id="stato-realtime-l">—</span>
+              </p>
+            </div>
+            <div id="blocco-qr-l">
+              <div id="qr-libera"></div>
+              <span id="url-studente-l"></span>
+            </div>
+          </div>
+
+          <div class="contatori">
+            <div class="contatore"><span class="numero" id="ln-collegati">0</span><span class="etichetta">Collegati</span></div>
+            <div class="contatore"><span class="numero" id="ln-attivi">0</span><span class="etichetta">Stanno scrivendo</span></div>
+            <div class="contatore"><span class="numero" id="ln-completati">0</span><span class="etichetta">Completati</span></div>
+            <div class="contatore"><span class="numero" id="ln-messaggi">0</span><span class="etichetta">Messaggi inviati</span></div>
+            <div class="contatore"><span class="numero" id="ln-media">—</span><span class="etichetta">Media a testa</span></div>
+          </div>
+
+          <div id="avviso-interrotte" class="avviso-rosso nascosto" role="alert"></div>
+
+          <h3 class="titolo-live">Come ha reagito la classe</h3>
+          <div id="toni-libera"></div>
+          <p class="nota-lettura">Conteggi aggregati del tono dei messaggi, non del loro contenuto: il testo non viene registrato. La conversazione si chiude da sola dopo <span id="max-scambi">14</span> scambi.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -208,5 +269,6 @@
 
 <script src="js/main.js"></script>
 <script type="module" src="js/chat-regia.js"></script>
+<script type="module" src="js/libera-regia.js"></script>
 </body>
 </html>
