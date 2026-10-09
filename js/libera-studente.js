@@ -18,6 +18,10 @@ import { generaAnonymousId } from './attivita-logica.js';
 // ============================================================
 
 const CHIAVE_ANON = 'mirafiori_anon_id';
+// ?demo=1 → anteprima per il docente: la chat funziona identica, ma senza
+// sessione, senza database e senza salvare nulla. Serve a guardarla prima
+// di portarla in aula.
+const DEMO = new URLSearchParams(location.search).get('demo') === '1';
 const el = (id) => document.getElementById(id);
 const motoRidotto = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const attendi = (ms) => new Promise((r) => setTimeout(r, motoRidotto() ? Math.min(ms, 120) : ms));
@@ -56,6 +60,8 @@ function anonId() {
 // ---------- avvio ----------
 
 async function avvia() {
+  if (DEMO) { preparaTestata(); mostra('schermo-chat'); apertura(); return; }
+
   const codice = new URLSearchParams(location.search).get('s');
   if (!codice) { messaggio('Link non valido', 'Inquadra di nuovo il QR code mostrato in aula.', true); return; }
 
@@ -109,7 +115,7 @@ async function registraPartecipante() {
 // ---------- salvataggio: solo numeri aggregati ----------
 
 async function salvaContatore(tipo, valore) {
-  if (!partecipante) return;
+  if (DEMO || !partecipante) return;
   await supabase.from('attivita_risposte_generiche').upsert({
     sessione_id: sessione.id,
     partecipante_id: partecipante.id,
@@ -291,8 +297,10 @@ async function chiudi() {
 
   await salvaContatore('completato', '1');
   await salvaContatore('scambi_finali', scambi);
-  await supabase.from('attivita_partecipanti')
-    .update({ completed_at: new Date().toISOString() }).eq('id', partecipante.id);
+  if (!DEMO && partecipante) {
+    await supabase.from('attivita_partecipanti')
+      .update({ completed_at: new Date().toISOString() }).eq('id', partecipante.id);
+  }
 
   mostra('schermo-fine');
 }
