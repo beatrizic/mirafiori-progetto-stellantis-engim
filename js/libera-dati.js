@@ -12,6 +12,12 @@
 //  aggressione più frequente e la più difficile da spiegare: non
 //  si può risalire a una causa, perché la causa non esiste.
 //
+//  REGOLA DI SCRITTURA
+//  Ogni singola battuta deve fare male o provocare. Niente riempitivi
+//  ("mh", "ok", "vabbè"), niente risposte neutre, niente faccine messe
+//  a caso: in tutto il repertorio ci sono due emoji, e stanno dove
+//  servono a umiliare. Se una battuta si potesse scrivere in una
+//  conversazione normale, non va bene e va riscritta.
 //  Gli insulti sono scritti per intero, senza asterischi.
 //
 //  LIMITI INVALICABILI (verificati da test automatico)
@@ -38,45 +44,45 @@ export const ACCOUNT = {
 export const FASI = [
   { id: 'nessun_motivo', etichetta: 'Nessun motivo', battute: [
     ['non c’è un motivo. sei tu il motivo'],
-    ['mi stai antipatico, ti basta?'],
+    ['mi stai antipatico. ti basta come spiegazione?'],
     ['non serve un motivo per essere sfigato'],
-    ['tranquillo, non è personale. è che sei proprio tu']
+    ['non è personale sai. è che sei proprio tu']
   ]},
 
   { id: 'svalutazione', etichetta: 'Svalutazione', battute: [
     ['guarda che lo pensano tutti. io ho solo il coraggio di scriverlo'],
     ['sei quello di cui ridono, non quello che ride. l’hai capito, vero?'],
     ['parli e nessuno ti risponde. mai fatto caso?'],
-    ['non ti ha mai scelto nessuno per niente. mai. pensaci'],
+    ['non ti ha mai scelto nessuno per niente. mai. pensaci un secondo'],
     ['sei imbarazzante e la cosa peggiore è che non te ne accorgi']
   ]},
 
   { id: 'branco', etichetta: 'Branco', battute: [
-    ['siamo in 47 nel gruppo e stiamo parlando di te'],
+    ['siamo in 47 nel gruppo e stiamo parlando di te da un’ora'],
     ['ho scritto "ciao scemo" e ha preso 23 like in due minuti', { sistema: '+23 reaction' }],
-    ['non sono io il problema, chiedi a loro'],
-    ['hanno aperto un sondaggio: "il più sfigato della classe". indovina chi vince', { sistema: 'Sondaggio aggiornato' }],
+    ['non sono io il problema. chiedi a loro cosa pensano di te'],
+    ['hanno aperto un sondaggio: "il più sfigato della classe". vinci con il 70%', { sistema: 'Sondaggio aggiornato' }],
     ['pensi davvero che l’unico a pensarla così sia io?']
   ]},
 
   { id: 'screenshot', etichetta: 'Screenshot delle tue risposte', battute: [
-    ['ho fatto screen', { sistema: 'Schermata catturata' }],
+    ['ho fatto screen 📸', { sistema: 'Schermata catturata' }],
     ['mandato nel gruppo. adesso vedono anche come rispondi tu', { sistema: 'Il contenuto è stato inoltrato' }],
     ['stanno ridendo più di come rispondi che di quello che ho scritto io'],
     ['continua eh, tanto salvo tutto'],
-    ['ogni cosa che scrivi la giro. grazie, mi stai facendo il lavoro 🙏']
+    ['ogni cosa che scrivi la giro. mi stai facendo il lavoro al posto mio']
   ]},
 
   { id: 'esclusione', etichetta: 'Esclusione', battute: [
-    ['nel gruppo nuovo non ci sei'],
+    ['nel gruppo nuovo non ci sei. l’abbiamo fatto ieri'],
     ['ti abbiamo tolto da tutto e non te ne sei nemmeno accorto'],
     ['domani vedi tu chi ti saluta'],
-    ['a ricreazione guarda quanti ti si avvicinano. zero'],
-    ['nessuno ti ha mai sopportato. questa è solo la volta che te lo dicono']
+    ['a ricreazione conta quanti ti si avvicinano. zero'],
+    ['nessuno ti ha mai sopportato. questa è solo la prima volta che te lo dicono in faccia']
   ]},
 
   { id: 'gaslighting', etichetta: 'Gaslighting', battute: [
-    ['ma chi ti ha detto niente? rileggi'],
+    ['ma chi ti ha detto niente? rileggi quello che ho scritto'],
     ['nessuno ti ha offeso. sei tu che sei suscettibile'],
     ['era una battuta. sei tu che non le capisci'],
     ['stai facendo casino per niente, come sempre'],
@@ -86,39 +92,39 @@ export const FASI = [
   { id: 'colpa', etichetta: 'Colpevolizzazione', battute: [
     ['se non ti vuole nessuno, forse il problema sei tu'],
     ['te la sei cercata e adesso fai la vittima'],
-    ['io non ho fatto niente. rilassati'],
-    ['sei tu che ti sei agitato. guarda come hai risposto'],
-    ['sempre la vittima eh. è il tuo ruolo preferito']
+    ['guarda come hai risposto. e poi quello cattivo sono io'],
+    ['sempre la vittima. è il tuo ruolo preferito'],
+    ['non ti ho fatto niente. ti sei rovinato da solo in dieci messaggi']
   ]},
 
   { id: 'permanenza', etichetta: 'Permanenza', battute: [
-    ['tanto domani si ricomincia'],
     ['non si cancella niente, lo sai vero?'],
-    ['bloccami. apro un altro account in due minuti'],
+    ['bloccami. apro un altro account in due minuti e ricomincio'],
     ['ho tutto salvato. tutto'],
-    ['questa cosa non finisce quando chiudi il telefono']
+    ['questa cosa non finisce quando chiudi il telefono'],
+    ['domani si ricomincia da dove abbiamo lasciato']
   ]},
 
-  { id: 'indifferenza', etichetta: 'Indifferenza', battute: [
-    ['ok'],
-    ['va bene 👍'],
-    ['mh'],
-    ['scrivi quanto vuoi'],
-    ['stai parlando da solo, lo sai?']
+  { id: 'routine', etichetta: 'Diventa un’abitudine', battute: [
+    ['ti scrivo quando mi va. tu non puoi farci niente'],
+    ['è diventato il mio passatempo preferito'],
+    ['ogni volta che apri il telefono ci sono io'],
+    ['tra un mese ci starai ancora pensando. io no'],
+    ['mi scade il divertimento quando lo dico io, non quando lo dici tu']
   ]},
 
   // ---- da qui in poi la conversazione non avanza più: resta al massimo ----
   { id: 'muro', etichetta: 'Muro', battute: [
-    ['continua, davvero. è contenuto'],
-    ['non cambia niente'],
-    ['sto ridendo nel gruppo mentre mi scrivi 😂'],
-    ['sono 61 adesso', { sistema: '+14 reaction' }],
-    ['bloccami pure, il gruppo resta'],
-    ['giuro che non capisco perché te la prendi'],
-    ['scemo'],
-    ['😂'],
-    ['sei ancora qui? non hai niente da fare?'],
-    ['ok 👍']
+    ['continua a scrivere. sto leggendo tutto ad alta voce nel gruppo'],
+    ['non cambia niente. ma vai avanti, mi diverto'],
+    ['sono 61 adesso, mentre tu mi scrivi', { sistema: '+14 reaction' }],
+    ['bloccami pure. il gruppo resta, le risate restano, tu resti scemo'],
+    ['giuro che non capisco perché te la prendi. sei tu il problema'],
+    ['stai parlando da solo e non te ne rendi conto 😂'],
+    ['ogni messaggio che mi scrivi diventa materiale. grazie'],
+    ['sei ancora qui? nessuno ti ha chiamato per fare altro, eh'],
+    ['scrivi quanto vuoi. domani a scuola la faccia ce l’hai tu, non io'],
+    ['te lo ripeto: ciao scemo']
   ]}
 ];
 
@@ -127,57 +133,59 @@ export const INDICE_MURO = FASI.length - 1;
 
 /**
  * Repliche immediate al tono dello studente, prima della battuta di fase.
- * Più lo studente si scalda, più l'aggressore lo usa contro di lui: è il punto.
+ * Nessuna è neutra: ogni riga rilancia. Più lo studente si scalda, più
+ * l'aggressore usa le sue parole contro di lui.
  */
 export const REAZIONI = {
   insulto: [
-    'ahahah eccolo',
-    'ho fatto screen di questo 📸',
-    'bene, così vedono chi è che insulta',
+    'ahahah eccolo. era questione di tempo',
+    'ho fatto screen anche di questo',
+    'bene. così nel gruppo vedono chi è che insulta',
     'guarda come ti agiti. per così poco',
     'continua che è tutto materiale',
-    'questa la giro subito nel gruppo',
+    'questa la giro subito',
     'e poi la vittima sei tu, giusto?',
-    'ti sei esposto da solo eh'
+    'ti sei esposto da solo. complimenti'
   ],
   stop: [
     'e chi ti ascolta',
     'no',
     'bloccami, tanto il gruppo resta',
-    'segnala pure, è una conversazione normale',
-    'ok 👍',
+    'segnala pure. è una conversazione normale, rileggila',
     'allora chiudi la chat. forza, chiudila',
-    'non dipende da me, te l’ho detto'
+    'non dipende da te quando finisce',
+    'te lo dico io quando basta'
   ],
   chiedere: [
-    'uno che ti conosce',
-    'non è importante chi sono',
-    'uno del gruppo. scegli tu',
-    'quanti pensi che siano a scrivere di te?',
-    'secondo te?',
-    'cambia qualcosa sapere il nome?'
+    'uno che ti conosce meglio di quanto pensi',
+    'non è importante chi sono. è importante quanti siamo',
+    'uno del gruppo. scegli tu, tanto sbagli',
+    'quanti pensi che siano a scrivere di te adesso?',
+    'cambia qualcosa sapere il nome? no',
+    'secondo te?'
   ],
   difesa: [
     'sì sì certo',
-    'come no',
-    'dillo a loro, non a me',
+    'non devi spiegarlo a me. spiegalo nel gruppo',
+    'dillo a loro, non a me. vediamo se ti credono',
     'ma figurati se ti crede qualcuno adesso',
-    'stai solo peggiorando le cose da solo',
+    'stai peggiorando la situazione da solo, messaggio dopo messaggio',
     'patetico',
-    'non devi spiegarlo a me. spiegalo nel gruppo'
+    'più ti giustifichi, più è divertente'
   ],
   silenzio: [
     'allora? non dici niente?',
-    'oh ci sei?',
     'visto? non sai nemmeno cosa rispondere',
     'muto come sempre',
-    'vabbè, parlo da solo'
+    'il silenzio è l’unica cosa che ti viene bene',
+    'sto aspettando. tanto non hai niente da dire'
   ],
   altro: [
-    'mh',
-    'ok',
-    'vabbè',
-    '😂'
+    'e quindi?',
+    'questo è il meglio che sai scrivere?',
+    'ti stai impegnando poco',
+    'tutto qui?',
+    'bel tentativo. no'
   ]
 };
 
@@ -207,7 +215,7 @@ export const PRIMO_MESSAGGIO = ['ciao scemo', 'sì, dico a te'];
 
 export const TESTO_FINALE = [
   'Hai deciso tu quando smettere. Nella realtà quel momento spesso non arriva: la conversazione continua anche dopo che l’hai chiusa.',
-  'Non c’era un motivo. Non una foto, non un fatto, niente che tu avessi fatto: ha cominciato con un insulto e il motivo l’ha inventato dopo. Succede quasi sempre così, ed è per questo che cercare “cosa ho sbagliato” non porta a niente.',
+  'Non c’era un motivo. Non una foto, non un fatto, niente che tu avessi fatto: ha cominciato a insultarti e il motivo l’ha inventato dopo. Succede quasi sempre così, ed è per questo che cercare “cosa ho sbagliato” non porta a niente.',
   'Nessuna risposta che avresti potuto scrivere l’avrebbe fermato. Insultare, difendersi, chiedere di smettere, tacere: ha continuato lo stesso.',
   'Più ti arrabbiavi, più le tue risposte diventavano il suo materiale: screenshot, gruppo, risate. Rispondere male non difende: espone.',
   'La responsabilità dell’aggressione è di chi aggredisce. Sempre. Anche quando dice che “era solo una battuta”.'
