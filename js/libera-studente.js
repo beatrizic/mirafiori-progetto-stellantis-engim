@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js';
 import {
-  ACTIVITY_KEY, ACCOUNT, FASI, INDICE_MURO, REAZIONI, SEGNALI, SEGNALE_ALLARME,
+  ACTIVITY_KEY, ACCOUNT, FASI, INDICE_MURO, SEGNALI, SEGNALE_ALLARME, normalizza,
   PRIMO_MESSAGGIO, TESTO_FINALE, TESTO_AIUTO, TESTO_PAUSA
 } from './libera-dati.js';
 import { generaAnonymousId } from './attivita-logica.js';
@@ -33,9 +33,10 @@ let scambi = 0;
 let chiusa = false;
 let inAttesa = false;
 let pausaMostrata = false;        // la pausa di sicurezza compare una volta sola
-let ultimaReazione = '';
-const usate = {};
-const conteggi = { insulto: 0, stop: 0, chiedere: 0, difesa: 0, altro: 0 };
+const usate = {};                 // alternative già usate, per cella fase×tono
+const conteggi = { chi: 0, perche: 0, insulto: 0, stop: 0, difesa: 0, sfida: 0, silenzio: 0, altro: 0 };
+let timerSilenzio = null;
+const ATTESA_SILENZIO = 25000;   // se non scrive per 25 secondi, l'aggressore scrive lo stesso
 
 function mostra(id) {
   ['schermo-stato', 'schermo-chat', 'schermo-fine'].forEach((x) => el(x).classList.add('nascosto'));
@@ -187,58 +188,68 @@ async function apertura() {
     await attendi(300);
   }
   abilita(true);
+  programmaSilenzio();
 }
 
-/** Battuta non ancora usata della fase corrente. Oltre l'ultima fase resta sul "muro". */
-function battutaDiFase() {
+/**
+ * La risposta è scelta da UNA sola cella: fase corrente × tono di quello
+ * che lo studente ha appena scritto. Per questo risponde nel merito invece
+ * di dire una cosa qualsiasi. Oltre l'ultima fase si resta sul "muro".
+ * Dentro la cella non si ripete un'alternativa finché non sono finite.
+ */
+function rispostaPer(tono, testoStudente) {
   const f = FASI[Math.min(fase, INDICE_MURO)];
-  usate[f.id] = usate[f.id] || [];
-  let libere = f.battute.filter((_, i) => !usate[f.id].includes(i));
-  if (!libere.length) { usate[f.id] = []; libere = f.battute; }
+  const cella = f.risposte[tono] || f.risposte.altro;
+  const chiave = f.id + ':' + tono;
+  usate[chiave] = usate[chiave] || [];
+
+  let libere = cella.filter((_, i) => !usate[chiave].includes(i));
+  if (!libere.length) { usate[chiave] = []; libere = cella; }
+
+  // Mai ripetere a pappagallo quello che ha appena scritto lo studente:
+  // "E quindi?" a cui si risponde "e quindi?" fa crollare la finzione.
+  const eco = normalizza(testoStudente);
+  if (eco) {
+    const diverse = libere.filter((alt) => {
+      const primo = Array.isArray(alt) ? alt[0] : alt;
+      return typeof primo !== 'string' || normalizza(primo) !== eco;
+    });
+    if (diverse.length) libere = diverse;
+  }
+
   const scelta = libere[Math.floor(Math.random() * libere.length)];
-  usate[f.id].push(f.battute.indexOf(scelta));
-  return scelta;
+  usate[chiave].push(cella.indexOf(scelta));
+  return Array.isArray(scelta) ? scelta : [scelta];
 }
 
 function riconosciTono(testo) {
-  const t = (testo || '').trim();
-  if (!t) return 'silenzio';
-  if (SEGNALI.chiedere.test(t)) return 'chiedere';
+  const t = normalizza(testo);
+  // "??" o "..." si appiattiscono a stringa vuota, ma lo studente HA scritto:
+  // è una reazione, non un silenzio.
+  if (!t) return 'altro';
+  if (SEGNALI.chi.test(t)) return 'chi';
+  if (SEGNALI.perche.test(t)) return 'perche';
   if (SEGNALI.insulto.test(t)) return 'insulto';
   if (SEGNALI.stop.test(t)) return 'stop';
   if (SEGNALI.difesa.test(t)) return 'difesa';
+  if (SEGNALI.sfida.test(t)) return 'sfida';
   return 'altro';
 }
 
-function pescaDiversa(lista) {
-  const libere = lista.filter((x) => x !== ultimaReazione);
-  const scelta = (libere.length ? libere : lista)[Math.floor(Math.random() * (libere.length ? libere.length : lista.length))];
-  ultimaReazione = scelta;
-  return scelta;
-}
-
-async function rispondi(testoStudente) {
-  const tono = riconosciTono(testoStudente);
-  if (conteggi[tono] !== undefined) conteggi[tono]++;
-
+async function emetti(tono, testoStudente) {
   // Dopo un insulto l'aggressore a volte legge e non risponde subito:
   // il silenzio è più efficace di una replica.
-  const ignora = tono === 'insulto' && Math.random() < 0.3;
-  if (ignora) { await attendi(900); visualizzato(); await attendi(1400); }
-
-  const repliche = REAZIONI[tono];
-  if (repliche) {
-    await scrivendo(700 + Math.random() * 600);
-    bolla(pescaDiversa(repliche), false);
-    await attendi(400);
+  if (tono === 'insulto' && Math.random() < 0.25) {
+    await attendi(900); visualizzato(); await attendi(1300);
   }
 
-  for (const pezzo of battutaDiFase()) {
+  for (const pezzo of rispostaPer(tono, testoStudente)) {
     if (typeof pezzo === 'string') {
-      await scrivendo(700 + Math.random() * 800);
+      await scrivendo(650 + Math.random() * 700);
       bolla(pezzo, false);
+      await attendi(250);
     } else if (pezzo.sistema) {
-      await attendi(700); evento(pezzo.sistema, true);
+      await attendi(600); evento(pezzo.sistema, true);
     } else if (pezzo.evento) {
       await attendi(600); evento(pezzo.evento, false);
     }
@@ -246,22 +257,47 @@ async function rispondi(testoStudente) {
 
   if (fase < INDICE_MURO) fase++;
   scambi++;
+  if (conteggi[tono] !== undefined) conteggi[tono]++;
 
   // Aggiornamento live della dashboard: solo numeri.
   salvaContatore('scambi', scambi);
   if (conteggi[tono] !== undefined) salvaContatore('tono_' + tono, conteggi[tono]);
+}
 
+async function rispondi(testoStudente) {
+  const tono = riconosciTono(testoStudente);
+  await emetti(tono, testoStudente);
   abilita(true);
+  programmaSilenzio();
 
   // La pausa di sicurezza arriva DOPO la risposta e non chiude niente:
   // decide lo studente se continuare.
-  if (!pausaMostrata && SEGNALE_ALLARME.test(testoStudente)) mostraPausa();
+  if (!pausaMostrata && SEGNALE_ALLARME.test(normalizza(testoStudente))) mostraPausa();
+}
+
+// ---------- il silenzio non ferma niente ----------
+// Se lo studente smette di rispondere, l'aggressore scrive lo stesso.
+// È il punto che in aula sorprende di più: tacere non fa finire la cosa.
+
+function programmaSilenzio() {
+  clearTimeout(timerSilenzio);
+  if (chiusa) return;
+  timerSilenzio = setTimeout(async () => {
+    if (chiusa || inAttesa) return;
+    inAttesa = true;
+    abilita(false);
+    await emetti('silenzio', '');
+    abilita(true);
+    inAttesa = false;
+    programmaSilenzio();
+  }, ATTESA_SILENZIO);
 }
 
 // ---------- pausa di sicurezza (non interrompe: mette in pausa) ----------
 
 function mostraPausa() {
   pausaMostrata = true;
+  clearTimeout(timerSilenzio);
   abilita(false);
   el('pausa-titolo').textContent = TESTO_PAUSA.titolo;
   const box = el('pausa-testo');
@@ -277,7 +313,7 @@ function mostraPausa() {
 
 el('btn-continua-pausa').addEventListener('click', () => {
   el('velo-pausa').classList.add('nascosto');
-  if (!chiusa) abilita(true);
+  if (!chiusa) { abilita(true); programmaSilenzio(); }
 });
 
 // ---------- chiusura, decisa dallo studente ----------
@@ -285,6 +321,7 @@ el('btn-continua-pausa').addEventListener('click', () => {
 async function chiudi() {
   if (chiusa) return;
   chiusa = true;
+  clearTimeout(timerSilenzio);
   abilita(false);
   el('velo-pausa').classList.add('nascosto');
   el('messaggi').classList.add('sfumata');
@@ -318,6 +355,7 @@ el('form-invio').addEventListener('submit', async (e) => {
   if (!t) return;
 
   inAttesa = true;
+  clearTimeout(timerSilenzio);
   bolla(t, true);
   el('campo').value = '';
   el('campo').style.height = 'auto';
