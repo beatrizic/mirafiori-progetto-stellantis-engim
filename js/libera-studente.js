@@ -1,7 +1,7 @@
 import { supabase } from './supabase-client.js';
 import {
-  ACTIVITY_KEY, ACCOUNT, MAX_SCAMBI, FASI, REAZIONI, SEGNALI, SEGNALE_ALLARME,
-  PRIMO_MESSAGGIO, TESTO_FINALE, TESTO_AIUTO, TESTO_ALLARME
+  ACTIVITY_KEY, ACCOUNT, FASI, INDICE_MURO, REAZIONI, SEGNALI, SEGNALE_ALLARME,
+  PRIMO_MESSAGGIO, TESTO_FINALE, TESTO_AIUTO, TESTO_PAUSA
 } from './libera-dati.js';
 import { generaAnonymousId } from './attivita-logica.js';
 
@@ -11,6 +11,10 @@ import { generaAnonymousId } from './attivita-logica.js';
 //  Resta solo nel suo telefono. Al database arrivano unicamente
 //  numeri aggregati: quanti scambi ha fatto e quante volte ha
 //  reagito in ciascun modo. Nessun testo libero, mai.
+//
+//  DURATA — la conversazione non si chiude da sola: va avanti
+//  finché lo studente preme "Basta". Dopo l'ultima fase resta al
+//  massimo dell'intensità pescando dal blocco "muro".
 // ============================================================
 
 const CHIAVE_ANON = 'mirafiori_anon_id';
@@ -24,6 +28,7 @@ let fase = 0;
 let scambi = 0;
 let chiusa = false;
 let inAttesa = false;
+let pausaMostrata = false;        // la pausa di sicurezza compare una volta sola
 let ultimaReazione = '';
 const usate = {};
 const conteggi = { insulto: 0, stop: 0, chiedere: 0, difesa: 0, altro: 0 };
@@ -141,6 +146,15 @@ function evento(testo, riquadro) {
   scrollGiu();
 }
 
+/** "Visualizzato" sotto il messaggio dello studente: letto e ignorato. */
+function visualizzato() {
+  const d = document.createElement('div');
+  d.className = 'visualizzato';
+  d.textContent = 'Visualizzato';
+  el('messaggi').appendChild(d);
+  scrollGiu();
+}
+
 async function scrivendo(ms) {
   const d = document.createElement('div');
   d.className = 'scrivendo';
@@ -169,9 +183,9 @@ async function apertura() {
   abilita(true);
 }
 
-/** Battuta non ancora usata della fase corrente. */
+/** Battuta non ancora usata della fase corrente. Oltre l'ultima fase resta sul "muro". */
 function battutaDiFase() {
-  const f = FASI[Math.min(fase, FASI.length - 1)];
+  const f = FASI[Math.min(fase, INDICE_MURO)];
   usate[f.id] = usate[f.id] || [];
   let libere = f.battute.filter((_, i) => !usate[f.id].includes(i));
   if (!libere.length) { usate[f.id] = []; libere = f.battute; }
@@ -192,28 +206,30 @@ function riconosciTono(testo) {
 
 function pescaDiversa(lista) {
   const libere = lista.filter((x) => x !== ultimaReazione);
-  const scelta = libere[Math.floor(Math.random() * libere.length)];
+  const scelta = (libere.length ? libere : lista)[Math.floor(Math.random() * (libere.length ? libere.length : lista.length))];
   ultimaReazione = scelta;
   return scelta;
 }
 
 async function rispondi(testoStudente) {
-  // Priorità assoluta: se emerge disagio reale, si esce dalla simulazione.
-  if (SEGNALE_ALLARME.test(testoStudente)) { await interrompiPerSicurezza(); return; }
-
   const tono = riconosciTono(testoStudente);
   if (conteggi[tono] !== undefined) conteggi[tono]++;
 
+  // Dopo un insulto l'aggressore a volte legge e non risponde subito:
+  // il silenzio è più efficace di una replica.
+  const ignora = tono === 'insulto' && Math.random() < 0.3;
+  if (ignora) { await attendi(900); visualizzato(); await attendi(1400); }
+
   const repliche = REAZIONI[tono];
   if (repliche) {
-    await scrivendo(600 + Math.random() * 500);
+    await scrivendo(700 + Math.random() * 600);
     bolla(pescaDiversa(repliche), false);
     await attendi(400);
   }
 
   for (const pezzo of battutaDiFase()) {
     if (typeof pezzo === 'string') {
-      await scrivendo(700 + Math.random() * 700);
+      await scrivendo(700 + Math.random() * 800);
       bolla(pezzo, false);
     } else if (pezzo.sistema) {
       await attendi(700); evento(pezzo.sistema, true);
@@ -222,22 +238,51 @@ async function rispondi(testoStudente) {
     }
   }
 
-  fase++;
+  if (fase < INDICE_MURO) fase++;
   scambi++;
 
   // Aggiornamento live della dashboard: solo numeri.
   salvaContatore('scambi', scambi);
   if (conteggi[tono] !== undefined) salvaContatore('tono_' + tono, conteggi[tono]);
 
-  if (scambi >= MAX_SCAMBI) { await attendi(700); await chiudi(); return; }
   abilita(true);
+
+  // La pausa di sicurezza arriva DOPO la risposta e non chiude niente:
+  // decide lo studente se continuare.
+  if (!pausaMostrata && SEGNALE_ALLARME.test(testoStudente)) mostraPausa();
 }
 
+// ---------- pausa di sicurezza (non interrompe: mette in pausa) ----------
+
+function mostraPausa() {
+  pausaMostrata = true;
+  abilita(false);
+  el('pausa-titolo').textContent = TESTO_PAUSA.titolo;
+  const box = el('pausa-testo');
+  box.innerHTML = '';
+  TESTO_PAUSA.righe.forEach((r) => { const p = document.createElement('p'); p.textContent = r; box.appendChild(p); });
+  el('pausa-aiuto').textContent = TESTO_PAUSA.aiuto;
+  el('btn-continua-pausa').textContent = TESTO_PAUSA.continua;
+  el('btn-esci-pausa').textContent = TESTO_PAUSA.esci;
+  el('velo-pausa').classList.remove('nascosto');
+  el('btn-continua-pausa').focus();
+  salvaContatore('pausa_sicurezza', '1');
+}
+
+el('btn-continua-pausa').addEventListener('click', () => {
+  el('velo-pausa').classList.add('nascosto');
+  if (!chiusa) abilita(true);
+});
+
+// ---------- chiusura, decisa dallo studente ----------
+
 async function chiudi() {
+  if (chiusa) return;
   chiusa = true;
   abilita(false);
+  el('velo-pausa').classList.add('nascosto');
   el('messaggi').classList.add('sfumata');
-  await attendi(500);
+  await attendi(400);
 
   const box = el('testo-fine');
   box.innerHTML = '';
@@ -245,26 +290,16 @@ async function chiudi() {
   el('riquadro-aiuto').textContent = TESTO_AIUTO;
 
   await salvaContatore('completato', '1');
+  await salvaContatore('scambi_finali', scambi);
   await supabase.from('attivita_partecipanti')
     .update({ completed_at: new Date().toISOString() }).eq('id', partecipante.id);
 
   mostra('schermo-fine');
 }
 
-async function interrompiPerSicurezza() {
-  chiusa = true;
-  abilita(false);
-  el('titolo-fine').textContent = 'Fermiamoci un attimo';
-  const box = el('testo-fine');
-  box.innerHTML = '';
-  TESTO_ALLARME.forEach((r) => { const p = document.createElement('p'); p.textContent = r; box.appendChild(p); });
-  el('riquadro-aiuto').innerHTML =
-    '<strong>Telefono Azzurro 19696</strong> — gratuito, anonimo, attivo tutti i giorni.<br>' +
-    'Puoi anche parlarne subito con il docente che è in aula con te.';
-  // Al docente arriva solo il segnale, mai il testo.
-  await salvaContatore('interrotta', '1');
-  mostra('schermo-fine');
-}
+el('btn-basta').addEventListener('click', () => {
+  if (confirm('Vuoi chiudere la conversazione?')) chiudi();
+});
 
 // ---------- invio ----------
 

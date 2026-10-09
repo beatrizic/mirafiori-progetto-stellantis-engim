@@ -1,5 +1,5 @@
 import { supabase } from './supabase-client.js';
-import { ACTIVITY_KEY, ETICHETTE_TONO, MAX_SCAMBI } from './libera-dati.js';
+import { ACTIVITY_KEY, ETICHETTE_TONO } from './libera-dati.js';
 import { generaCodiceSessione } from './attivita-logica.js';
 
 const CHIAVE_SESSIONE = 'mirafiori_sessione_libera';
@@ -127,13 +127,15 @@ async function aggiornaDashboard() {
   const attivi = new Set(scambiPer.map((x) => x.partecipante_id)).size;
   const completati = p.filter((x) => x.completed_at).length;
   const totScambi = scambiPer.reduce((a, x) => a + num(x.valore), 0);
-  const interrotte = r.filter((x) => x.tipo === 'interrotta').length;
+  const massimo = scambiPer.reduce((a, x) => Math.max(a, num(x.valore)), 0);
+  const pause = r.filter((x) => x.tipo === 'pausa_sicurezza').length;
 
   el('ln-collegati').textContent = p.length;
   el('ln-attivi').textContent = attivi;
   el('ln-completati').textContent = completati;
   el('ln-messaggi').textContent = totScambi;
   el('ln-media').textContent = attivi ? (totScambi / attivi).toFixed(1) : '—';
+  el('ln-max').textContent = massimo || '—';
 
   // Come ha reagito la classe: somma dei contatori per tono.
   const toni = ['insulto', 'stop', 'chiedere', 'difesa', 'altro'];
@@ -158,12 +160,12 @@ async function aggiornaDashboard() {
         barra(ETICHETTE_TONO[t], Math.round((n / totale) * 100), n, classi[t])));
   }
 
-  // Avviso al docente: qualcuno ha scritto qualcosa che ha fatto scattare l'interruzione.
+  // Avviso al docente: a qualcuno è comparsa la schermata di aiuto.
   const avviso = el('avviso-interrotte');
-  if (interrotte > 0) {
-    avviso.textContent = interrotte === 1
-      ? 'Una simulazione si è interrotta da sola: uno studente ha scritto qualcosa che segnala disagio. Il testo non è stato registrato. Vale la pena guardarsi intorno in aula.'
-      : `${interrotte} simulazioni si sono interrotte da sole: alcuni studenti hanno scritto qualcosa che segnala disagio. I testi non sono stati registrati. Vale la pena guardarsi intorno in aula.`;
+  if (pause > 0) {
+    avviso.textContent = pause === 1
+      ? 'A uno studente è comparsa la schermata di aiuto: ha scritto qualcosa che segnala disagio. Il testo non è stato registrato e la simulazione non si è chiusa. Vale la pena guardarsi intorno in aula.'
+      : `A ${pause} studenti è comparsa la schermata di aiuto: hanno scritto qualcosa che segnala disagio. I testi non sono stati registrati. Vale la pena guardarsi intorno in aula.`;
     avviso.classList.remove('nascosto');
   } else {
     avviso.classList.add('nascosto');
@@ -194,5 +196,4 @@ el('btn-reset-l').addEventListener('click', async () => {
   abilitaControlli();
 });
 
-el('max-scambi').textContent = MAX_SCAMBI;
 riprendiSessione();
