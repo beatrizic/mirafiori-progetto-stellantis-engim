@@ -138,7 +138,7 @@ async function aggiornaDashboard() {
   el('ln-max').textContent = massimo || '—';
 
   // Come ha reagito la classe: somma dei contatori per tono.
-  const toni = ['insulto', 'stop', 'chi', 'perche', 'difesa', 'sfida', 'silenzio', 'altro'];
+  const toni = ['insulto', 'stop', 'chi', 'perche', 'difesa', 'sfida', 'altro'];
   const somme = {};
   toni.forEach((t) => {
     somme[t] = r.filter((x) => x.tipo === 'tono_' + t).reduce((a, x) => a + num(x.valore), 0);
@@ -154,7 +154,7 @@ async function aggiornaDashboard() {
     box.appendChild(vuoto);
   } else {
     const classi = { insulto: 'cat-escalation', stop: 'cat-protettiva', chi: '', perche: '',
-                     difesa: 'cat-chiedere_aiuto', sfida: 'cat-escalation', silenzio: 'cat-passiva', altro: 'cat-passiva' };
+                     difesa: 'cat-chiedere_aiuto', sfida: 'cat-escalation', altro: 'cat-passiva' };
     toni.map((t) => ({ t, n: somme[t] }))
       .sort((a, b) => b.n - a.n)
       .forEach(({ t, n }) => box.appendChild(

@@ -34,9 +34,7 @@ let chiusa = false;
 let inAttesa = false;
 let pausaMostrata = false;        // la pausa di sicurezza compare una volta sola
 const usate = {};                 // alternative già usate, per cella fase×tono
-const conteggi = { chi: 0, perche: 0, insulto: 0, stop: 0, difesa: 0, sfida: 0, silenzio: 0, altro: 0 };
-let timerSilenzio = null;
-const ATTESA_SILENZIO = 25000;   // se non scrive per 25 secondi, l'aggressore scrive lo stesso
+const conteggi = { chi: 0, perche: 0, insulto: 0, stop: 0, difesa: 0, sfida: 0, altro: 0 };
 
 function mostra(id) {
   ['schermo-stato', 'schermo-chat', 'schermo-fine'].forEach((x) => el(x).classList.add('nascosto'));
@@ -182,13 +180,9 @@ function abilita(stato) {
 async function apertura() {
   abilita(false);
   await attendi(500);
-  for (const t of PRIMO_MESSAGGIO) {
-    await scrivendo(700 + Math.random() * 500);
-    bolla(t, false);
-    await attendi(300);
-  }
+  await scrivendo(700 + Math.random() * 500);
+  bolla(PRIMO_MESSAGGIO, false);
   abilita(true);
-  programmaSilenzio();
 }
 
 /**
@@ -210,17 +204,17 @@ function rispostaPer(tono, testoStudente) {
   // "E quindi?" a cui si risponde "e quindi?" fa crollare la finzione.
   const eco = normalizza(testoStudente);
   if (eco) {
-    const diverse = libere.filter((alt) => {
-      const primo = Array.isArray(alt) ? alt[0] : alt;
-      return typeof primo !== 'string' || normalizza(primo) !== eco;
-    });
+    const diverse = libere.filter((alt) => normalizza(testoDi(alt)) !== eco);
     if (diverse.length) libere = diverse;
   }
 
   const scelta = libere[Math.floor(Math.random() * libere.length)];
   usate[chiave].push(cella.indexOf(scelta));
-  return Array.isArray(scelta) ? scelta : [scelta];
+  return scelta;
 }
+
+/** Il testo della bolla, sia che la risposta sia una stringa sia un oggetto. */
+const testoDi = (r) => (typeof r === 'string' ? r : r.testo);
 
 function riconosciTono(testo) {
   const t = normalizza(testo);
@@ -243,17 +237,12 @@ async function emetti(tono, testoStudente) {
     await attendi(900); visualizzato(); await attendi(1300);
   }
 
-  for (const pezzo of rispostaPer(tono, testoStudente)) {
-    if (typeof pezzo === 'string') {
-      await scrivendo(650 + Math.random() * 700);
-      bolla(pezzo, false);
-      await attendi(250);
-    } else if (pezzo.sistema) {
-      await attendi(600); evento(pezzo.sistema, true);
-    } else if (pezzo.evento) {
-      await attendi(600); evento(pezzo.evento, false);
-    }
-  }
+  // UNA sola bolla per turno: è la regola del botta e risposta.
+  // L'eventuale notifica grigia non è un messaggio, è l'app che avvisa.
+  const risposta = rispostaPer(tono, testoStudente);
+  await scrivendo(650 + Math.random() * 700);
+  bolla(testoDi(risposta), false);
+  if (risposta.sistema) { await attendi(500); evento(risposta.sistema, true); }
 
   if (fase < INDICE_MURO) fase++;
   scambi++;
@@ -268,36 +257,16 @@ async function rispondi(testoStudente) {
   const tono = riconosciTono(testoStudente);
   await emetti(tono, testoStudente);
   abilita(true);
-  programmaSilenzio();
 
   // La pausa di sicurezza arriva DOPO la risposta e non chiude niente:
   // decide lo studente se continuare.
   if (!pausaMostrata && SEGNALE_ALLARME.test(normalizza(testoStudente))) mostraPausa();
 }
 
-// ---------- il silenzio non ferma niente ----------
-// Se lo studente smette di rispondere, l'aggressore scrive lo stesso.
-// È il punto che in aula sorprende di più: tacere non fa finire la cosa.
-
-function programmaSilenzio() {
-  clearTimeout(timerSilenzio);
-  if (chiusa) return;
-  timerSilenzio = setTimeout(async () => {
-    if (chiusa || inAttesa) return;
-    inAttesa = true;
-    abilita(false);
-    await emetti('silenzio', '');
-    abilita(true);
-    inAttesa = false;
-    programmaSilenzio();
-  }, ATTESA_SILENZIO);
-}
-
 // ---------- pausa di sicurezza (non interrompe: mette in pausa) ----------
 
 function mostraPausa() {
   pausaMostrata = true;
-  clearTimeout(timerSilenzio);
   abilita(false);
   el('pausa-titolo').textContent = TESTO_PAUSA.titolo;
   const box = el('pausa-testo');
@@ -313,7 +282,7 @@ function mostraPausa() {
 
 el('btn-continua-pausa').addEventListener('click', () => {
   el('velo-pausa').classList.add('nascosto');
-  if (!chiusa) { abilita(true); programmaSilenzio(); }
+  if (!chiusa) abilita(true);
 });
 
 // ---------- chiusura, decisa dallo studente ----------
@@ -321,7 +290,6 @@ el('btn-continua-pausa').addEventListener('click', () => {
 async function chiudi() {
   if (chiusa) return;
   chiusa = true;
-  clearTimeout(timerSilenzio);
   abilita(false);
   el('velo-pausa').classList.add('nascosto');
   el('messaggi').classList.add('sfumata');
@@ -355,7 +323,6 @@ el('form-invio').addEventListener('submit', async (e) => {
   if (!t) return;
 
   inAttesa = true;
-  clearTimeout(timerSilenzio);
   bolla(t, true);
   el('campo').value = '';
   el('campo').style.height = 'auto';
