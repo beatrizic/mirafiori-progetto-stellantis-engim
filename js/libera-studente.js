@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js';
 import {
-  ACTIVITY_KEY, ACCOUNT, FASI, INDICE_MURO, SEGNALI, SEGNALE_ALLARME, normalizza,
+  ACTIVITY_KEY, ACCOUNT, FASI, INDICE_MURO, TONI, riconosciTono, SEGNALE_ALLARME, normalizza,
   PRIMO_MESSAGGIO, TESTO_FINALE, TESTO_AIUTO, TESTO_PAUSA
 } from './libera-dati.js';
 import { generaAnonymousId } from './attivita-logica.js';
@@ -34,7 +34,8 @@ let chiusa = false;
 let inAttesa = false;
 let pausaMostrata = false;        // la pausa di sicurezza compare una volta sola
 const usate = {};                 // alternative già usate, per cella fase×tono
-const conteggi = { chi: 0, perche: 0, insulto: 0, stop: 0, difesa: 0, sfida: 0, altro: 0 };
+const conteggi = Object.fromEntries(TONI.map((t) => [t, 0]));
+let ultimaRisposta = null;        // serve per i "seguiti": cosa ha appena detto l'aggressore
 
 function mostra(id) {
   ['schermo-stato', 'schermo-chat', 'schermo-fine'].forEach((x) => el(x).classList.add('nascosto'));
@@ -216,18 +217,15 @@ function rispostaPer(tono, testoStudente) {
 /** Il testo della bolla, sia che la risposta sia una stringa sia un oggetto. */
 const testoDi = (r) => (typeof r === 'string' ? r : r.testo);
 
-function riconosciTono(testo) {
-  const t = normalizza(testo);
-  // "??" o "..." si appiattiscono a stringa vuota, ma lo studente HA scritto:
-  // è una reazione, non un silenzio.
-  if (!t) return 'altro';
-  if (SEGNALI.chi.test(t)) return 'chi';
-  if (SEGNALI.perche.test(t)) return 'perche';
-  if (SEGNALI.insulto.test(t)) return 'insulto';
-  if (SEGNALI.stop.test(t)) return 'stop';
-  if (SEGNALI.difesa.test(t)) return 'difesa';
-  if (SEGNALI.sfida.test(t)) return 'sfida';
-  return 'altro';
+/**
+ * Se l'ultima battuta aveva lanciato un gancio ("hanno aperto un sondaggio")
+ * e lo studente ci risponde ("cosa vinco?"), si resta su quel gancio.
+ * Unica eccezione: se chiede di smettere, si risponde a quello.
+ */
+function seguitoPer(tono, testoStudente) {
+  if (!ultimaRisposta || !ultimaRisposta.seguiti || tono === 'stop') return null;
+  const t = normalizza(testoStudente);
+  return ultimaRisposta.seguiti.find((s) => s.se.test(t)) || null;
 }
 
 async function emetti(tono, testoStudente) {
@@ -239,7 +237,8 @@ async function emetti(tono, testoStudente) {
 
   // UNA sola bolla per turno: è la regola del botta e risposta.
   // L'eventuale notifica grigia non è un messaggio, è l'app che avvisa.
-  const risposta = rispostaPer(tono, testoStudente);
+  const risposta = seguitoPer(tono, testoStudente) || rispostaPer(tono, testoStudente);
+  ultimaRisposta = typeof risposta === 'string' ? null : risposta;
   await scrivendo(650 + Math.random() * 700);
   bolla(testoDi(risposta), false);
   if (risposta.sistema) { await attendi(500); evento(risposta.sistema, true); }

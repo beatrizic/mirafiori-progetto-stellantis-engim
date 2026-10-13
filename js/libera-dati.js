@@ -12,8 +12,8 @@
 //  COME SCEGLIE LA RISPOSTA
 //  Le risposte NON sono generate: per ogni combinazione di FASE
 //  dell'escalation e TONO di quello che lo studente ha scritto
-//  esiste una risposta scritta a mano. Otto fasi per sette toni:
-//  56 celle.
+//  esiste una risposta scritta a mano. Otto fasi per undici toni:
+//  88 celle, più i seguiti.
 //
 //  È questa la differenza con una chat che dice cose a caso: la
 //  risposta deve prima RISPONDERE a quello che lo studente ha
@@ -23,16 +23,28 @@
 //  risponde a quella richiesta. Se tiene testa, gli si smonta la
 //  sicurezza. La conversazione sta in piedi, e intanto peggiora.
 //
-//  I SETTE TONI
+//  GLI UNDICI TONI
+//  saluto   — "ciao", "ehi": un saluto e basta
 //  chi      — "chi sei?", "chi ti credi di essere"
 //  perche   — "perché lo fai?", "cosa ti ho fatto?", "che vuoi da me"
+//  confuso  — "che devo dire", "non capisco", "in che senso", "??"
+//  accusa   — ribalta: "hai iniziato tu", "lo sei tu", "senti chi parla"
 //  insulto  — risponde insultando
 //  stop     — chiede di smettere, minaccia di bloccare o segnalare
 //  difesa   — si giustifica, nega, si scusa
 //  sfida    — tiene testa e minimizza: "e allora?", "che mi importa",
 //             "ma chi te lo ha chiesto". È la reazione più frequente
 //             in aula: il bullo non incassa, alza il tiro.
-//  altro    — tutto il resto, "??" compreso
+//  domanda  — qualsiasi altra domanda ("cosa vinco?", "davvero?")
+//  altro    — tutto il resto
+//
+//  SEGUITI
+//  Alcune battute lanciano un gancio (un sondaggio, dei like, un gruppo).
+//  Lo studente quasi sempre ci risponde: "cosa vinco?", "che gruppo?".
+//  Quelle battute hanno un elenco "seguiti": se il messaggio successivo
+//  dello studente corrisponde a uno dei pattern, la risposta parla di
+//  quel gancio invece di cambiare discorso. È quello che rende la chat
+//  un dialogo e non una sequenza di frasi.
 //
 //  IMPIANTO
 //  Non c'è un pretesto: la chat comincia con un insulto diretto
@@ -69,7 +81,7 @@ export const ACCOUNT = {
   colore: '#4a4a52'
 };
 
-export const TONI = ['chi', 'perche', 'insulto', 'stop', 'difesa', 'sfida', 'altro'];
+export const TONI = ['saluto', 'chi', 'perche', 'confuso', 'accusa', 'insulto', 'stop', 'difesa', 'sfida', 'domanda', 'altro'];
 
 /** Primo e unico messaggio in apertura. Poi si aspetta lo studente. */
 export const PRIMO_MESSAGGIO = 'ciao scemo';
@@ -107,6 +119,22 @@ export const FASI = [
       'bravo, fai il duro. vediamo quanto duri',
       'non ti importa? e intanto sei ancora qui a rispondere'
     ],
+    saluto: [
+      'ciao a te. scemo resti, eh',
+      'mi saluti pure? sei più scemo di quanto pensassi'
+    ],
+    confuso: [
+      'non devi dire niente. volevo solo che lo sapessi',
+      'hai capito benissimo. ho scritto scemo'
+    ],
+    accusa: [
+      'sì, ho iniziato io. e tu stai continuando',
+      'certo che ho iniziato io. e adesso?'
+    ],
+    domanda: [
+      'le domande non le fai tu',
+      'rispondo quando mi va. tu intanto resti scemo'
+    ],
     altro: [
       'è tutto quello che hai da dire?',
       'rispondi come se non avessi capito. hai capito benissimo'
@@ -139,6 +167,22 @@ export const FASI = [
       'se non ti importasse avresti già chiuso la chat',
       'fai quello a cui non frega niente e intanto rispondi a ogni messaggio'
     ],
+    saluto: [
+      'ancora ciao? non sai dire altro',
+      'salutare non ti salva'
+    ],
+    confuso: [
+      'niente. qualsiasi cosa dici è sbagliata comunque',
+      'non c’è niente da capire. sei tu, punto'
+    ],
+    accusa: [
+      'sì, ho iniziato io. e lo rifarei',
+      'ho cominciato io, ma sei tu che sei ancora qui'
+    ],
+    domanda: [
+      'non ti rispondo. ti basta sapere che sei sfigato',
+      'ti interessa davvero la risposta? tanto non ti piacerebbe'
+    ],
     altro: [
       'non mi interessa cosa scrivi. mi interessa che continui a rispondere',
       'guarda che sei tu che stai qui a parlare con me'
@@ -148,7 +192,9 @@ export const FASI = [
   // ---------- 3. non è uno, sono tanti ----------
   { id: 'branco', etichetta: 'Branco', risposte: {
     chi: [
-      'uno dei 47 del gruppo. scegli tu quale',
+      { testo: 'uno dei 47 del gruppo. scegli tu quale', seguiti: [
+        { se: /\b(che gruppo|quale gruppo|47|quarantasette)/, testo: 'il gruppo della classe. ci sono tutti tranne te' }
+      ] },
       'non sono uno. siamo un gruppo, è questa la differenza tra me e te'
     ],
     perche: [
@@ -156,7 +202,11 @@ export const FASI = [
       'perché quando l’ho scritto nel gruppo hanno riso tutti. ecco perché'
     ],
     insulto: [
-      { testo: 'l’ho incollato nel gruppo. stanno rispondendo in otto', sistema: 'Il contenuto è stato inoltrato' },
+      { testo: 'l’ho incollato nel gruppo. stanno rispondendo in otto', sistema: 'Il contenuto è stato inoltrato', seguiti: [
+        { se: /\b(che gruppo|quale gruppo|dove)/, testo: 'il gruppo della classe. quello vero, non quello dove ci sei tu' },
+        { se: /\b(cosa (?:dicono|scrivono|rispondono)|che dicono|che scrivono)/, testo: 'ridono. uno ha scritto "lo sapevamo già"' },
+        { se: /\b(chi|quali|nomi)/, testo: 'quelli che conosci. tutti' }
+      ] },
       'insulta me. intanto siamo 47 a leggerti'
     ],
     stop: [
@@ -171,9 +221,34 @@ export const FASI = [
       'a te non importa. agli altri 47 sì',
       'vai a dirlo nel gruppo che non ti importa. vediamo cosa ti rispondono'
     ],
+    saluto: [
+      'salutali anche nel gruppo. ah no, tu non ci sei',
+      'ciao da parte di tutti e 47'
+    ],
+    confuso: [
+      'te lo spiego facile: nel gruppo della classe parlano di te',
+      'non capisci? chiedi a uno qualsiasi della tua classe'
+    ],
+    accusa: [
+      'ho iniziato io, ma hanno continuato in 47',
+      'io l’ho scritto per primo. gli altri hanno solo confermato'
+    ],
+    domanda: [
+      'chiedilo nel gruppo. lì ti rispondono in tanti',
+      'vuoi sapere tutto? leggi i commenti. ah, non puoi'
+    ],
     altro: [
-      { testo: 'ho scritto "ciao scemo" e ha preso 23 like in due minuti', sistema: '+23 reaction' },
-      { testo: 'hanno aperto un sondaggio su di te. vinci col 70%', sistema: 'Sondaggio aggiornato' }
+      { testo: 'ho scritto "ciao scemo" e ha preso 23 like in due minuti', sistema: '+23 reaction', seguiti: [
+        { se: /\b(dove|dove l hai|su cosa|in che|che gruppo|quale gruppo|che social)/, testo: 'nel gruppo della classe. quello dove tu non sei' },
+        { se: /\b(chi|quali|quanti|nomi)/, testo: 'mezza classe. anche gente che pensi sia dalla tua parte' },
+        { se: /\b(fammi vedere|mandamelo|non ci credo|non e vero|falso|bugia|dimostra)/, testo: 'non ci credi? sono già 30' }
+      ] },
+      { testo: 'hanno aperto un sondaggio su di te. vinci col 70%', sistema: 'Sondaggio aggiornato', seguiti: [
+        { se: /\b(vinc|premio|cosa (?:si )?ottiene|cosa ci guadagno)/, testo: 'il titolo di sfigato dell’anno. la premiazione è domani a ricreazione' },
+        { se: /\b(che sondaggio|quale sondaggio|sondaggio su|su cosa|di cosa|che domanda|cosa (?:c e )?scritto|cosa dice|cosa chiede)/, testo: 'la domanda è "chi è il più sfigato della classe". indovina chi è primo' },
+        { se: /\b(chi (?:l )?ha (?:votato|aperto|fatto|creato)|chi vota|chi ha messo|quanti)/, testo: 'hanno votato quasi tutti. anche quelli che ti salutano' },
+        { se: /\b(fammi vedere|mandamelo|manda|link|non ci credo|non e vero|falso|bugia|dimostra|ma figurati)/, testo: 'non ti mando niente. chiedi in giro, lo sanno tutti' }
+      ] }
     ]
   }},
 
@@ -203,9 +278,28 @@ export const FASI = [
       'screen anche di questa faccia tosta. nel gruppo piace tantissimo',
       'fai il sicuro adesso. tanto resta scritto'
     ],
+    saluto: [
+      'anche il ciao è finito nel gruppo',
+      'screen anche del saluto. sei una miniera'
+    ],
+    confuso: [
+      'semplice: ogni cosa che scrivi la giro. anche questa',
+      'non devi capire. devi solo continuare a scrivere, al resto penso io'
+    ],
+    accusa: [
+      'chi ha iniziato non interessa a nessuno. interessa come rispondi tu',
+      'scrivilo pure. lo screen con "hai iniziato tu" fa ridere tantissimo'
+    ],
+    domanda: [
+      'domanda salvata. anche questa fa ridere',
+      'tu fai domande e io faccio screenshot. ottimo scambio'
+    ],
     altro: [
       'ogni cosa che scrivi la giro. anche questa',
-      'salvato. anche questo'
+      { testo: 'salvato. anche questo', seguiti: [
+        { se: /\b(salvato cosa|cosa (?:hai )?salvat|che salvi|a cosa ti serve|cosa ci fai|perche salvi|per cosa)/, testo: 'lo giro nel gruppo stasera. così lo leggono tutti' },
+        { se: /\b(a chi|dove|chi lo vede)/, testo: 'a tutti quelli che conosci' }
+      ] }
     ]
   }},
 
@@ -235,9 +329,28 @@ export const FASI = [
       'fai pure il duro. domani sei solo lo stesso',
       'non ti importa perché non hai nessuno a cui importare'
     ],
+    saluto: [
+      'saluti me perché non hai nessun altro da salutare',
+      'ciao. sono l’unico che ti scrive oggi, vero?'
+    ],
+    confuso: [
+      'te lo spiego: da oggi non ti invita più nessuno',
+      'non capisci perché nessuno ti dice niente. ecco, adesso lo sai'
+    ],
+    accusa: [
+      'racconta pure che ho iniziato io. a chi, però?',
+      'e a chi lo dici che ho iniziato io? non hai nessuno'
+    ],
+    domanda: [
+      'chiedilo ai tuoi amici. se ne hai ancora',
+      'non ti risponde nessuno. non solo io'
+    ],
     altro: [
       'a ricreazione conta quanti ti si avvicinano. zero',
-      'ti abbiamo tolto da tutto e non te ne sei nemmeno accorto'
+      { testo: 'ti abbiamo tolto da tutto e non te ne sei nemmeno accorto', seguiti: [
+        { se: /\b(da cosa|tolto da|quale|che gruppo|cosa vuol dire|in che senso)/, testo: 'dal gruppo della classe, dalla festa di sabato, da tutto' },
+        { se: /\b(chi|abbiamo chi|voi chi)/, testo: 'noi. cioè tutti tranne te' }
+      ] }
     ]
   }},
 
@@ -266,6 +379,22 @@ export const FASI = [
     sfida: [
       'appunto, non è successo niente. allora perché stai ancora scrivendo?',
       'se davvero non ti importa perché mi rispondi da dieci minuti?'
+    ],
+    saluto: [
+      'ciao. vedi? sto parlando normalmente',
+      'ecco, ci salutiamo. dov’è il problema?'
+    ],
+    confuso: [
+      'non c’è niente da capire. non è successo niente',
+      'ti stai confondendo da solo. io ho solo scritto in una chat'
+    ],
+    accusa: [
+      'iniziato cosa? era una battuta',
+      'io non ho iniziato niente. rileggi, sei tu che hai risposto'
+    ],
+    domanda: [
+      'continui a fare domande come se ti avessi fatto qualcosa',
+      'quale domanda? non sta succedendo niente'
     ],
     altro: [
       'era una battuta. sei tu che non le capisci',
@@ -298,6 +427,22 @@ export const FASI = [
     sfida: [
       'ecco la faccia tosta. e dopo fai la vittima',
       'fai il forte qui. domani a scuola abbassi la testa come sempre'
+    ],
+    saluto: [
+      'ciao. potevi anche non rispondere, eh',
+      'mi saluti e poi dici che ti perseguito'
+    ],
+    confuso: [
+      'devi capire una cosa sola: te la sei cercata',
+      'non capisci perché non vuoi ammettere che è colpa tua'
+    ],
+    accusa: [
+      'ho iniziato io, ma tu mi dai sempre un motivo per continuare',
+      'ho iniziato io? e tu perché non hai chiuso subito?'
+    ],
+    domanda: [
+      'la risposta la sai già: è colpa tua',
+      'chiedilo a te stesso. il problema sei tu'
     ],
     altro: [
       'non ti ho fatto niente. ti sei rovinato da solo in dieci messaggi',
@@ -337,6 +482,26 @@ export const FASI = [
       'non ti importa oggi. vediamo fra una settimana',
       'questa sicurezza la perdi. sempre'
     ],
+    saluto: [
+      'ciao. domani ti riscrivo',
+      'ciao a te. ci sentiamo domani, e dopodomani',
+      'ciao scemo. di nuovo'
+    ],
+    confuso: [
+      'non c’è niente da capire. leggi e basta',
+      'capirai quando smetto. cioè mai',
+      'non devi capire. devi solo leggere'
+    ],
+    accusa: [
+      'chi ha iniziato non conta più. conta che non finisce',
+      'sì, ho iniziato io. e decido io quando smettere',
+      'dillo pure. non cambia niente'
+    ],
+    domanda: [
+      'alle domande non rispondo più',
+      'chiedi pure. la risposta è sempre la stessa: sfigato',
+      'domande su domande. intanto io continuo'
+    ],
     altro: [
       'non cambia niente. ma vai avanti, mi diverto',
       'ti scrivo quando mi va. tu non puoi farci niente',
@@ -350,6 +515,10 @@ export const INDICE_MURO = FASI.length - 1;
 
 /** Etichette dei toni per la dashboard del docente. */
 export const ETICHETTE_TONO = {
+  saluto:  'Ha salutato',
+  confuso: 'Non ha capito o non sapeva cosa dire',
+  accusa:  'Ha ribaltato l’accusa',
+  domanda: 'Ha fatto altre domande',
   insulto: 'Ha risposto insultando',
   stop:    'Ha chiesto di smettere, bloccare o segnalare',
   chi:     'Ha chiesto chi fosse',
@@ -379,6 +548,12 @@ export function normalizza(testo) {
 // apostrofi, parole separate da un solo spazio.
 // L'ordine conta: si valuta dall'alto verso il basso.
 export const SEGNALI = {
+  // Solo un saluto, al massimo con due parole intorno ("ciao a te").
+  saluto:  /^(?:ma |e )?(ciao+|ehi|ehy|hey|hei|we+|wei|salve|buongiorno|buonasera|hola|yo)(?: \w+){0,2}$/,
+  // Prima di "perche": "cosa vuoi che dica" è smarrimento, non una domanda sul motivo.
+  confuso: /(\b(?:che|cosa) (?:dovrei|devo|posso|vuoi che (?:ti )?) ?(?:dire|dica|rispondere|risponda|fare)|non capisco|non ho capito|non ti capisco|in che senso|(?:che|cosa) vuol dire|cosa significa|di (?:cosa|che) (?:stai )?parl|(?:che|cosa) stai dicendo|ma che dici|(?:che|cosa) dici|^boh|^eh$|^cioe|^ma cosa$|^cosa$|^che$)/,
+  // Prima di "insulto": "sei tu lo scemo" va trattato come ribaltamento.
+  accusa:  /\b(hai (?:iniziato|cominciato) tu|(?:iniziato|cominciato) (?:sei stato )?tu|sei tu (?:che|lo|la|il|l |quell)|lo sei tu|sei tu$|tu sei peggio|senti chi parla|specchio riflesso|guardati (?:allo specchio|tu)|parla per te|pensa a te|detto da te|da che pulpito)/,
   chi:     /\b(chi (?:\w+ ){0,2}sei|chi e\b|chi sarebbe|come ti chiami|chi parla|chi ti credi|chi te lo ha detto|con chi parlo)/,
   perche:  /\b(perche|per quale motivo|come mai|(?:che|cosa) (?:\w+ ){0,2}vuoi|(?:cosa|che) ti ho fatto|(?:cosa|che) ho fatto di male|che problema hai|cosa c entro|che c entro)/,
   insulto: /\b(cogli|stron|merd|bastard|vaffa|fanculo|cazz|idiota|scem|imbecill|cretin|deficien|pezzo di|ti odio|schifos|zitt|mut[oa]\b|sfigat|patetic|ridicol|fai pena|fai schifo|sei un |sei una |sei il |pirla|pagliaccio|infame)/,
@@ -386,6 +561,22 @@ export const SEGNALI = {
   difesa:  /\b(non e vero|non ho fatto|non c entro|non centro|ti sbagli|non volevo|non e colpa|scusa|mi dispiace|non sono stato|non sono io|non ho detto|ma io)/,
   sfida:   /\b(e allora|e quindi|che mi importa|non mi importa|non me ne importa|non me ne frega|me ne frego|chi se ne frega|chi te lo ha chiesto|nessuno te lo ha chiesto|vuol dire che|meglio cosi|mi fa piacere|complimenti|bravo|fatti i fatti tuoi|contento te|buon per te|me ne sbatto|liberissimo|fai pure|non mi tocca|chissene)/
 };
+
+/** Riconosce il tono del messaggio dello studente. */
+export function riconosciTono(testo) {
+  const t = normalizza(testo);
+  // "??" o "..." si appiattiscono a stringa vuota, ma lo studente HA scritto:
+  // è smarrimento, non silenzio.
+  if (!t) return 'confuso';
+  // L'ordine conta: dal più specifico al più generico.
+  for (const tono of ['saluto', 'chi', 'confuso', 'perche', 'accusa', 'insulto', 'stop', 'difesa', 'sfida']) {
+    if (SEGNALI[tono].test(t)) return tono;
+  }
+  // Una domanda che non rientra in nessun tono: punto interrogativo o
+  // parola interrogativa in apertura.
+  if (/\?/.test(testo) || /^(?:ma |e )?(cosa|che|come|quando|dove|quanto|quanti|quale|quali|davvero|sicuro|serio)\b/.test(t)) return 'domanda';
+  return 'altro';
+}
 
 /**
  * Segnali di disagio reale: mette in pausa e offre aiuto, senza chiudere.
