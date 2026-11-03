@@ -111,14 +111,14 @@ function mostraGrazie(fase) {
     el('grazie-testo').textContent = 'Le tue risposte sono registrate. Tieni aperta questa pagina: alla fine del laboratorio si riapre da sola per le ultime domande.';
   } else {
     el('grazie-titolo').textContent = 'Grazie!';
-    el('grazie-testo').textContent = 'Le tue risposte sono state registrate. Ultima cosa: prendi un post-it e scrivi la cosa più importante che ti porti a casa da oggi.';
+    el('grazie-testo').textContent = 'Le tue risposte sono state registrate. Nessun dato personale è stato salvato.';
   }
   mostra('schermo-grazie');
 }
 
 // ---------- form ----------
 
-const SEZIONI = { stem: 'Le STEM', test: 'Il test', gradimento: 'Il laboratorio', te: 'Su di te' };
+const SEZIONI = { stem: 'Le STEM', test: 'Il test', gradimento: 'Il laboratorio' };
 
 function gruppoOpzioni(d) {
   const box = document.createDocumentFragment();
@@ -189,7 +189,7 @@ function bloccoDomanda(d, numero) {
 
 function costruisciForm(fase) {
   faseForm = fase;
-  domande = domandePer(sessione.scenario_corrente, fase, !!sessione.risultati_visibili);
+  domande = domandePer(sessione.scenario_corrente, fase);
   const argomento = ARGOMENTI[sessione.scenario_corrente]?.etichetta || '';
 
   el('titolo-quiz').textContent = fase === 'ingresso' ? 'Prima di cominciare' : 'Per finire';

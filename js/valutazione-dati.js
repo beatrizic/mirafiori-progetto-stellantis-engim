@@ -4,13 +4,10 @@
 //  Una sessione per classe e per argomento, in due fasi:
 //    ingresso: le STEM (S1–S4) + il test sull'argomento (T1–T6)
 //    uscita:   lo stesso test + S3 e S4 + il gradimento (G1–G8)
-//    G9 (genere), se attiva, è l'ultima domanda dell'ingresso: così ogni
-//    studente è classificato fin dall'inizio e i risultati si leggono per genere.
 //
 //  Dove stanno i dati nella sessione (tabella attivita_sessioni):
 //    scenario_corrente   = argomento ('citizenship' | 'cloud' | 'printing' | 'ia')
 //    fase                = 'ingresso' | 'uscita'
-//    risultati_visibili  = true se la domanda facoltativa sul genere è attiva
 //  Nelle risposte, tipo = fase: così ingresso e uscita della stessa
 //  domanda convivono per lo stesso studente.
 //
@@ -142,24 +139,13 @@ export const GRADIMENTO = [
   { id: 'g8', tipo: 'aperta', sezione: 'gradimento', testo: 'Cosa cambieresti del laboratorio?' }
 ];
 
-export const GENERE = {
-  id: 'g9', tipo: 'singola', sezione: 'te', facoltativa: true,
-  testo: 'Ti identifichi come…',
-  aiuto: 'Domanda facoltativa: puoi lasciarla vuota.',
-  opzioni: [
-    { id: 'f', testo: 'Femmina' },
-    { id: 'm', testo: 'Maschio' },
-    { id: 'altro', testo: 'Altro' },
-    { id: 'nr', testo: 'Preferisco non rispondere' }
-  ]
-};
 
 export const MAX_APERTA = 500;
 
 /** Le domande di una fase, nell'ordine in cui le vede lo studente. */
-export function domandePer(argomento, fase, conGenere = false) {
+export function domandePer(argomento, fase) {
   const test = TEST[argomento] || [];
-  if (fase === 'ingresso') return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...test, ...(conGenere ? [GENERE] : [])];
+  if (fase === 'ingresso') return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...test];
   return [...test, STEM.s3, STEM.s4, ...GRADIMENTO];
 }
 
@@ -176,5 +162,5 @@ export function eCorretta(d, valore) {
 
 /** Tutte le domande possibili, per cercarle per id nell'esportazione. */
 export function tutteLeDomande(argomento) {
-  return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...(TEST[argomento] || []), ...GRADIMENTO, GENERE];
+  return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...(TEST[argomento] || []), ...GRADIMENTO];
 }

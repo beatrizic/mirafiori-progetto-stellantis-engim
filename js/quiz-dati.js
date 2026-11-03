@@ -27,6 +27,18 @@ export const MOMENTI = {
 };
 
 export const DOMANDE = [
+  // ---- genere: serve a leggere i risultati rispetto alla partecipazione femminile ----
+  {
+    id: 'genere', tipo: 'anagrafica', nuova: true,
+    testo: 'Ti identifichi come…',
+    opzioni: [
+      { id: 'f', testo: 'Femmina' },
+      { id: 'm', testo: 'Maschio' },
+      { id: 'altro', testo: 'Altro' },
+      { id: 'nr', testo: 'Preferisco non rispondere' }
+    ]
+  },
+
   {
     id: 'q1', tipo: 'conoscenza',
     testo: 'Cosa significa l\u2019acronimo STEM?',
@@ -173,18 +185,6 @@ export const DOMANDE = [
       { id: 'b', testo: 'Sì, ma non so ancora quale' },
       { id: 'c', testo: 'No, non ci ho mai pensato' },
       { id: 'd', testo: 'Non mi interessa' }
-    ]
-  },
-
-  // ---- genere: serve a leggere i risultati rispetto alla partecipazione femminile ----
-  {
-    id: 'genere', tipo: 'anagrafica', nuova: true,
-    testo: 'Ti identifichi come…',
-    opzioni: [
-      { id: 'f', testo: 'Femmina' },
-      { id: 'm', testo: 'Maschio' },
-      { id: 'altro', testo: 'Altro' },
-      { id: 'nr', testo: 'Preferisco non rispondere' }
     ]
   }
 
