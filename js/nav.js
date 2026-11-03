@@ -25,7 +25,8 @@
         { href: 'tema-cyberbullismo.html', label: 'Cyberbullismo' }
       ]
     },
-    { href: 'regia-quiz-iniziale.html', label: 'Quiz iniziale' }
+    { href: 'regia-quiz-iniziale.html', label: 'Quiz iniziale' },
+    { href: 'regia-valutazione.html', label: 'Valutazione' }
   ];
 
   const header = document.getElementById('barra');

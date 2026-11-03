@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valutazione — Mirafiori</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body { text-align: left; }
+  .quiz-wrap { max-width: 640px; margin: 0 auto; padding: 2.4rem 1.2rem 5rem; }
+  .quiz-wrap h1 { text-align: center; margin-bottom: 0.4rem; }
+  .quiz-wrap > p.intro { text-align: center; color: var(--grigio); margin: 0 auto 2.2rem; }
+  .quiz-wrap > p.intro a { white-space: nowrap; }
+
+  .titolo-sezione { font-size: 1.5rem; margin: 2.2rem 0 1.2rem; text-align: left; }
+  .titolo-sezione:first-child { margin-top: 0; }
+
+  .domanda-quiz { margin-bottom: 1.8rem; padding-bottom: 1.8rem; border-bottom: 1px solid var(--linea); }
+  .domanda-quiz legend, .domanda-quiz .legenda { font-weight: 700; color: var(--blu); margin: 0 0 0.9rem; font-size: 1.02rem; line-height: 1.4; padding: 0; display: block; }
+  .domanda-quiz fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .numero-domanda { color: var(--accento); margin-right: 0.3rem; }
+  .aiuto-domanda { display: block; font-weight: 500; font-size: 0.86rem; color: var(--grigio); margin-top: 0.2rem; }
+  .opzioni-radio { display: grid; gap: 0.6rem; }
+  .opzione-radio {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.85rem 1rem; min-height: 48px;
+    background: var(--bianco-2); border-radius: 10px; cursor: pointer; border: 2px solid transparent;
+  }
+  .opzione-radio:has(input:checked) { border-color: var(--blu); background: #e8edf7; }
+  .opzione-radio:has(input:focus-visible) { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .opzione-radio input { accent-color: var(--blu); width: 18px; height: 18px; flex: none; }
+
+  .campo-aperto { width: 100%; min-height: 110px; padding: 0.85rem 1rem; border: 2px solid var(--linea); border-radius: 10px; font-family: var(--font-testo); font-size: 1rem; color: var(--nero); background: #fff; resize: vertical; }
+  .campo-aperto:focus { outline: none; border-color: var(--blu); }
+  .conta-caratteri { display: block; text-align: right; font-size: 0.78rem; color: var(--grigio); margin-top: 0.3rem; }
+
+  .avviso-mancanti { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 0.9rem 1.1rem; border-radius: 10px; font-size: 0.92rem; margin-bottom: 1rem; }
+  .btn-invia { display: block; width: 100%; padding: 1rem; background: var(--blu); color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: var(--font-testo); }
+  .btn-invia:disabled { opacity: 0.4; cursor: default; }
+  .btn-invia:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+
+  .schermo { text-align: center; padding: 5rem 1.4rem; }
+  .schermo p { margin: 0 auto; max-width: 34ch; }
+  .avviso { background: #fff4f4; border: 1px solid #f3c7cb; color: #8a2733; padding: 1rem 1.2rem; border-radius: 12px; }
+  .nascosto { display: none; }
+</style>
+</head>
+<body>
+<header id="barra" data-modo="gioco" data-avviso="Le risposte non ancora inviate andranno perse."></header>
+<script src="js/nav.js"></script>
+
+<div id="schermo-stato" class="schermo" role="status" aria-live="polite">
+  <h1 id="stato-titolo">Un attimo…</h1>
+  <p id="stato-testo" class="grigio">Sto caricando le domande.</p>
+</div>
+
+<form id="form-quiz" class="quiz-wrap nascosto" novalidate>
+  <h1 id="titolo-quiz">Valutazione</h1>
+  <p class="intro" id="intro-quiz"></p>
+
+  <div id="contenitore-domande"></div>
+
+  <div id="avviso-mancanti" class="avviso-mancanti nascosto" role="alert"></div>
+  <button type="submit" class="btn-invia" id="btn-invia">Invia le risposte</button>
+</form>
+
+<div id="schermo-grazie" class="schermo nascosto" role="status" aria-live="polite">
+  <h1 id="grazie-titolo">Grazie!</h1>
+  <p class="grigio" id="grazie-testo">Le tue risposte sono state registrate. Nessun dato personale è stato salvato.</p>
+</div>
+
+<script type="module" src="js/valutazione.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regia valutazione — Mirafiori</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body { padding: 0 0 4rem; }
+  .interno { padding: 1.6rem 1.6rem 0; }
+  .interno { max-width: 1240px; margin: 0 auto; }
+  .link-home { display: inline-block; margin-bottom: 1.2rem; color: var(--grigio); font-size: 0.9rem; text-decoration: none; }
+  .link-home:hover { color: var(--accento); }
+
+  /* configurazione iniziale */
+  .configura { background: var(--bianco-2); border-radius: 18px; padding: 1.8rem; max-width: 720px; margin: 0 auto 2rem; }
+  .configura h1 { font-size: 2rem; margin-bottom: 0.3rem; }
+  .configura .sotto { color: var(--grigio); margin: 0 auto 1.6rem; }
+  .scelta-gruppo { margin-bottom: 1.3rem; text-align: left; }
+  .scelta-gruppo .etichetta { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--grigio); margin-bottom: 0.5rem; }
+  .pulsanti-scelta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .pulsante-scelta { padding: 0.9rem; border: 2px solid var(--linea); background: #fff; border-radius: 12px; cursor: pointer; font-family: var(--font-testo); font-weight: 600; font-size: 0.98rem; color: var(--blu); }
+  .pulsante-scelta[aria-pressed="true"] { border-color: var(--blu); background: var(--blu); color: #fff; }
+  .pulsante-scelta:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+  .campo { width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--linea); border-radius: 12px; font-family: var(--font-testo); font-size: 1rem; color: var(--nero); background: #fff; }
+  .campo:focus { outline: none; border-color: var(--blu); }
+  .campo.errore { border-color: var(--accento); }
+  .aiuto { display: block; font-size: 0.8rem; color: var(--grigio); margin-top: 0.4rem; }
+  .messaggio-errore { display: block; font-size: 0.85rem; color: var(--accento); font-weight: 600; margin-top: 0.4rem; }
+  .facoltativo { text-transform: none; letter-spacing: 0; font-weight: 500; }
+  .azioni-secondarie { display: flex; justify-content: center; margin-top: 1rem; }
+  .btn-testo { background: none; border: 0; color: var(--blu-chiaro); font-family: var(--font-testo); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0.4rem; }
+  .btn-testo:disabled { color: var(--grigio); cursor: default; }
+  .riepilogo-domande { font-size: 0.85rem; color: var(--grigio); margin: 0.8rem 0 1.4rem; }
+
+  /* testata sessione */
+  .testata { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .testata h1 { font-size: 2rem; margin: 0; }
+  .etichette-sessione { display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
+  .pillola { font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--blu); color: #fff; }
+  .pillola.chiara { background: #e5edfb; color: var(--blu-chiaro); }
+  .codice-grande { font-family: var(--font-display); font-size: 2.6rem; color: var(--blu); letter-spacing: 0.12em; line-height: 1; display: block; margin-top: 0.4rem; }
+  #qr-quiz { background: #fff; padding: 1rem; display: inline-block; border-radius: 10px; }
+  #url-studente { font-size: 0.78rem; color: var(--grigio); display: block; margin-top: 0.4rem; word-break: break-all; text-align: center; }
+
+  .contatore { background: var(--blu); color: #fff; border-radius: 14px; text-align: center; padding: 1.2rem; margin-bottom: 1.6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contatore .numero { font-family: var(--font-display); font-size: 2.6rem; color: var(--accento); display: block; line-height: 1; }
+
+  .controlli { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; align-items: center; margin-bottom: 2rem; }
+  .controlli .btn { font-size: 0.88rem; padding: 0.6rem 1.1rem; }
+  .stato { color: var(--grigio); font-size: 0.9rem; }
+
+  .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.6rem; }
+  .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
+  .tab.attivo { background: var(--blu); color: #fff; }
+
+  .griglia { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
+  .card { background: var(--bianco-2); border-radius: 12px; padding: 1.1rem 1.2rem; text-align: left; }
+  .card h3 { font-family: var(--font-testo); font-weight: 700; font-size: 0.9rem; line-height: 1.35; margin: 0 0 0.3rem; color: var(--blu); }
+  .card .meta { font-size: 0.74rem; color: var(--grigio); margin-bottom: 0.8rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+  .card .valore-grande { font-family: var(--font-display); font-size: 2.2rem; color: var(--blu); line-height: 1; margin: 0.2rem 0 0.4rem; }
+  .card p { font-size: 0.85rem; margin: 0 0 0.4rem; max-width: none; }
+  .badge { font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 999px; }
+  .badge.conoscenza { background: #e3f3ea; color: #1d7a4c; }
+  .badge.corrette { background: #1d7a4c; color: #fff; }
+
+  .barra-riga { margin-bottom: 0.55rem; }
+  .barra-etichetta { display: flex; justify-content: space-between; gap: 0.6rem; font-size: 0.8rem; margin-bottom: 0.2rem; }
+  .barra-etichetta .corretta::after { content: ' \2713'; color: #1d7a4c; font-weight: 700; }
+  .barra-traccia { height: 9px; background: #fff; border: 1px solid var(--linea); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; width: 0%; background: var(--blu); transition: width 0.5s ease; }
+  .barra-fill.giusta { background: #1d7a4c; }
+
+  /* in proiezione, durante l'ingresso, le risposte corrette non si vedono */
+  .nascondi-corrette .barra-etichetta .corretta::after { content: ''; }
+  .nascondi-corrette .barra-fill.giusta { background: var(--blu); }
+  .nascondi-corrette .badge.corrette, .nascondi-corrette .risposta-giusta { display: none; }
+  .proiezione .card h3, .proiezione .riga-confronto h3 { font-size: 1.1rem; }
+  .proiezione .barra-etichetta, .proiezione .coppia { font-size: 1rem; }
+  .proiezione .barra-traccia { height: 14px; }
+
+  /* confronto ingresso / uscita */
+  .confronto { max-width: 900px; margin: 0 auto; }
+  .riga-confronto { background: var(--bianco-2); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; text-align: left; }
+  .riga-confronto h3 { font-family: var(--font-testo); font-weight: 700; font-size: 0.92rem; color: var(--blu); margin: 0 0 0.7rem; }
+  .riga-confronto .risposta-giusta { font-size: 0.8rem; color: var(--grigio); margin: -0.4rem 0 0.6rem; max-width: none; }
+  .coppia { display: grid; grid-template-columns: 90px 1fr 110px; gap: 0.8rem; align-items: center; font-size: 0.85rem; margin-bottom: 0.4rem; }
+  .delta { font-weight: 700; }
+  .delta.su { color: #1d7a4c; }
+  .delta.giu { color: var(--accento); }
+  .nota { font-size: 0.85rem; color: var(--grigio); max-width: 64ch; margin: 1.2rem auto 0; }
+  .avviso-giallo { background: #fff8e6; border: 1px solid #f0d99b; border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.88rem; color: #6b5310; margin: 0 auto 1.6rem; max-width: 900px; text-align: left; }
+
+  .elenco-aperte { list-style: none; padding: 0; margin: 0; }
+  .elenco-aperte li { font-size: 0.88rem; padding: 0.55rem 0; border-bottom: 1px solid var(--linea); }
+  .elenco-aperte li:last-child { border-bottom: 0; }
+  .azioni-sintesi { display: flex; justify-content: center; margin-top: 1.4rem; }
+
+  .nascosto { display: none; }
+  @media (prefers-reduced-motion: reduce) { .barra-fill { transition: none; } }
+</style>
+</head>
+<body>
+<header class="barra" id="barra"></header>
+<script src="js/nav.js"></script>
+<div class="interno">
+
+  <a class="link-home" href="index.html">&larr; Torna alla home</a>
+
+  <!-- 1. configurazione della sessione -->
+  <section id="blocco-configura" class="configura">
+    <h1>Nuova valutazione</h1>
+    <p class="sotto">Una sessione per classe: lo stesso QR serve all'ingresso e all'uscita.</p>
+
+    <div class="scelta-gruppo">
+      <span class="etichetta">Argomento</span>
+      <div class="pulsanti-scelta" id="scelta-argomento" role="group" aria-label="Argomento"></div>
+    </div>
+    <div class="scelta-gruppo">
+      <span class="etichetta">Contesto</span>
+      <div class="pulsanti-scelta" id="scelta-contesto" role="group" aria-label="Contesto"></div>
+    </div>
+
+    <div class="scelta-gruppo nascosto" id="gruppo-scuola">
+      <label class="etichetta" for="campo-scuola">Nome della scuola</label>
+      <input class="campo" id="campo-scuola" list="elenco-scuole" autocomplete="off" placeholder="Es. IIS Primo Levi">
+      <datalist id="elenco-scuole"></datalist>
+      <span class="aiuto">Se la scuola compare nell'elenco, sceglila da lì: scritta sempre allo stesso modo, i suoi dati si potranno confrontare.</span>
+      <span class="messaggio-errore nascosto" id="errore-scuola" role="alert">Inserisci il nome della scuola.</span>
+    </div>
+
+    <div class="scelta-gruppo">
+      <label class="etichetta" for="campo-classe">Classe <span class="facoltativo">(facoltativa)</span></label>
+      <input class="campo" id="campo-classe" autocomplete="off" placeholder="Es. 5A">
+      <span class="aiuto">Solo la sigla della classe: niente nomi di studenti o docenti.</span>
+    </div>
+
+    <div class="scelta-gruppo">
+      <span class="etichetta">Domanda facoltativa sul genere</span>
+      <div class="pulsanti-scelta" id="scelta-genere" role="group" aria-label="Domanda facoltativa sul genere"></div>
+      <span class="aiuto">Da concordare con il coordinamento prima dell'uso. Il numero di maschi e femmine si registra comunque sul foglio firmato dal docente.</span>
+    </div>
+
+    <p class="riepilogo-domande" id="riepilogo-domande"></p>
+    <button class="btn" id="btn-crea" style="width:100%;">Crea sessione</button>
+    <div class="azioni-secondarie">
+      <button class="btn-testo" id="btn-esporta-config" type="button">Scarica tutti i dati delle valutazioni (CSV)</button>
+    </div>
+  </section>
+
+  <!-- 2. sessione attiva -->
+  <section id="blocco-sessione" class="nascosto">
+
+    <div class="testata">
+      <div>
+        <h1 id="titolo-sessione">Valutazione</h1>
+        <div class="etichette-sessione">
+          <span class="pillola" id="pillola-fase"></span>
+          <span class="pillola chiara" id="pillola-contesto"></span>
+          <span class="pillola chiara" id="pillola-scuola"></span>
+          <span class="pillola chiara nascosto" id="pillola-classe"></span>
+        </div>
+        <span class="codice-grande" id="codice-sessione"></span>
+      </div>
+      <div id="blocco-qr">
+        <div id="qr-quiz"></div>
+        <span id="url-studente"></span>
+      </div>
+    </div>
+
+    <div class="contatore">
+      <div><span class="numero" id="conteggio-ingresso">0</span><span>hanno risposto all'ingresso</span></div>
+      <div><span class="numero" id="conteggio-uscita">0</span><span>hanno risposto all'uscita</span></div>
+    </div>
+
+    <div class="controlli">
+      <button class="btn" id="btn-apri-ingresso">Apri l'ingresso</button>
+      <button class="btn" id="btn-apri-uscita">Apri l'uscita</button>
+      <button class="btn corallo" id="btn-chiudi">Chiudi le risposte</button>
+      <button class="btn" id="btn-qr">Nascondi QR</button>
+      <button class="btn" id="btn-proietta">Modalità proiezione</button>
+      <button class="btn corallo" id="btn-termina">Termina</button>
+      <button class="btn corallo" id="btn-reset">Reset</button>
+      <button class="btn" id="btn-esporta">Scarica dati (CSV)</button>
+      <span class="stato">Stato: <strong id="stato-sessione">—</strong> · <span id="stato-realtime">—</span></span>
+    </div>
+
+    <div class="tab-barra" id="tab-barra" role="group" aria-label="Vista">
+      <button class="tab attivo" data-tab="sintesi" type="button">Sintesi</button>
+      <button class="tab" data-tab="test" type="button">Test prima / dopo</button>
+      <button class="tab" data-tab="stem" type="button">STEM</button>
+      <button class="tab" data-tab="gradimento" type="button">Gradimento</button>
+      <button class="tab" data-tab="aperte" type="button">Risposte aperte</button>
+    </div>
+
+    <div id="vista-risultati">
+      <div id="avviso-proiezione" class="avviso-giallo nascosto">
+        In proiezione le risposte corrette sono nascoste: se i ragazzi le vedessero adesso, il test di uscita misurerebbe la memoria e non l'apprendimento.
+      </div>
+      <div id="contenuto-vista"></div>
+    </div>
+
+  </section>
+
+</div>
+<script type="module" src="js/regia-valutazione.js"></script>
+</body>
+</html>
