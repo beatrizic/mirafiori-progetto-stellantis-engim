@@ -10,8 +10,8 @@ const CHIAVE_SESSIONE = 'mirafiori_sessione_valutazione';
 const URL_STUDENTE = new URL('valutazione.html', window.location.href).href;
 const NOME_ENGIM = 'ENGIM San Luca';
 const SI_NO = {
-  no: { id: 'no', etichetta: 'Non includere' },
-  si: { id: 'si', etichetta: 'Includi' }
+  si: { id: 'si', etichetta: 'Includi' },
+  no: { id: 'no', etichetta: 'Non includere' }
 };
 let scuoleNote = [];
 
@@ -23,7 +23,17 @@ let proiezione = false;
 let esplosaGia = false;
 let vista = 'sintesi';
 let dati = { partecipanti: [], risposte: [] };
-let scelta = { argomento: 'citizenship', contesto: 'esterna', genere: 'no' };
+let tutteLeRisposte = [];
+let scelta = { argomento: 'citizenship', contesto: 'esterna', genere: 'si' };
+let filtroGenere = 'tutti';
+const FILTRI_GENERE = { tutti: 'Tutti', f: 'Solo ragazze', m: 'Solo ragazzi' };
+
+/** Tiene solo le risposte di chi ha indicato il genere scelto nel filtro. */
+function filtraPerGenere(risposte) {
+  if (filtroGenere === 'tutti') return risposte;
+  const scelti = new Set(risposte.filter((r) => r.scenario_id === GENERE.id && r.valore === filtroGenere).map((r) => r.partecipante_id));
+  return risposte.filter((r) => scelti.has(r.partecipante_id));
+}
 
 const statoLeggibile = (s) =>
   ({ waiting: 'In attesa', running: 'Aperto', locked: 'Chiuso', completed: 'Terminato' }[s] || s);
@@ -55,7 +65,7 @@ function aggiornaRiepilogo() {
   const ingresso = domandePer(scelta.argomento, 'ingresso', genere).length;
   const uscita = domandePer(scelta.argomento, 'uscita', genere).length;
   el('riepilogo-domande').textContent =
-    `Ingresso: ${ingresso} domande (4 sulle STEM e 6 di test). Uscita: ${uscita} domande (lo stesso test, 2 sulle STEM e il gradimento${genere ? ', con la domanda facoltativa sul genere' : ''}).`;
+    `Ingresso: ${ingresso} domande (4 sulle STEM, 6 di test${genere ? ' e quella facoltativa sul genere' : ''}). Uscita: ${uscita} domande (lo stesso test, 2 sulle STEM e il gradimento).`;
 }
 
 // ---------- scuola e classe ----------
@@ -179,6 +189,7 @@ function renderTestata() {
   el('btn-apri-ingresso').disabled = aperto && sessione.fase === 'ingresso';
   el('btn-apri-uscita').disabled = aperto && sessione.fase === 'uscita';
   el('btn-chiudi').disabled = !aperto;
+  el('avviso-postit').classList.toggle('nascosto', sessione.fase !== 'uscita');
 }
 
 function disegnaQr() {
@@ -369,7 +380,7 @@ function vistaSintesi(cont) {
 
   // Stesse persone
   const ap = punteggiAppaiati();
-  const cAp = card('Sulle stesse persone', `${ap.n} ragazzi hanno fatto il test sia all'ingresso sia all'uscita`);
+  const cAp = card('Sulle stesse persone', `${ap.n} ${ap.n === 1 ? 'studente ha' : 'studenti hanno'} fatto il test sia all'ingresso sia all'uscita`);
   const v = document.createElement('div'); v.className = 'valore-grande';
   v.textContent = ap.n ? `${numero(ap.prima)} → ${numero(ap.dopo)}` : '—';
   const p = document.createElement('p');
@@ -458,6 +469,8 @@ function testoSintesi() {
     `Data: ${new Date(sessione.created_at).toLocaleDateString('it-IT')}`,
     'Studenti (dal foglio del docente): ___ totali, ___ maschi, ___ femmine',
     `Hanno risposto: ${partecipantiFase('ingresso')} all'ingresso, ${partecipantiFase('uscita')} all'uscita`,
+    filtroGenere !== 'tutti' ? `Dati filtrati: ${FILTRI_GENERE[filtroGenere].toLowerCase()}` : null,
+    sessione.risultati_visibili ? `Genere dichiarato: ${GENERE.opzioni.map((o) => `${o.testo.toLowerCase()} ${righeDi(GENERE.id, 'ingresso').filter((r) => r.valore === o.id).length}`).join(', ')}` : null,
     `Test, risposte corrette: ${pct(ti.pct)} in ingresso, ${pct(tu.pct)} in uscita`,
     ap.n ? `Stesse persone (${ap.n}): da ${numero(ap.prima)} a ${numero(ap.dopo)} risposte giuste su 6` : null,
     variazioni.length ? `Migliorata di più: domanda ${variazioni[0].n}; di meno: domanda ${variazioni[variazioni.length - 1].n}` : null,
@@ -521,7 +534,7 @@ function vistaGradimento(cont) {
   const griglia = document.createElement('div');
   griglia.className = 'griglia';
   GRADIMENTO.filter((d) => d.tipo !== 'aperta').forEach((d) => griglia.appendChild(cardDistribuzione(d, 'uscita')));
-  if (sessione.risultati_visibili) griglia.appendChild(cardDistribuzione(GENERE, 'uscita'));
+  if (sessione.risultati_visibili) griglia.appendChild(cardDistribuzione(GENERE, 'ingresso'));
   cont.appendChild(griglia);
 }
 
@@ -555,7 +568,8 @@ async function aggiornaRisultati() {
     leggiTutto(() => supabase.from('attivita_risposte_generiche').select('partecipante_id, scenario_id, tipo, valore').eq('sessione_id', sessione.id).order('created_at'))
       .then((data) => ({ data }), () => ({ data: [] }))
   ]);
-  dati = { partecipanti: partecipanti || [], risposte: risposte || [] };
+  tutteLeRisposte = risposte || [];
+  dati = { partecipanti: partecipanti || [], risposte: filtraPerGenere(tutteLeRisposte) };
 
   const ingresso = partecipantiFase('ingresso');
   el('conteggio-ingresso').textContent = ingresso;
@@ -702,6 +716,28 @@ document.querySelectorAll('#tab-barra .tab').forEach((t) => {
     renderVista();
   });
 });
+
+function pulsantiFiltroGenere() {
+  const cont = el('filtro-genere');
+  Object.entries(FILTRI_GENERE).forEach(([id, etichetta]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab' + (id === filtroGenere ? ' attivo' : '');
+    b.textContent = etichetta;
+    b.setAttribute('aria-pressed', id === filtroGenere ? 'true' : 'false');
+    b.addEventListener('click', () => {
+      filtroGenere = id;
+      [...cont.children].forEach((x) => {
+        x.classList.toggle('attivo', x === b);
+        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+      });
+      dati.risposte = filtraPerGenere(tutteLeRisposte);
+      renderVista();
+    });
+    cont.appendChild(b);
+  });
+}
+pulsantiFiltroGenere();
 
 pulsantiScelta('scelta-argomento', ARGOMENTI, 'argomento');
 pulsantiScelta('scelta-contesto', CONTESTI, 'contesto');

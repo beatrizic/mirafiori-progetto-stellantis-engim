@@ -89,6 +89,15 @@
   .testo-progetto p { margin: 0 auto 1.3rem; font-size: 1.05rem; }
   .testo-progetto p:last-child { margin-bottom: 0; }
   .testo-progetto .chiusura { font-weight: 600; color: var(--blu); }
+  .testo-progetto h3 { font-size: 1.6rem; margin: 2.6rem 0 1rem; }
+  .testo-progetto h3:first-child { margin-top: 0; }
+
+  /* cronologia: da Fiat a Stellantis */
+  .cronologia { list-style: none; padding: 0; margin: 1.8rem 0 2rem; border-left: 3px solid var(--accento); }
+  .cronologia li { display: grid; grid-template-columns: 6.2rem 1fr; gap: 1rem; align-items: baseline; padding: 0.55rem 0 0.55rem 1.2rem; }
+  .cronologia .anno { font-family: var(--font-display); font-size: 1.5rem; line-height: 1; color: var(--blu); }
+  .cronologia span:last-child { font-size: 0.98rem; }
+  @media (max-width: 520px) { .cronologia li { grid-template-columns: 1fr; gap: 0.15rem; } }
 
   /* ---------- tecnologie: righe a piena larghezza ---------- */
   .lista-tecnologie { max-width: 940px; margin: 2.5rem auto 0; display: grid; gap: 1.2rem; }
@@ -152,6 +161,23 @@
       <h2>Il progetto e i suoi obiettivi</h2>
     </div>
     <div class="testo-progetto reveal">
+      <h3>Una fabbrica che ha fatto nascere un quartiere</h3>
+      <p>Per tutta l'Italia, Mirafiori è prima di tutto il nome di una fabbrica. Nel 1939 la Fiat inaugura qui, nella campagna a sud di Torino, il suo nuovo stabilimento, progettato dall'ingegnere Vittorio Bonadè Bottino: due milioni di metri quadrati, per decenni il più grande complesso industriale del Paese. Da quei cancelli sono uscite oltre 28 milioni di automobili.</p>
+      <p>Il quartiere è cresciuto insieme alla fabbrica. Negli anni del boom economico la Fiat assume decine di migliaia di giovani, in gran parte arrivati dal Sud Italia: solo tra il 1961 e il 1963 entrano in azienda a Torino circa 22.000 nuovi lavoratori. Molti si stabiliscono proprio a Mirafiori o nei comuni vicini, e il quartiere si riempie di case, scuole, negozi e famiglie. Nel 1980 lo stabilimento conta quasi 58.000 dipendenti e produce circa 5.000 auto al giorno. Mirafiori è stata anche il luogo di grandi lotte operaie, dagli scioperi del marzo 1943 all'autunno caldo del 1969, che hanno cambiato i diritti del lavoro in tutto il Paese.</p>
+      <p>Poi il lavoro è cambiato. Robot e automazione hanno sostituito molte mansioni, le crisi del settore hanno ridotto i posti, e anche l'azienda ha cambiato forma: nel 2014 Fiat si unisce all'americana Chrysler e nasce FCA; nel 2021 FCA e il gruppo francese PSA si fondono in <strong>Stellantis</strong>, uno dei maggiori costruttori di auto al mondo, con marchi come Fiat, Jeep, Alfa Romeo, Lancia, Maserati, Peugeot, Citroën e Opel.</p>
+      <p>Oggi Mirafiori è uno dei laboratori della mobilità del futuro. Qui si costruiscono la Fiat 500 elettrica e, da novembre 2025, la nuova 500 ibrida; qui lavorano il Battery Technology Center, dove si progettano e collaudano le batterie delle auto elettriche, e il Circular Economy Hub, dove motori, cambi e batterie vengono rigenerati invece di essere buttati. Per fare un'auto, oggi, servono software, elettronica, dati e sostenibilità quanto bulloni e saldature.</p>
+      <ol class="cronologia" aria-label="Da Fiat a Stellantis">
+        <li><span class="anno">1899</span><span>Nasce a Torino la Fiat, Fabbrica Italiana Automobili Torino.</span></li>
+        <li><span class="anno">1939</span><span>Viene inaugurato lo stabilimento di Mirafiori.</span></li>
+        <li><span class="anno">1961–63</span><span>Circa 22.000 nuove assunzioni, soprattutto dal Sud: il quartiere cresce intorno alla fabbrica.</span></li>
+        <li><span class="anno">1980</span><span>Quasi 58.000 dipendenti e circa 5.000 auto al giorno: il picco della storia di Mirafiori.</span></li>
+        <li><span class="anno">2014</span><span>Fiat e Chrysler si uniscono: nasce FCA.</span></li>
+        <li><span class="anno">2021</span><span>FCA e PSA si fondono: nasce Stellantis.</span></li>
+        <li><span class="anno">2025</span><span>A Mirafiori parte la 500 ibrida; ENGIM avvia con Stellantis il progetto "A Neighborhood, A Lab for the Future".</span></li>
+      </ol>
+      <p>Ecco perché questo progetto nasce proprio qui. Il quartiere che per oltre ottant'anni è vissuto intorno alla fabbrica dell'auto oggi ha bisogno di competenze nuove, digitali, per non restare indietro mentre l'auto e il lavoro cambiano. Sostenendo questo progetto, Stellantis investe sui ragazzi e sulle ragazze del luogo in cui è cresciuta la storia dell'auto italiana.</p>
+
+      <h3>Un laboratorio per il futuro</h3>
       <p>Mirafiori è un pezzo di storia di Torino: un quartiere di circa centomila abitanti che da oltre vent'anni vive un percorso di rigenerazione urbana. Eppure, per molti giovani, alcune sfide restano aperte: l'abbandono scolastico, la difficoltà a trovare lavoro, competenze che non bastano più per un mercato che corre sempre più veloce sul digitale. È da qui che nasce "Mirafiori: A Neighborhood, A Lab for the Future", il progetto promosso da Fondazione ENGIM San Luca con il sostegno di Stellantis, che vuole trasformare il quartiere in un vero laboratorio per il futuro.</p>
       <p>Il cuore del progetto è semplice e ambizioso: dare ai ragazzi e alle ragazze di Mirafiori la possibilità di scoprire, capire e usare le tecnologie che stanno ridisegnando il lavoro e la società, perché nessuno resti indietro per mancanza di strumenti o di occasioni. Significa avvicinarli alle materie scientifiche e tecnologiche con metodi interattivi che rendono lo studio concreto e stimolante, accompagnarli nella scoperta delle professioni emergenti e offrire a ciascuno una prospettiva di crescita personale e professionale, contrastando la dispersione scolastica.</p>
       <p>La visione è fare di Mirafiori un centro di eccellenza per la formazione digitale, aperto e accessibile, sostenuto da una rete di scuole, biblioteche, associazioni e case del quartiere. In tre anni, dal 2025 al 2027, il progetto punta a coinvolgere mille giovani fino a 24 anni, con almeno il 60% di ragazze, per colmare il divario digitale e aprire nuove strade a chi vive il quartiere.</p>

@@ -3,7 +3,9 @@
 //
 //  Una sessione per classe e per argomento, in due fasi:
 //    ingresso: le STEM (S1–S4) + il test sull'argomento (T1–T6)
-//    uscita:   lo stesso test + S3 e S4 + il gradimento (G1–G8, G9 facoltativa)
+//    uscita:   lo stesso test + S3 e S4 + il gradimento (G1–G8)
+//    G9 (genere), se attiva, è l'ultima domanda dell'ingresso: così ogni
+//    studente è classificato fin dall'inizio e i risultati si leggono per genere.
 //
 //  Dove stanno i dati nella sessione (tabella attivita_sessioni):
 //    scenario_corrente   = argomento ('citizenship' | 'cloud' | 'printing' | 'ia')
@@ -141,7 +143,7 @@ export const GRADIMENTO = [
 ];
 
 export const GENERE = {
-  id: 'g9', tipo: 'singola', sezione: 'gradimento', facoltativa: true,
+  id: 'g9', tipo: 'singola', sezione: 'te', facoltativa: true,
   testo: 'Ti identifichi come…',
   aiuto: 'Domanda facoltativa: puoi lasciarla vuota.',
   opzioni: [
@@ -157,8 +159,8 @@ export const MAX_APERTA = 500;
 /** Le domande di una fase, nell'ordine in cui le vede lo studente. */
 export function domandePer(argomento, fase, conGenere = false) {
   const test = TEST[argomento] || [];
-  if (fase === 'ingresso') return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...test];
-  return [...test, STEM.s3, STEM.s4, ...GRADIMENTO, ...(conGenere ? [GENERE] : [])];
+  if (fase === 'ingresso') return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...test, ...(conGenere ? [GENERE] : [])];
+  return [...test, STEM.s3, STEM.s4, ...GRADIMENTO];
 }
 
 /** Una risposta (valore salvato) è corretta? null se la domanda non ha risposta giusta. */

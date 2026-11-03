@@ -55,6 +55,7 @@
   .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.6rem; }
   .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
   .tab.attivo { background: var(--blu); color: #fff; }
+  #filtro-genere .tab { font-size: 0.8rem; padding: 0.35rem 0.85rem; }
 
   .griglia { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
   .card { background: var(--bianco-2); border-radius: 12px; padding: 1.1rem 1.2rem; text-align: left; }
@@ -179,6 +180,8 @@
       <button class="tab attivo" data-tab="risultati" type="button">Risultati</button>
       <button class="tab" data-tab="confronto" type="button">Confronto iniziale / finale</button>
     </div>
+
+    <div class="tab-barra" id="filtro-genere" role="group" aria-label="Filtra per genere"></div>
 
     <div id="vista-risultati">
       <div id="avviso-proiezione" class="avviso-giallo nascosto">

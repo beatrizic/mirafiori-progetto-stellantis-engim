@@ -55,6 +55,7 @@
   .tab-barra { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.6rem; }
   .tab { font-family: var(--font-testo); font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; background: var(--bianco-2); color: var(--blu); border: 2px solid transparent; }
   .tab.attivo { background: var(--blu); color: #fff; }
+  #filtro-genere .tab { font-size: 0.8rem; padding: 0.35rem 0.85rem; }
 
   .griglia { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
   .card { background: var(--bianco-2); border-radius: 12px; padding: 1.1rem 1.2rem; text-align: left; }
@@ -140,7 +141,7 @@
     <div class="scelta-gruppo">
       <span class="etichetta">Domanda facoltativa sul genere</span>
       <div class="pulsanti-scelta" id="scelta-genere" role="group" aria-label="Domanda facoltativa sul genere"></div>
-      <span class="aiuto">Da concordare con il coordinamento prima dell'uso. Il numero di maschi e femmine si registra comunque sul foglio firmato dal docente.</span>
+      <span class="aiuto">È l'ultima domanda dell'ingresso, con "Preferisco non rispondere": permette di leggere i risultati per ragazze e ragazzi. Il numero di maschi e femmine si registra comunque sul foglio firmato dal docente.</span>
     </div>
 
     <p class="riepilogo-domande" id="riepilogo-domande"></p>
@@ -194,6 +195,12 @@
       <button class="tab" data-tab="gradimento" type="button">Gradimento</button>
       <button class="tab" data-tab="aperte" type="button">Risposte aperte</button>
     </div>
+
+    <div id="avviso-postit" class="avviso-giallo nascosto">
+      Quando tutti hanno inviato, ultimo gesto dell'incontro: il biglietto di uscita sui post-it. Fotografali prima di andare via.
+    </div>
+
+    <div class="tab-barra" id="filtro-genere" role="group" aria-label="Filtra per genere"></div>
 
     <div id="vista-risultati">
       <div id="avviso-proiezione" class="avviso-giallo nascosto">

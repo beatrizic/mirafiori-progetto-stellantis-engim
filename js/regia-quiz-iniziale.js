@@ -15,6 +15,16 @@ let qrDisegnato = false;
 let proiezione = false;
 let esplosaGia = false;
 let scelta = { contesto: 'engim', momento: 'iniziale' };
+let filtroGenere = 'tutti';
+const FILTRI_GENERE = { tutti: 'Tutti', f: 'Solo ragazze', m: 'Solo ragazzi' };
+
+/** Tiene solo le risposte di chi ha indicato il genere scelto nel filtro. */
+function filtraPerGenere(risposte) {
+  if (filtroGenere === 'tutti') return risposte;
+  const chiave = (r) => (r.sessione_id || '') + '|' + r.partecipante_id;
+  const scelti = new Set(risposte.filter((r) => r.scenario_id === 'genere' && r.valore === filtroGenere).map(chiave));
+  return risposte.filter((r) => scelti.has(chiave(r)));
+}
 
 const statoLeggibile = (s) =>
   ({ waiting: 'In attesa', running: 'Aperto', locked: 'Chiuso', completed: 'Terminato' }[s] || s);
@@ -232,7 +242,9 @@ async function aggiornaRisultati() {
   if (!sessione) return;
   const [{ data: partecipanti }, { data: risposte }] = await Promise.all([
     supabase.from('attivita_partecipanti').select('id, completed_at').eq('sessione_id', sessione.id),
-    supabase.from('attivita_risposte_generiche').select('scenario_id, valore').eq('sessione_id', sessione.id)
+    // Una classe intera supera le 1000 righe: si legge tutto paginando.
+    leggiTutto(() => supabase.from('attivita_risposte_generiche').select('partecipante_id, scenario_id, valore').eq('sessione_id', sessione.id).order('created_at'))
+      .then((data) => ({ data: filtraPerGenere(data) }), () => ({ data: [] }))
   ]);
 
   const completati = (partecipanti || []).filter((p) => p.completed_at).length;
@@ -262,9 +274,13 @@ async function renderConfronto() {
   const ids = (sessioni || []).map((s) => s.id);
   if (!ids.length) { cont.innerHTML = '<p class="nota">Nessuna sessione disponibile.</p>'; return; }
 
-  const { data: risposte } = await supabase
-    .from('attivita_risposte_generiche').select('sessione_id, scenario_id, valore')
-    .in('sessione_id', ids);
+  let risposte = [];
+  for (let i = 0; i < ids.length; i += 100) {
+    const blocco = ids.slice(i, i + 100);
+    risposte = risposte.concat(await leggiTutto(() => supabase.from('attivita_risposte_generiche')
+      .select('sessione_id, partecipante_id, scenario_id, valore').in('sessione_id', blocco).order('created_at')));
+  }
+  risposte = filtraPerGenere(risposte);
 
   const momentoDi = new Map((sessioni || []).map((s) => [s.id, s.momento]));
   const conoscenza = DOMANDE.filter((d) => d.corretta && (!d.solo || d.solo === sessione.contesto));
@@ -273,7 +289,8 @@ async function renderConfronto() {
   const intro = document.createElement('p');
   intro.className = 'nota';
   intro.style.marginTop = '0';
-  intro.textContent = `Risposte corrette nelle domande di conoscenza, sommando tutte le sessioni di ${sessione.scuola || CONTESTI[sessione.contesto].etichetta}.`;
+  intro.textContent = `Risposte corrette nelle domande di conoscenza, sommando tutte le sessioni di ${sessione.scuola || CONTESTI[sessione.contesto].etichetta}`
+    + (filtroGenere === 'tutti' ? '.' : ` (${FILTRI_GENERE[filtroGenere].toLowerCase()}). Le sessioni fatte prima della domanda sul genere non entrano in questo filtro.`);
   cont.appendChild(intro);
 
   conoscenza.forEach((d) => {
@@ -436,6 +453,28 @@ el('btn-reset').addEventListener('click', async () => {
   el('blocco-configura').classList.remove('nascosto');
   caricaScuoleNote();
 });
+
+function pulsantiFiltroGenere() {
+  const cont = el('filtro-genere');
+  Object.entries(FILTRI_GENERE).forEach(([id, etichetta]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tab' + (id === filtroGenere ? ' attivo' : '');
+    b.textContent = etichetta;
+    b.setAttribute('aria-pressed', id === filtroGenere ? 'true' : 'false');
+    b.addEventListener('click', () => {
+      filtroGenere = id;
+      [...cont.children].forEach((x) => {
+        x.classList.toggle('attivo', x === b);
+        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+      });
+      aggiornaRisultati();
+      if (!el('vista-confronto').classList.contains('nascosto')) renderConfronto();
+    });
+    cont.appendChild(b);
+  });
+}
+pulsantiFiltroGenere();
 
 document.querySelectorAll('#tab-barra .tab').forEach((t) => {
   t.addEventListener('click', () => {
