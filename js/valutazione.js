@@ -5,7 +5,21 @@ import { generaAnonymousId } from './attivita-logica.js';
 // A differenza delle altre attività, l'id anonimo resta in localStorage
 // (legato al codice della sessione): serve ad abbinare ingresso e uscita
 // dello stesso telefono anche se nel frattempo la scheda è stata chiusa.
-const chiaveAnon = (codice) => 'mirafiori_valutazione_' + codice;
+//
+// Dispositivo condiviso (tablet del laboratorio che passa di mano):
+// dopo "Passa a un compagno" il dispositivo è segnato come condiviso e
+// l'id diventa uno per fase e per persona. Ingresso e uscita non vengono
+// più abbinati: meglio nessun abbinamento che uno sbagliato.
+const chiaveBase = (codice) => 'mirafiori_valutazione_' + codice;
+const chiaveCondiviso = (codice) => chiaveBase(codice) + '_condiviso';
+
+function leggi(chiave) { try { return localStorage.getItem(chiave); } catch { return null; } }
+function scrivi(chiave, valore) { try { localStorage.setItem(chiave, valore); } catch { /* non disponibile */ } }
+function togli(chiave) { try { localStorage.removeItem(chiave); } catch { /* non disponibile */ } }
+
+const condiviso = () => leggi(chiaveCondiviso(sessione.codice)) === '1';
+const chiaveAnon = () => chiaveBase(sessione.codice) + (condiviso() ? '_' + sessione.fase : '');
+let chiaveUsata = null;
 
 const el = (id) => document.getElementById(id);
 let sessione = null;
@@ -27,14 +41,18 @@ function messaggio(titolo, testo, errore = false) {
 }
 
 function anonId() {
-  const chiave = chiaveAnon(sessione.codice);
-  let id = null;
-  try { id = localStorage.getItem(chiave); } catch { /* archiviazione non disponibile */ }
-  if (!id) {
-    id = generaAnonymousId();
-    try { localStorage.setItem(chiave, id); } catch { /* resta valido per questa visita */ }
-  }
+  const chiave = chiaveAnon();
+  let id = leggi(chiave);
+  if (!id) { id = generaAnonymousId(); scrivi(chiave, id); }
+  chiaveUsata = chiave;
   return id;
+}
+
+/** Il tablet passa a un compagno: nuova persona, nuovo id anonimo. */
+function passaAUnCompagno() {
+  scrivi(chiaveCondiviso(sessione.codice), '1');
+  togli(chiaveAnon());
+  location.reload();
 }
 
 // ---------- avvio ----------
@@ -64,6 +82,8 @@ async function sincronizza() {
   if (sessione.stato === 'waiting')   { messaggio('Aspetta il via', 'Le domande non sono ancora aperte. Questa pagina si aggiorna da sola.'); return; }
   if (sessione.stato === 'completed') { messaggio('Valutazione chiusa', 'Questa valutazione è terminata. Grazie!'); return; }
 
+  // Su un dispositivo condiviso, al cambio di fase si riparte con una persona nuova.
+  if (partecipante && chiaveUsata !== chiaveAnon()) { partecipante = null; inviate.clear(); faseForm = null; }
   if (!partecipante && !(await registraPartecipante())) return;
 
   if (inviate.has(fase)) { mostraGrazie(fase); return; }
@@ -108,13 +128,16 @@ async function registraPartecipante() {
 function mostraGrazie(fase) {
   if (fase === 'ingresso') {
     el('grazie-titolo').textContent = 'Grazie, ci vediamo alla fine!';
-    el('grazie-testo').textContent = 'Le tue risposte sono registrate. Tieni aperta questa pagina: alla fine del laboratorio si riapre da sola per le ultime domande.';
+    el('grazie-testo').textContent = 'Le tue risposte sono registrate. Tieni aperta questa pagina: alla fine del laboratorio si riapre da sola per le ultime domande. Se il dispositivo è della scuola o del laboratorio, passalo al compagno.';
   } else {
     el('grazie-titolo').textContent = 'Grazie!';
     el('grazie-testo').textContent = 'Le tue risposte sono state registrate. Nessun dato personale è stato salvato.';
   }
+  el('btn-passa').classList.toggle('nascosto', sessione.stato !== 'running');
   mostra('schermo-grazie');
 }
+
+el('btn-passa').addEventListener('click', passaAUnCompagno);
 
 // ---------- form ----------
 
@@ -190,7 +213,8 @@ function bloccoDomanda(d, numero) {
 function costruisciForm(fase) {
   faseForm = fase;
   domande = domandePer(sessione.scenario_corrente, fase);
-  const argomento = ARGOMENTI[sessione.scenario_corrente]?.etichetta || '';
+  const arg = ARGOMENTI[sessione.scenario_corrente];
+  const argomento = arg?.nome || arg?.etichetta || '';
 
   el('titolo-quiz').textContent = fase === 'ingresso' ? 'Prima di cominciare' : 'Per finire';
   const intro = el('intro-quiz');
@@ -213,7 +237,7 @@ function costruisciForm(fase) {
       sezione = d.sezione;
       const h = document.createElement('h2');
       h.className = 'titolo-sezione';
-      h.textContent = SEZIONI[sezione];
+      h.textContent = sezione === 'stem' && ARGOMENTI[sessione.scenario_corrente]?.fascia === 'primaria' ? 'Scienza e tecnologia' : SEZIONI[sezione];
       cont.appendChild(h);
     }
     cont.appendChild(bloccoDomanda(d, i + 1));

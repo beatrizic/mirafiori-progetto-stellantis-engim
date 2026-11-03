@@ -38,6 +38,7 @@
   .btn-invia { display: block; width: 100%; padding: 1rem; background: var(--blu); color: #fff; border: none; border-radius: 999px; font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: var(--font-testo); }
   .btn-invia:disabled { opacity: 0.4; cursor: default; }
   .btn-invia:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+  .btn-passa { max-width: 340px; margin: 2rem auto 0; }
 
   .schermo { text-align: center; padding: 5rem 1.4rem; }
   .schermo p { margin: 0 auto; max-width: 34ch; }
@@ -67,6 +68,7 @@
 <div id="schermo-grazie" class="schermo nascosto" role="status" aria-live="polite">
   <h1 id="grazie-titolo">Grazie!</h1>
   <p class="grigio" id="grazie-testo">Le tue risposte sono state registrate. Nessun dato personale è stato salvato.</p>
+  <button type="button" class="btn-invia btn-passa nascosto" id="btn-passa">Passa a un compagno</button>
 </div>
 
 <script type="module" src="js/valutazione.js"></script>

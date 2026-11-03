@@ -1,7 +1,7 @@
 import { supabase } from './supabase-client.js';
 import {
-  ACTIVITY_KEY, CONTESTI, FASI, ARGOMENTI, STEM, TEST, GRADIMENTO,
-  domandePer, eCorretta, tutteLeDomande
+  ACTIVITY_KEY, CONTESTI, FASI, ARGOMENTI, TEST,
+  domandePer, eCorretta, tutteLeDomande, fasciaDi
 } from './valutazione-dati.js';
 import { generaCodiceSessione, media } from './attivita-logica.js';
 import { esplosioneParticelle } from './particelle.js';
@@ -47,10 +47,13 @@ function pulsantiScelta(contenitoreId, voci, chiave) {
 }
 
 function aggiornaRiepilogo() {
+  const f = fasciaDi(scelta.argomento);
+  const test = (TEST[scelta.argomento] || []).length;
   const ingresso = domandePer(scelta.argomento, 'ingresso').length;
   const uscita = domandePer(scelta.argomento, 'uscita').length;
   el('riepilogo-domande').textContent =
-    `Ingresso: ${ingresso} domande (4 sulle STEM e 6 di test). Uscita: ${uscita} domande (lo stesso test, 2 sulle STEM e il gradimento).`;
+    `Ingresso: ${ingresso} domande (${f.stemIngresso.length} sulle STEM e ${test} di test). Uscita: ${uscita} domande (lo stesso test, ${f.stemUscita.length} sulle STEM e il gradimento).`
+    + (ARGOMENTI[scelta.argomento].fascia === 'primaria' ? ' Domande e gradimento in versione semplificata per la primaria.' : '');
 }
 
 // ---------- scuola e classe ----------
@@ -191,6 +194,7 @@ function disegnaQr() {
 const righeDi = (id, fase) => dati.risposte.filter((r) => r.scenario_id === id && r.tipo === fase);
 const domandaPer = (id) => tutteLeDomande(sessione.scenario_corrente).find((d) => d.id === id);
 const testCorrente = () => TEST[sessione.scenario_corrente] || [];
+const fascia = () => fasciaDi(sessione.scenario_corrente);
 
 /** Percentuale di risposte corrette di una domanda in una fase. */
 function corrette(d, fase) {
@@ -367,7 +371,7 @@ function vistaSintesi(cont) {
   const v = document.createElement('div'); v.className = 'valore-grande';
   v.textContent = ap.n ? `${numero(ap.prima)} → ${numero(ap.dopo)}` : '—';
   const p = document.createElement('p');
-  p.textContent = ap.n ? `Risposte giuste su 6, in media. Sono migliorati in ${ap.migliorati} su ${ap.n}.` : 'Il dato compare quando qualcuno ha completato ingresso e uscita.';
+  p.textContent = ap.n ? `Risposte giuste su ${testCorrente().length}, in media. Sono migliorati in ${ap.migliorati} su ${ap.n}.` : 'Il dato compare quando qualcuno ha completato ingresso e uscita.';
   cAp.append(v, p);
   griglia.appendChild(cAp);
 
@@ -390,8 +394,9 @@ function vistaSintesi(cont) {
   griglia.appendChild(cVar);
 
   // STEM nei mestieri
-  const si = corrette(STEM.s3, 'ingresso'), su = corrette(STEM.s3, 'uscita');
-  const cS3 = card('Riconoscono le STEM in tutti i mestieri', 'Domanda STEM 3: tutti i cinque mestieri scelti');
+  const f = fascia();
+  const si = corrette(f.mestieri, 'ingresso'), su = corrette(f.mestieri, 'uscita');
+  const cS3 = card('Riconoscono le STEM in tutti i mestieri', `"${f.mestieri.testo}": tutti i mestieri giusti scelti`);
   cS3.append(
     coppia('Ingresso', si.pct, si.pct === null ? 'nessun dato' : `${si.pct}%`),
     coppia('Uscita', su.pct, su.pct === null ? 'nessun dato' : `${su.pct}%`)
@@ -399,26 +404,40 @@ function vistaSintesi(cont) {
   const d3 = delta(si.pct, su.pct); if (d3) cS3.appendChild(d3);
   griglia.appendChild(cS3);
 
+  // Primaria: scienza e tecnologia sono per tutti?
+  if (f.percezione) {
+    const pi = corrette(f.percezione, 'ingresso'), pu = corrette(f.percezione, 'uscita');
+    const cP = card('Scienza e tecnologia sono per tutti', 'Hanno risposto "per tutti, maschi e femmine"');
+    cP.append(
+      coppia('Ingresso', pi.pct, pi.pct === null ? 'nessun dato' : `${pi.pct}%`),
+      coppia('Uscita', pu.pct, pu.pct === null ? 'nessun dato' : `${pu.pct}%`)
+    );
+    const dp = delta(pi.pct, pu.pct); if (dp) cP.appendChild(dp);
+    griglia.appendChild(cP);
+  }
+
   // Interesse STEM
-  const mi = media(valoriNumerici('s4', 'ingresso')), mu = media(valoriNumerici('s4', 'uscita'));
-  const cS4 = card('Interesse per un lavoro STEM', 'Domanda STEM 4, media da 1 a 5');
+  const mi = media(valoriNumerici(f.interesse.id, 'ingresso')), mu = media(valoriNumerici(f.interesse.id, 'uscita'));
+  const cS4 = card('Interesse per un lavoro STEM', `Media da 1 a ${f.scalaInteresse}`);
   cS4.append(
-    coppia('Ingresso', mi === null ? null : mi * 20, numero(mi), false),
-    coppia('Uscita', mu === null ? null : mu * 20, numero(mu), false)
+    coppia('Ingresso', mi === null ? null : (mi / f.scalaInteresse) * 100, numero(mi), false),
+    coppia('Uscita', mu === null ? null : (mu / f.scalaInteresse) * 100, numero(mu), false)
   );
   const d4 = delta(mi, mu, 'punti'); if (d4) cS4.appendChild(d4);
   griglia.appendChild(cS4);
 
   // Gradimento
-  const g14 = GRADIMENTO.slice(0, 4).flatMap((d) => valoriNumerici(d.id, 'uscita'));
-  const cG = card('Gradimento', 'Media delle domande 1–4, da 1 a 5');
-  const vg = document.createElement('div'); vg.className = 'valore-grande'; vg.textContent = numero(media(g14));
+  const scala = f.gradimento.filter((d) => f.gradScala.includes(d.id));
+  const gMedia = media(scala.flatMap((d) => valoriNumerici(d.id, 'uscita')));
+  const cG = card('Gradimento', `Media delle domande a punteggio, da 1 a ${f.scalaGradimento}`);
+  const vg = document.createElement('div'); vg.className = 'valore-grande'; vg.textContent = numero(gMedia);
   cG.appendChild(vg);
-  GRADIMENTO.slice(0, 4).forEach((d) => {
+  scala.forEach((d) => {
     cG.appendChild(Object.assign(document.createElement('p'), { textContent: `${d.testo} ${numero(media(valoriNumerici(d.id, 'uscita')))}` }));
   });
-  const g5 = percentualeDi('g5', 'uscita', 'si'), g6 = percentualeDi('g6', 'uscita', 'si');
-  cG.appendChild(Object.assign(document.createElement('p'), { textContent: `Lo consiglierebbero: ${g5 === null ? '—' : g5 + '%'} sì. Vogliono approfondire: ${g6 === null ? '—' : g6 + '%'} sì.` }));
+  cG.appendChild(Object.assign(document.createElement('p'), {
+    textContent: f.gradSi.map((g) => { const v = percentualeDi(g.id, 'uscita', 'si'); return `${g.etichetta}: ${v === null ? '—' : v + '%'} sì.`; }).join(' ')
+  }));
   griglia.appendChild(cG);
 
   cont.appendChild(griglia);
@@ -443,8 +462,9 @@ function testoSintesi() {
     return { n: i + 1, v: a === null || b === null ? null : b - a };
   }).filter((x) => x.v !== null).sort((x, y) => y.v - x.v);
   const pct = (x) => (x === null ? '—' : x + '%');
-  const g14 = GRADIMENTO.slice(0, 4).flatMap((d) => valoriNumerici(d.id, 'uscita'));
-  const aperte = ['g7', 'g8'].flatMap((id) => righeDi(id, 'uscita').map((r) => r.valore)).slice(0, 3);
+  const f = fascia();
+  const gMedia = media(f.gradimento.filter((d) => f.gradScala.includes(d.id)).flatMap((d) => valoriNumerici(d.id, 'uscita')));
+  const aperte = f.gradimento.filter((d) => d.tipo === 'aperta').flatMap((d) => righeDi(d.id, 'uscita').map((r) => r.valore)).slice(0, 3);
 
   return [
     `Argomento: ${ARGOMENTI[sessione.scenario_corrente]?.etichetta || ''}`,
@@ -453,12 +473,13 @@ function testoSintesi() {
     'Studenti (dal foglio del docente): ___ totali, ___ maschi, ___ femmine',
     `Hanno risposto: ${partecipantiFase('ingresso')} all'ingresso, ${partecipantiFase('uscita')} all'uscita`,
     `Test, risposte corrette: ${pct(ti.pct)} in ingresso, ${pct(tu.pct)} in uscita`,
-    ap.n ? `Stesse persone (${ap.n}): da ${numero(ap.prima)} a ${numero(ap.dopo)} risposte giuste su 6` : null,
+    ap.n ? `Stesse persone (${ap.n}): da ${numero(ap.prima)} a ${numero(ap.dopo)} risposte giuste su ${testCorrente().length}` : null,
     variazioni.length ? `Migliorata di più: domanda ${variazioni[0].n}; di meno: domanda ${variazioni[variazioni.length - 1].n}` : null,
-    `STEM 3, tutti i mestieri riconosciuti: ${pct(corrette(STEM.s3, 'ingresso').pct)} in ingresso, ${pct(corrette(STEM.s3, 'uscita').pct)} in uscita`,
-    `STEM 4, interesse (1–5): ${numero(media(valoriNumerici('s4', 'ingresso')))} in ingresso, ${numero(media(valoriNumerici('s4', 'uscita')))} in uscita`,
-    `Gradimento, media domande 1–4: ${numero(media(g14))}`,
-    `"Sì" alla domanda 5: ${pct(percentualeDi('g5', 'uscita', 'si'))}; alla domanda 6: ${pct(percentualeDi('g6', 'uscita', 'si'))}`,
+    `STEM, tutti i mestieri riconosciuti: ${pct(corrette(f.mestieri, 'ingresso').pct)} in ingresso, ${pct(corrette(f.mestieri, 'uscita').pct)} in uscita`,
+    f.percezione ? `Scienza e tecnologia "per tutti": ${pct(corrette(f.percezione, 'ingresso').pct)} in ingresso, ${pct(corrette(f.percezione, 'uscita').pct)} in uscita` : null,
+    `STEM, interesse (1–${f.scalaInteresse}): ${numero(media(valoriNumerici(f.interesse.id, 'ingresso')))} in ingresso, ${numero(media(valoriNumerici(f.interesse.id, 'uscita')))} in uscita`,
+    `Gradimento, media (1–${f.scalaGradimento}): ${numero(gMedia)}`,
+    ...f.gradSi.map((g) => `${g.etichetta}: ${pct(percentualeDi(g.id, 'uscita', 'si'))} sì`),
     'Tre frasi:',
     ...aperte.map((t) => `- ${t}`)
   ].filter(Boolean).join('\n');
@@ -500,28 +521,25 @@ function vistaTest(cont) {
 function vistaStem(cont) {
   const griglia = document.createElement('div');
   griglia.className = 'griglia';
-  griglia.append(
-    cardDistribuzione(STEM.s1, 'ingresso'),
-    cardDistribuzione(STEM.s2, 'ingresso'),
-    cardDistribuzione(STEM.s3, 'ingresso'),
-    cardDistribuzione(STEM.s3, 'uscita'),
-    cardDistribuzione(STEM.s4, 'ingresso'),
-    cardDistribuzione(STEM.s4, 'uscita')
-  );
+  const f = fascia();
+  f.stemIngresso.forEach((d) => {
+    griglia.appendChild(cardDistribuzione(d, 'ingresso'));
+    if (f.stemUscita.includes(d)) griglia.appendChild(cardDistribuzione(d, 'uscita'));
+  });
   cont.appendChild(griglia);
 }
 
 function vistaGradimento(cont) {
   const griglia = document.createElement('div');
   griglia.className = 'griglia';
-  GRADIMENTO.filter((d) => d.tipo !== 'aperta').forEach((d) => griglia.appendChild(cardDistribuzione(d, 'uscita')));
+  fascia().gradimento.filter((d) => d.tipo !== 'aperta').forEach((d) => griglia.appendChild(cardDistribuzione(d, 'uscita')));
   cont.appendChild(griglia);
 }
 
 function vistaAperte(cont) {
   const griglia = document.createElement('div');
   griglia.className = 'griglia';
-  GRADIMENTO.filter((d) => d.tipo === 'aperta').forEach((d) => {
+  fascia().gradimento.filter((d) => d.tipo === 'aperta').forEach((d) => {
     const r = righeDi(d.id, 'uscita');
     const c = card(d.testo, `${r.length} risposte`);
     const ul = document.createElement('ul');

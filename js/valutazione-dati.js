@@ -6,7 +6,11 @@
 //    uscita:   lo stesso test + S3 e S4 + il gradimento (G1–G8)
 //
 //  Dove stanno i dati nella sessione (tabella attivita_sessioni):
-//    scenario_corrente   = argomento ('citizenship' | 'cloud' | 'printing' | 'ia')
+//    scenario_corrente   = argomento ('citizenship' | 'cloud' | 'printing' | 'ia'
+//                          | 'ia-medie' | 'cloud-medie' | 'ia-primaria')
+//
+//  Ogni argomento ha una fascia d'età (FASCE): per la primaria le domande
+//  sulle STEM e il gradimento sono più semplici e hanno ID propri.
 //    fase                = 'ingresso' | 'uscita'
 //  Nelle risposte, tipo = fase: così ingresso e uscita della stessa
 //  domanda convivono per lo stesso studente.
@@ -29,10 +33,13 @@ export const FASI = {
 };
 
 export const ARGOMENTI = {
-  citizenship: { id: 'citizenship', etichetta: 'Digital Citizenship' },
-  cloud:       { id: 'cloud',       etichetta: 'Cloud' },
-  printing:    { id: 'printing',    etichetta: 'Digital Printing' },
-  ia:          { id: 'ia',          etichetta: 'Intelligenza Artificiale' }
+  citizenship:   { id: 'citizenship', etichetta: 'Digital Citizenship', fascia: 'superiori' },
+  cloud:         { id: 'cloud', etichetta: 'Cloud', fascia: 'superiori' },
+  printing:      { id: 'printing', etichetta: 'Digital Printing', fascia: 'superiori' },
+  ia:            { id: 'ia', etichetta: 'Intelligenza Artificiale', fascia: 'superiori' },
+  'ia-medie':    { id: 'ia-medie', etichetta: 'IA · scuola media', nome: 'Intelligenza Artificiale', fascia: 'medie' },
+  'cloud-medie': { id: 'cloud-medie', etichetta: 'Cloud · scuola media', nome: 'Cloud', fascia: 'medie' },
+  'ia-primaria': { id: 'ia-primaria', etichetta: 'IA · scuola primaria', nome: 'Intelligenza Artificiale', fascia: 'primaria' }
 };
 
 const SCALA = (etichette) => etichette.map((t, i) => ({ id: String(i + 1), testo: `${i + 1} · ${t}` }));
@@ -123,7 +130,31 @@ export const TEST = {
     t('t4', 'Perché un’IA può ripetere stereotipi?', abc('Perché è programmata per farlo', 'Perché li ha imparati dai dati del passato', 'Non può farlo'), 'b'),
     t('t5', 'Come si verifica un’immagine sospetta?', abc('Guardandola con attenzione', 'Chiedendo a un’IA', 'Con la ricerca inversa e cercando chi l’ha pubblicata per primo'), 'c'),
     t('t6', 'Secondo l’AI Act europeo, un’IA che seleziona i curriculum…', abc('È vietata', 'È ad alto rischio e serve il controllo di una persona', 'Non ha regole'), 'b')
+  ],
+  'ia-medie': [
+    t('t1', 'Un’app che riconosce le piante dalle foto ha imparato…', abc('Da migliaia di foto di piante con il loro nome', 'Da un esperto che le parla ogni giorno', 'Da sola, senza nessun aiuto'), 'a'),
+    t('t2', 'Un’IA che riconosce i cani è stata allenata solo con foto di cani grandi. Cosa può succedere?', abc('Riconosce benissimo anche i cani piccoli', 'Può sbagliare con i cani piccoli', 'Diventa più veloce'), 'b'),
+    t('t3', 'Se fai due volte la stessa domanda a un chatbot…', abc('Risponde sempre uguale', 'Può rispondere in modo diverso', 'Non risponde più'), 'b'),
+    t('t4', 'Un chatbot ti dice una cosa con molta sicurezza. Allora…', abc('È sicuramente vera', 'Può essere inventata: va controllata', 'È sicuramente falsa'), 'b'),
+    t('t5', 'Un generatore di immagini disegna quasi sempre gli ingegneri come uomini. Perché?', abc('Ha imparato da immagini in cui erano quasi sempre uomini', 'Perché è un mestiere solo da uomini', 'Per un guasto del computer'), 'a'),
+    t('t6', 'Una foto molto realistica gira nel gruppo della classe. Come capisci se è vera?', abc('Dalla qualità dell’immagine', 'Cercando da dove viene e chiedendo a un adulto', 'Se ha tanti like'), 'b')
+  ],
+  'cloud-medie': [
+    t('t1', 'Quando una foto “si salva nel cloud”, dove va?', abc('In grandi edifici pieni di computer', 'In cielo, tra le nuvole', 'Resta solo nel telefono'), 'a'),
+    t('t2', 'Il servizio dove tieni le foto cambia le regole e diventa a pagamento. Può farlo?', abc('No, mai', 'Sì, se le condizioni d’uso lo permettono', 'Solo se lo decide il governo'), 'b'),
+    t('t3', 'Per non perdere le foto importanti è meglio tenerle…', abc('Solo sul telefono', 'In almeno due posti diversi', 'In una cartella nascosta'), 'b'),
+    t('t4', 'Quale password è più difficile da indovinare?', abc('Il nome del tuo cane e l’anno di nascita', 'Una frase di quattro parole a caso', '123456'), 'b'),
+    t('t5', 'Ti chiedono il codice che ti è arrivato via SMS per entrare nel tuo account. Cosa fai?', abc('Lo do se è un amico', 'Non lo do a nessuno', 'Lo scrivo nel gruppo'), 'b'),
+    t('t6', 'In un documento condiviso, perché dare a qualcuno il permesso “solo lettura”?', abc('Per fargli un dispetto', 'Perché abbia solo i permessi che gli servono', 'Perché altrimenti non si apre'), 'b')
+  ],
+  'ia-primaria': [
+    t('t1', 'Come impara un’intelligenza artificiale?', abc('Guardando tantissimi esempi', 'Una maestra le scrive tutte le risposte', 'Sa già tutto da quando la accendono'), 'a'),
+    t('t2', 'Un robot ha visto solo gatti neri. Ora vede un gatto bianco: cosa può succedere?', abc('Lo riconosce subito', 'Può non riconoscerlo', 'Lo fa diventare nero'), 'b'),
+    t('t3', 'Un’IA ti dice una cosa con tanta sicurezza. Allora…', abc('È vera di sicuro', 'Può essere inventata: chiedo a un adulto', 'È falsa di sicuro'), 'b'),
+    t('t4', 'Cosa NON si dice mai a un’IA?', abc('Il nome della propria scuola e l’indirizzo di casa', 'Il proprio colore preferito', 'Una domanda sugli animali'), 'a'),
+    t('t5', 'Una foto bellissima e strana gira su internet. È vera?', abc('Sì, se sembra vera', 'Guardandola non si capisce: chiedo a un adulto', 'Sì, se è colorata'), 'b')
   ]
+
 };
 
 // ---------- Parte 3 · il gradimento ----------
@@ -140,13 +171,80 @@ export const GRADIMENTO = [
 ];
 
 
+// ---------- Primaria: STEM e gradimento semplificati ----------
+
+const TRE = (a, b, c) => [{ id: '3', testo: a }, { id: '2', testo: b }, { id: '1', testo: c }];
+
+export const STEM_PRIMARIA = {
+  ps1: {
+    id: 'ps1', tipo: 'singola', sezione: 'stem',
+    testo: 'Secondo te, la scienza e la tecnologia sono…',
+    opzioni: abc('Più adatte ai maschi', 'Più adatte alle femmine', 'Per tutti, maschi e femmine'),
+    corretta: 'c'
+  },
+  ps2: {
+    id: 'ps2', tipo: 'multipla', sezione: 'stem',
+    testo: 'Quali di questi lavori usano la scienza e la tecnologia?',
+    aiuto: 'Puoi sceglierne più di uno.',
+    opzioni: [
+      { id: 'parrucchiere', testo: 'Parrucchiere o parrucchiera' },
+      { id: 'cuoco', testo: 'Cuoco o cuoca' },
+      { id: 'meccanico', testo: 'Meccanico o meccanica' },
+      { id: 'programmatore', testo: 'Programmatore o programmatrice' },
+      { id: 'medico', testo: 'Medico' },
+      { id: 'nessuno', testo: 'Nessuno di questi', esclusiva: true }
+    ],
+    corretta: ['parrucchiere', 'cuoco', 'meccanico', 'programmatore', 'medico']
+  },
+  ps3: {
+    id: 'ps3', tipo: 'scala', sezione: 'stem',
+    testo: 'Da grande ti piacerebbe fare un lavoro con la scienza o la tecnologia?',
+    opzioni: TRE('Sì, tanto', 'Forse', 'No')
+  }
+};
+
+export const GRADIMENTO_PRIMARIA = [
+  { id: 'pg1', tipo: 'scala', sezione: 'gradimento', testo: 'Ti è piaciuto il laboratorio di oggi?', opzioni: TRE('Tanto', 'Così così', 'Poco') },
+  { id: 'pg2', tipo: 'scala', sezione: 'gradimento', testo: 'Hai capito le cose che abbiamo spiegato?', opzioni: TRE('Sì, quasi tutto', 'Un po’', 'Poco') },
+  { id: 'pg3', tipo: 'scala', sezione: 'gradimento', testo: 'Ti sono piaciuti i giochi?', opzioni: TRE('Tanto', 'Così così', 'Poco') },
+  { id: 'pg4', tipo: 'singola', sezione: 'gradimento', testo: 'Vorresti rifare un laboratorio così?', opzioni: SI_FORSE_NO },
+  { id: 'pg5', tipo: 'aperta', sezione: 'gradimento', facoltativa: true, testo: 'La cosa più bella di oggi è stata…' }
+];
+
+/** Le domande che cambiano con l'età. Medie e superiori usano le stesse. */
+const STANDARD = {
+  stemIngresso: [STEM.s1, STEM.s2, STEM.s3, STEM.s4],
+  stemUscita: [STEM.s3, STEM.s4],
+  gradimento: GRADIMENTO,
+  mestieri: STEM.s3, interesse: STEM.s4, scalaInteresse: 5,
+  gradScala: ['g1', 'g2', 'g3', 'g4'], scalaGradimento: 5,
+  gradSi: [{ id: 'g5', etichetta: 'Lo consiglierebbero' }, { id: 'g6', etichetta: 'Vogliono approfondire' }]
+};
+
+export const FASCE = {
+  superiori: STANDARD,
+  medie: STANDARD,
+  primaria: {
+    stemIngresso: [STEM_PRIMARIA.ps1, STEM_PRIMARIA.ps2, STEM_PRIMARIA.ps3],
+    stemUscita: [STEM_PRIMARIA.ps1, STEM_PRIMARIA.ps2, STEM_PRIMARIA.ps3],
+    gradimento: GRADIMENTO_PRIMARIA,
+    percezione: STEM_PRIMARIA.ps1,
+    mestieri: STEM_PRIMARIA.ps2, interesse: STEM_PRIMARIA.ps3, scalaInteresse: 3,
+    gradScala: ['pg1', 'pg2', 'pg3'], scalaGradimento: 3,
+    gradSi: [{ id: 'pg4', etichetta: 'Vorrebbero rifarlo' }]
+  }
+};
+
+export const fasciaDi = (argomento) => FASCE[ARGOMENTI[argomento]?.fascia || 'superiori'];
+
 export const MAX_APERTA = 500;
 
 /** Le domande di una fase, nell'ordine in cui le vede lo studente. */
 export function domandePer(argomento, fase) {
   const test = TEST[argomento] || [];
-  if (fase === 'ingresso') return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...test];
-  return [...test, STEM.s3, STEM.s4, ...GRADIMENTO];
+  const f = fasciaDi(argomento);
+  if (fase === 'ingresso') return [...f.stemIngresso, ...test];
+  return [...test, ...f.stemUscita, ...f.gradimento];
 }
 
 /** Una risposta (valore salvato) è corretta? null se la domanda non ha risposta giusta. */
@@ -162,5 +260,6 @@ export function eCorretta(d, valore) {
 
 /** Tutte le domande possibili, per cercarle per id nell'esportazione. */
 export function tutteLeDomande(argomento) {
-  return [STEM.s1, STEM.s2, STEM.s3, STEM.s4, ...(TEST[argomento] || []), ...GRADIMENTO];
+  const f = fasciaDi(argomento);
+  return [...new Set([...f.stemIngresso, ...f.stemUscita, ...(TEST[argomento] || []), ...f.gradimento])];
 }
