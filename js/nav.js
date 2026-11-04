@@ -25,6 +25,15 @@
         { href: 'tema-cyberbullismo.html', label: 'Cyberbullismo' }
       ]
     },
+    {
+      label: 'Scuole esterne',
+      figli: [
+        { href: 'scuole-superiori.html', label: 'Superiori' },
+        { href: 'scuole-elementari-medie.html', label: 'Elementari e medie' }
+      ],
+      sezione: ['guida-digital-citizenship.html', 'guida-cloud.html', 'guida-digital-printing.html',
+        'guida-intelligenza-artificiale.html', 'guida-digital-ethics.html', 'guida-stem-primaria.html', 'guida-stem-medie.html']
+    },
     { href: 'regia-quiz-iniziale.html', label: 'Quiz iniziale' },
     { href: 'regia-valutazione.html', label: 'Valutazione' }
   ];
@@ -110,7 +119,7 @@
     b.className = 'nav-tendina-btn';
     b.setAttribute('aria-expanded', 'false');
     b.textContent = l.label;
-    if (l.figli.some((f) => eCorrente(f.href))) b.classList.add('corrente');
+    if (l.figli.some((f) => eCorrente(f.href)) || (l.sezione || []).some(eCorrente)) b.classList.add('corrente');
 
     const lista = document.createElement('ul');
     lista.className = 'nav-tendina-lista';

@@ -201,6 +201,43 @@ footer .link-legali a:hover { color: var(--accento); }
 .testo-legale .aggiornamento { color: var(--grigio); font-size: 0.88rem; margin-top: 2.4rem; }
 @media (max-width: 600px) { .testo-legale table, .testo-legale thead, .testo-legale tbody, .testo-legale tr, .testo-legale th, .testo-legale td { display: block; } .testo-legale thead { display: none; } .testo-legale td { border: 0; padding: 0.2rem 0; } .testo-legale tr { border-bottom: 1px solid var(--linea); padding: 0.6rem 0; } }
 
+/* ---------- scuole esterne: elenco e guide ---------- */
+.hero-legale .eyebrow a { color: inherit; text-decoration: none; }
+.hero-legale .eyebrow a:hover { text-decoration: underline; }
+.elenco-guide { max-width: 1040px; margin: 0 auto; padding: 1rem 1.6rem 4rem; }
+.griglia-guide { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
+.scheda-guida {
+  display: flex; flex-direction: column; height: 100%; padding: 1.6rem; text-align: left;
+  background: var(--bianco); border: 1px solid var(--linea); border-radius: 14px;
+  color: var(--nero); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.scheda-guida:hover { transform: translateY(-3px); border-color: var(--blu-chiaro); box-shadow: 0 12px 28px rgba(14,42,82,0.12); }
+.scheda-guida:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+.scheda-guida h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); margin: 0.4rem 0 0.3rem; }
+.scheda-guida p { margin: 0 0 0.8rem; font-size: 0.98rem; max-width: none; }
+.scheda-guida .eta-guida { align-self: flex-start; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--bianco-2); color: var(--blu); font-size: 0.82rem; font-weight: 700; }
+.scheda-guida .dove-guida { color: var(--grigio); font-size: 0.9rem; }
+.scheda-guida .apri-guida { margin-top: auto; color: var(--blu-chiaro); font-weight: 600; font-size: 0.95rem; }
+.link-altra-categoria { margin-top: 2.6rem; color: var(--grigio); }
+.azioni-guida { margin-top: 1.4rem; }
+.btn-stampa {
+  min-height: 44px; padding: 0.6rem 1.4rem; border: 1px solid var(--blu); border-radius: 999px;
+  background: var(--bianco); color: var(--blu); font-family: var(--font-testo); font-size: 0.92rem; font-weight: 600; cursor: pointer;
+}
+.btn-stampa:hover { background: var(--blu); color: var(--bianco); }
+.btn-stampa:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+.testo-guida ol { list-style: decimal; padding-left: 1.4rem; list-style-position: outside; }
+.testo-guida ol li { margin-bottom: 0.5rem; }
+.testo-guida h2 + p strong:first-child { color: var(--blu); }
+.link-indietro-guida { margin-top: 3rem; }
+@media print {
+  .barra, footer, .azioni-guida, .link-indietro-guida, .hero-legale .eyebrow { display: none !important; }
+  .hero-legale { padding: 0 0 1rem; background: none; }
+  .testo-legale { padding: 0; max-width: none; }
+  body { font-size: 11pt; }
+  .testo-guida h2 { break-after: avoid; }
+}
+
 @media (max-width: 640px) {
   .barra nav { display: none; }
   .sezione { padding: 3.5rem 1.2rem; }
