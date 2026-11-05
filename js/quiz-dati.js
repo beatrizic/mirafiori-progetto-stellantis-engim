@@ -35,7 +35,8 @@ export const DOMANDE = [
       { id: 'f', testo: 'Femmina' },
       { id: 'm', testo: 'Maschio' },
       { id: 'altro', testo: 'Altro' },
-      { id: 'nr', testo: 'Preferisco non rispondere' }
+      // tolta dal quiz il 5/11/2026: resta solo per leggere le risposte già salvate
+      { id: 'nr', testo: 'Preferisco non rispondere', nascosta: true }
     ]
   },
 

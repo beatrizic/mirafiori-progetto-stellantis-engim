@@ -233,6 +233,7 @@ function cardDomanda(d, risposte, numero) {
   card.append(h, meta);
   d.opzioni.forEach((o) => {
     const n = righe.filter((r) => r.valore === o.id).length;
+    if (o.nascosta && !n) return;
     card.appendChild(barra(o.testo, totale ? Math.round((n / totale) * 100) : 0, n, d.corretta === o.id));
   });
   return card;

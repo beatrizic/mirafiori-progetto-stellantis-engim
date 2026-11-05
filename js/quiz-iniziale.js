@@ -124,7 +124,7 @@ function costruisciForm() {
 
     const opz = document.createElement('div');
     opz.className = 'opzioni-radio';
-    opz.appendChild(gruppoRadio(d.id, d.opzioni, 'opzione-radio'));
+    opz.appendChild(gruppoRadio(d.id, d.opzioni.filter((o) => !o.nascosta), 'opzione-radio'));
 
     fs.append(legend, opz);
     blocco.appendChild(fs);
