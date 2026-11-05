@@ -3,99 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guida Laboratorio STEM — Mirafiori</title>
-<meta name="description" content="Guida per il laboratorio Laboratorio STEM, 10-11 anni: Algoritmi con il gioco del robot, pixel segreti e una macchina da addestrare che sbaglia.">
+<title>Come ragionano le macchine: Laboratorio STEM per la primaria — Mirafiori</title>
+<meta name="description" content="Algoritmi, pixel e macchine che imparano dagli esempi, con attività senza schermi da riproporre in classe.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="barra" id="barra"></header>
 <script src="js/nav.js"></script>
 
-<section class="hero-legale">
-  <p class="eyebrow"><a href="scuole-elementari-medie.html">Scuole elementari e medie</a> · Guida per il formatore</p>
-  <h1>Laboratorio STEM</h1>
-  <p class="sub">10-11 anni · Vittorino da Feltre · quinte primaria · gennaio</p>
-  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa la guida</button></p>
+<section class="hero-legale hero-articolo">
+  <p class="eyebrow"><a href="scuole-elementari-medie.html">Scuole elementari e medie</a> · 10-11 anni</p>
+  <h1>Come ragionano le macchine</h1>
+  <p class="sub">Laboratorio STEM per la primaria</p>
+  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 13 minuti</p>
+  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
 <main class="testo-legale testo-guida">
-<p><strong>Dove e quando:</strong> Vittorino da Feltre · quinte primaria · 14/1 e 21/1 (da confermare) · due classi insieme, circa 40 bambini.</p>
-<p><strong>Obiettivo:</strong> escono sapendo che una macchina segue istruzioni, salva le immagini come numeri e impara dagli esempi, e che per questo può sbagliare.</p>
-<p><strong>Senza telefoni:</strong> in questa scuola i telefoni non si usano. Tutte le attività funzionano con carta, corpo e voce. I tablet servono solo per "Addestra la macchina", e c'è una versione senza schermo.</p>
-<p><strong>Da preparare:</strong> benda o foulard · 40 griglie quadrettate 10x10 stampate con il codice dei pixel · pennarelli · 20 carte "istruzione" con frecce · 10 tablet con Teachable Machine già aperto (si usa senza account) · oggetti per addestrare: mele rosse, mele verdi, banane (o figure stampate) · stampante Bambu Lab A1 con il file del portachiavi pronto · 40 "patenti" da firmare.</p>
-<p><strong>Regole per i piccoli:</strong> attività brevi, poi si cambia o ci si alza. Una parola nuova alla volta, scritta in grande. Mai la paura come leva. Con la fotocamera si inquadrano solo oggetti, mai i volti dei bambini.</p>
-<h2>1 · Accoglienza e avvio della stampante</h2>
-<p>Avvia subito la stampa del portachiavi, davanti a loro.</p>
-<p>"Ciao a tutti! Io sono Beatrice e lavoro con i computer. Vedete questa macchina? Le ho appena chiesto di costruire una cosa per voi. Non vi dico cosa: lo scopriremo alla fine. Intanto oggi diventiamo tutti scienziati delle macchine."</p>
-<p>"Vi faccio una domanda difficilissima. Quando chiedete una cosa al telefono della mamma, o a un assistente vocale, e lui risponde... secondo voi la macchina sa le cose oppure indovina?"</p>
-<p>Fai alzare la mano: chi dice "sa", chi dice "indovina". Conta le mani ad alta voce e scrivi i numeri alla lavagna.</p>
-<p>"Teniamo questi numeri. Alla fine della mattina rifacciamo la votazione e vediamo se avete cambiato idea."</p>
-<h2>2 · Gioco "Il robot obbedisce"</h2>
-<p>Parola nuova alla lavagna: <strong>ALGORITMO</strong> = una lista di istruzioni, una dopo l'altra.</p>
-<p>"Mi serve un volontario coraggioso. Tu sei il robot. Il robot è bravissimo ma fa esattamente quello che gli dite, parola per parola. Non pensa, non indovina." Benda il volontario. Metti un oggetto (un astuccio) in un punto dell'aula.</p>
-<p>"La classe deve portare il robot fino all'astuccio. Ma attenzione: potete dare solo queste istruzioni: AVANTI DI UN PASSO, GIRA A DESTRA, GIRA A SINISTRA, PRENDI."</p>
-<p>Cosa succede di solito e cosa dici:</p>
+  <nav class="indice-articolo" aria-label="Indice dell'articolo">
+    <p class="etichetta-box">In questo articolo</p>
+    <ol>
+      <li><a href="#cosa-imparerai">Cosa imparerai</a></li>
+      <li><a href="#le-macchine-seguono-istruzioni-lalgoritmo">Le macchine seguono istruzioni: l&#x27;algoritmo</a></li>
+      <li><a href="#le-immagini-sono-numeri-i-pixel">Le immagini sono numeri: i pixel</a></li>
+      <li><a href="#le-macchine-che-imparano-lintelligenza-artificiale">Le macchine che imparano: l&#x27;intelligenza artificiale</a></li>
+      <li><a href="#una-macchina-che-costruisce-la-stampante-3d">Una macchina che costruisce: la stampante 3D</a></li>
+      <li><a href="#il-percorso-in-aula">Il percorso in aula</a></li>
+      <li><a href="#parlare-di-tecnologia-ai-piu-piccoli-senza-paura">Parlare di tecnologia ai più piccoli, senza paura</a></li>
+      <li><a href="#mettilo-in-pratica">Mettilo in pratica</a></li>
+      <li><a href="#glossario">Glossario</a></li>
+      <li><a href="#fonti-e-approfondimenti">Fonti e approfondimenti</a></li>
+    </ol>
+  </nav>
+<p>I bambini di oggi parlano con gli assistenti vocali, scorrono foto sui tablet e vedono i filtri trasformare un volto in un cartone animato. Usano le macchine con naturalezza, ma raramente qualcuno spiega loro come funzionano. Questo laboratorio, pensato per bambini di 10-11 anni, parte da una domanda semplice: quando una macchina ci risponde, sa davvero le cose oppure le indovina? Per arrivare alla risposta non servono schermi né formule: bastano il corpo, la carta, qualche gioco e, per una sola attività, un tablet. L'obiettivo è che i bambini escano con tre idee chiare e un'abitudine: davanti a una macchina, controllare.</p>
+<h2 id="cosa-imparerai">Cosa imparerai</h2>
 <ul>
-<li><strong>Gridano tutti insieme:</strong> "Il robot non capisce se parlate in dieci. Anche il computer esegue un'istruzione alla volta. Scegliete un capo-programmatore."</li>
-<li><strong>Dicono "vai di là" o "un pochino":</strong> fai fare al robot qualcosa di buffo e letterale. "Il robot non sa cosa vuol dire un pochino! Le istruzioni devono essere precise."</li>
-<li><strong>Il robot sbatte contro un banco:</strong> "Chi ha sbagliato, il robot o il programma?" Fai arrivare la risposta: il programma. "Questo si chiama errore, in inglese bug, e i programmatori passano tantissimo tempo a cercarli."</li>
+<li>Che cos'è un algoritmo e perché le istruzioni date a una macchina devono essere precise.</li>
+<li>Che cos'è un errore di programma, il "bug", e perché non è colpa della macchina.</li>
+<li>Come un computer trasforma un'immagine in numeri, attraverso i pixel.</li>
+<li>Come un'intelligenza artificiale impara guardando tanti esempi, invece di ricevere istruzioni.</li>
+<li>Perché una macchina che impara può sbagliare, e chi ha il compito di correggerla.</li>
+<li>Come proporre questi concetti ai bambini in modo divertente, senza usare la paura.</li>
 </ul>
-<p>Ripeti con altri due volontari, se c'è spazio.</p>
-<h2>3 · Scriviamo il programma</h2>
-<p>"Adesso non dite più le istruzioni ad alta voce: le scrivete prima, come fanno i veri programmatori."</p>
-<p>Squadre da 4. Ogni squadra ha le carte freccia e una griglia disegnata sul pavimento con il nastro adesivo (o su un foglio grande), con una partenza e un tesoro. Mettono in fila le carte, poi un compagno esegue il programma senza cambiarlo.</p>
-<p>Domanda da fare a ogni squadra: "Il vostro programma ha funzionato al primo colpo? Cosa avete dovuto correggere?"</p>
-<p>Chiusura: "Avete appena scritto il vostro primo programma. Il computer funziona così: qualcuno scrive le istruzioni, lui le esegue velocissimo, ma senza capire."</p>
-<h2>4 · Gioco "Pixel segreti"</h2>
-<p>Parola nuova: <strong>PIXEL</strong> = un quadratino colorato. Ogni foto sul telefono è fatta da tantissimi pixel.</p>
-<p>"Avvicinatevi alla lavagna. Se guardate da vicinissimo uno schermo, vedete dei puntini. La macchina non vede un gatto: vede tanti quadratini e per ognuno si ricorda un numero. Uno vuol dire colorato, zero vuol dire bianco."</p>
-<p>Distribuisci la griglia con le righe di numeri. Consegna: "Colorate i quadretti dove c'è 1 e lasciate bianchi quelli con 0. Scoprite il disegno segreto." (Il disegno può essere un cuore, un razzo o il logo ENGIM semplificato.)</p>
-<p>Quando finiscono: "Avete fatto la stessa cosa che fa il telefono quando vi mostra una foto: ha letto dei numeri e li ha trasformati in colori."</p>
-<p>Per chi finisce prima: inventano un disegno e scrivono i numeri per farlo indovinare al compagno.</p>
-<p>Durante l'intervallo guarda insieme a loro la stampante: "Guardate, la cosa sta crescendo! La macchina la costruisce a strati, come una torta: un velo sopra l'altro."</p>
-<h2>5 · "Addestra la macchina"</h2>
-<p>Parola nuova: <strong>INTELLIGENZA ARTIFICIALE</strong> = una macchina che impara guardando tanti esempi.</p>
-<p>"Fino a adesso la macchina ha fatto solo quello che le dicevamo noi. Adesso facciamo una cosa diversa: non le diamo istruzioni, le facciamo vedere degli esempi e lei impara da sola."</p>
-<p>Gruppi da 4 con un tablet. Ognuno ha Teachable Machine aperto con due categorie: MELA e BANANA.</p>
+<h2 id="le-macchine-seguono-istruzioni-lalgoritmo">Le macchine seguono istruzioni: l'algoritmo</h2>
+<h3>Una ricetta, non una magia</h3>
+<p>Un algoritmo è una sequenza di istruzioni da eseguire una dopo l'altra per arrivare a un risultato. La parola sembra difficile, ma l'idea è familiare: una ricetta di cucina è un algoritmo, come le istruzioni per montare un mobile o il percorso per andare da casa a scuola. Ogni programma per computer, dal videogioco alla calcolatrice, è fatto di algoritmi scritti da persone.</p>
+<p>La differenza con una ricetta letta da un essere umano è enorme. Una persona capisce "aggiungi un pizzico di sale" e "cuoci finché è dorato", perché interpreta, completa, si accorge degli errori. Un computer no. Esegue esattamente quello che c'è scritto, alla lettera, velocissimo e senza capire. Se un'istruzione manca o è vaga, la macchina non la completa: si blocca, oppure fa qualcosa di diverso da quello che volevamo.</p>
+<h3>Precisione e sequenza</h3>
+<p>Da questa caratteristica discendono due regole che i bambini scoprono giocando. La prima è la precisione: "vai di là" o "un pochino a destra" non sono istruzioni che una macchina può eseguire. Servono comandi chiari e limitati, come "avanti di un passo" o "gira a destra". La seconda è la sequenza: le istruzioni si eseguono una alla volta, nell'ordine in cui sono scritte. Se dieci persone parlano insieme, la macchina non sa a chi dare retta; per questo nei gruppi di programmazione serve un ordine, e spesso una persona che scrive il programma per tutti.</p>
+<h3>Il bug: chi ha sbagliato?</h3>
+<p>Quando un programma non fa quello che ci aspettiamo, i programmatori parlano di "bug", in inglese insetto. Il nome viene dalla storia dei primi computer, quando un guasto poteva essere causato davvero da un insetto finito tra i circuiti; oggi indica qualsiasi errore in un programma. Il punto educativo è un altro: quando un robot va a sbattere contro un banco, l'errore non è del robot, che ha eseguito alla perfezione, ma del programma, cioè di chi lo ha scritto. Cercare e correggere i bug è una parte normale, anzi grandissima, del lavoro di chi programma. Sbagliare e correggere non è un fallimento: è il metodo.</p>
+<h2 id="le-immagini-sono-numeri-i-pixel">Le immagini sono numeri: i pixel</h2>
+<h3>Che cosa vede un computer</h3>
+<p>Se si guarda da vicinissimo lo schermo di un tablet o di un televisore, si vedono tanti puntini colorati. Sono i pixel, piccoli quadratini disposti in righe e colonne, come i quadretti di un quaderno. Ogni immagine digitale, dalla foto del gatto al disegno animato, è fatta di migliaia o milioni di pixel.</p>
+<p>Un computer non "vede" il gatto come lo vediamo noi. Per lui l'immagine è una griglia di numeri: per ogni pixel conserva un valore che indica il colore. Nella versione più semplice, in bianco e nero, basta un 1 per un quadratino colorato e uno 0 per un quadratino bianco. Le immagini a colori usano più numeri per ogni pixel, che indicano quanta luce rossa, verde e blu mescolare, ma il principio resta lo stesso: un'immagine è un elenco ordinato di numeri.</p>
+<h3>Perché è importante saperlo</h3>
+<p>Capire che le immagini sono numeri aiuta i bambini a fare un passo fondamentale: tutto quello che passa dentro un computer, testi, suoni, foto, video, diventa numeri. Le macchine sono bravissime a lavorare con i numeri, a copiarli, a confrontarli e a modificarli. È anche per questo che un'immagine si può alterare così facilmente: cambiare qualche numero significa cambiare l'immagine. Non serve dirlo con toni allarmati; basta che resti l'idea che ciò che vediamo su uno schermo è stato costruito, e quindi può essere modificato.</p>
+<h2 id="le-macchine-che-imparano-lintelligenza-artificiale">Le macchine che imparano: l'intelligenza artificiale</h2>
+<h3>Dagli ordini agli esempi</h3>
+<p>Fino a qui la macchina ha fatto solo quello che le dicevamo noi, istruzione per istruzione. L'intelligenza artificiale che usiamo ogni giorno funziona in un modo diverso. Invece di scrivere tutte le regole per riconoscere una mela ("è rotonda, è rossa o verde, ha un picciolo…"), si mostrano alla macchina tantissimi esempi di mele e di altre cose, e la macchina trova da sola le caratteristiche che le distinguono. Questo modo di lavorare si chiama apprendimento automatico, in inglese machine learning.</p>
+<p>È un po' come imparare a riconoscere i cani da piccoli: nessuno ci ha dato una definizione precisa, ne abbiamo visti tanti e a un certo punto li riconosciamo, anche di razze mai viste. La macchina fa qualcosa di simile, ma con una differenza importante: non capisce che cosa sia un cane. Riconosce schemi nei numeri delle immagini che le abbiamo mostrato.</p>
+<h3>Indovinare bene non è sapere</h3>
+<p>Quando una macchina addestrata dice "questa è una mela", in realtà sta dando la risposta più probabile, sulla base degli esempi che ha visto. Se gli esempi erano buoni e vari, indovina quasi sempre. Ma non sa che cos'è una mela: non sa che si mangia, che cresce su un albero, che ha un sapore. Questa distinzione, tra indovinare molto bene e sapere davvero, è il cuore del laboratorio, ed è la stessa che vale per gli assistenti vocali e per i chatbot che i bambini incontrano o incontreranno.</p>
+<h3>Perché una macchina sbaglia</h3>
+<p>Se la macchina ha imparato solo da mele rosse, davanti a una mela verde può sbagliare o restare incerta. Non perché sia "stupida", ma perché nessuno le ha mai mostrato una mela verde. Allo stesso modo può confondersi con una luce diversa, con un oggetto tenuto a metà, con una mano davanti, oppure scambiare una palla gialla per una banana se gli unici oggetti gialli che conosce sono banane.</p>
+<p>Da qui viene la lezione più importante, valida anche per gli adulti: una macchina che impara è buona quanto gli esempi che riceve. Se gli esempi sono pochi, sbagliati o tutti uguali, la macchina sbaglierà. E chi ha il compito di accorgersene e correggere sono le persone che scelgono gli esempi. Quando i bambini aggiungono le mele verdi e la macchina ricomincia a funzionare, scoprono da soli che la macchina non si è corretta da sola: l'hanno corretta loro.</p>
+<h2 id="una-macchina-che-costruisce-la-stampante-3d">Una macchina che costruisce: la stampante 3D</h2>
+<p>La stampante 3D è un ottimo modo per collegare tutto quello che si è visto. Un oggetto da stampare nasce come disegno al computer, cioè come numeri, proprio come i pixel di un'immagine. Un programma divide il disegno in tanti strati sottilissimi e calcola il percorso da seguire per ognuno. La stampante, a quel punto, esegue l'algoritmo: scioglie un filo di plastica e lo deposita strato dopo strato, come si fa con i veli di una torta, finché l'oggetto non è completo.</p>
+<p>Vedere crescere un piccolo oggetto davanti ai propri occhi durante la mattina, e poi tenerlo in mano, rende concreto un concetto astratto: da istruzioni e numeri può nascere una cosa vera. È anche un modo per mostrare che le macchine sono lente o veloci a seconda di cosa devono fare: un portachiavi di pochi grammi può richiedere quasi mezz'ora.</p>
+<h2 id="il-percorso-in-aula">Il percorso in aula</h2>
+<p>Il laboratorio è pensato per due classi insieme, senza telefoni, con attività brevi e frequenti cambi di ritmo. Tutto, tranne una sola attività, funziona con carta, voce e movimento.</p>
 <ol>
-<li>"Mostrate alla fotocamera la mela tante volte, girandola. Poi la banana."</li>
-<li>"Premete il pulsante per farla imparare."</li>
-<li>"Adesso mostrate di nuovo la mela. Cosa dice?"</li>
+<li><strong>Avvio e domanda iniziale.</strong> La stampante 3D parte subito, davanti ai bambini, senza dire che cosa sta costruendo. Poi si vota per alzata di mano: la macchina sa le cose o le indovina? Il risultato si scrive alla lavagna per confrontarlo alla fine.</li>
+<li><strong>Il robot obbedisce.</strong> Un volontario bendato fa il robot e la classe deve guidarlo fino a un oggetto usando solo quattro comandi: avanti di un passo, gira a destra, gira a sinistra, prendi. Gli errori arrivano da soli: istruzioni vaghe, comandi gridati da tutti, il robot che va a sbattere. Ogni errore diventa una scoperta su come funziona un programma.</li>
+<li><strong>Scriviamo il programma.</strong> A squadre, i bambini dispongono in fila delle carte freccia per guidare un compagno da una partenza a un tesoro su una griglia disegnata a terra o su un foglio grande. Il programma si scrive prima e poi si esegue senza cambiarlo: è il primo programma vero, con i suoi bug da correggere.</li>
+<li><strong>Pixel segreti.</strong> Ogni bambino riceve una griglia quadrettata con righe di 1 e 0: colorando i quadretti giusti scopre un disegno nascosto. Chi finisce prima inventa un disegno e lo trasforma in numeri per un compagno.</li>
+<li><strong>Addestra la macchina.</strong> A piccoli gruppi, con un tablet e Teachable Machine, uno strumento gratuito che funziona nel browser senza account, i bambini insegnano alla macchina a distinguere mele e banane mostrando gli oggetti alla fotocamera. Si inquadrano solo gli oggetti, mai i volti.</li>
+<li><strong>La macchina sbaglia.</strong> Si mostra una mela verde a una macchina addestrata solo con mele rosse. L'errore apre la discussione su chi sceglie gli esempi; poi si aggiungono gli esempi mancanti e si riprova.</li>
+<li><strong>La sorpresa della stampante.</strong> L'oggetto stampato passa di mano in mano e si collegano le tre parole della mattina: algoritmo, pixel, intelligenza artificiale.</li>
+<li><strong>Nuovo voto e patente.</strong> Si rifà la votazione iniziale e si confrontano i risultati. Ogni bambino riceve una "patente di scienziato delle macchine" e la regola finale: quando una macchina ci dice una cosa, controlliamo.</li>
 </ol>
-<p>Tutti esultano quando funziona. È il momento di chiedere: "Allora la macchina sa cos'è una mela?" Lascia rispondere. Poi: "Ha imparato a riconoscere quella mela, in questa stanza, con questa luce. Proviamo a ingannarla."</p>
-<p>Lasciali provare a confonderla: oggetto a metà, mano davanti, una palla gialla al posto della banana.</p>
-<h2>6 · "La macchina sbaglia"</h2>
-<p>Questo è il cuore della mattina. Dai a ogni gruppo una mela verde.</p>
-<p>"Avete insegnato alla macchina solo con mele rosse. Mostratele la mela verde."</p>
-<p>Di solito la macchina sbaglia o resta incerta. Chiedi: "Perché ha sbagliato? È stupida?"</p>
+<h3>Se mancano tablet o connessione</h3>
+<p>L'attività di addestramento ha una versione completamente senza schermo. Un bambino fa la macchina e "impara" solo dalle carte-esempio che gli mostrano i compagni, tutte con mele rosse. Quando gli si mostra una carta con una mela verde, l'errore arriva esattamente come con il tablet, e la discussione è la stessa.</p>
+<h2 id="parlare-di-tecnologia-ai-piu-piccoli-senza-paura">Parlare di tecnologia ai più piccoli, senza paura</h2>
+<p>Con i bambini di questa età il modo conta quanto il contenuto. Alcuni accorgimenti rendono il laboratorio efficace e sereno:</p>
 <ul>
-<li><strong>Risposta probabile:</strong> "Perché non l'aveva mai vista!"</li>
-<li><strong>Rilancio:</strong> "Esatto. Ha imparato solo da quello che le abbiamo fatto vedere noi. Se le facciamo vedere esempi sbagliati o incompleti, sbaglierà. Chi deve stare attento, allora?" Fai arrivare la risposta: le persone che scelgono gli esempi.</li>
+<li><strong>Una parola nuova alla volta.</strong> Algoritmo, pixel, intelligenza artificiale: ognuna scritta in grande alla lavagna, con una definizione di una riga e un esempio concreto.</li>
+<li><strong>Brevi blocchi e movimento.</strong> L'attenzione cala presto: è meglio alternare spesso gioco, scoperta e discussione, e far alzare i bambini.</li>
+<li><strong>Mai la paura come leva.</strong> Le macchine non vanno presentate come minacce. Il messaggio è che sono strumenti potenti, costruiti e corretti da persone, e che i bambini possono diventare quelle persone.</li>
+<li><strong>L'errore come scoperta.</strong> Ogni sbaglio del robot o della macchina è un'occasione per chiedere "perché è successo?" e non un momento di frustrazione.</li>
+<li><strong>Domande vere, risposte loro.</strong> Chiedere "la macchina sa o indovina?" e lasciare che siano i bambini a cambiare idea vale più di qualsiasi spiegazione.</li>
+<li><strong>Un segnale per il silenzio.</strong> Con molti bambini insieme aiuta una regola semplice, decisa all'inizio: chi vede una mano alzata la alza a sua volta e smette di parlare.</li>
+<li><strong>Rispetto della privacy.</strong> Anche in un gioco, la fotocamera inquadra solo oggetti. È un piccolo gesto che insegna un'abitudine.</li>
 </ul>
-<p>Fai aggiungere le mele verdi agli esempi e riprovare. "Adesso funziona. Abbiamo corretto noi la macchina, non si è corretta da sola."</p>
-<p>Torna alla votazione iniziale: "Allora, la macchina sa o indovina?" Fai rivotare e confronta i numeri alla lavagna. Il messaggio da far restare: "La macchina indovina molto bene, perché ha visto tanti esempi. Ma non sa davvero. Per questo dobbiamo sempre controllare."</p>
-<h2>7 · La sorpresa della stampante</h2>
-<p>Stacca il portachiavi davanti a loro e fallo passare di mano in mano.</p>
-<p>"Questo oggetto stamattina non esisteva. Era solo un disegno nel computer, cioè numeri, come i vostri pixel. La stampante ha seguito un programma, un algoritmo, e ha costruito strato dopo strato."</p>
-<p>Domanda finale di collegamento: "Oggi abbiamo visto tre cose che fanno le macchine. Chi se le ricorda?" Guidali alle tre parole alla lavagna: algoritmo (seguono istruzioni), pixel (trasformano tutto in numeri), intelligenza artificiale (imparano dagli esempi).</p>
-<h2>8 · Patente e saluti</h2>
-<p>Ogni bambino riceve la "Patente di scienziato delle macchine" con tre caselle da spuntare insieme: ho programmato un robot · ho scoperto un disegno segreto · ho addestrato una macchina.</p>
-<p>"L'ultima regola da scienziati: quando una macchina vi dice una cosa, voi cosa fate?" Fai rispondere in coro: "Controlliamo!"</p>
-<h2>Situazioni da gestire</h2>
+<p>Alla domanda che prima o poi arriva, "le macchine ci sostituiranno?", una risposta onesta e adatta all'età è questa: le macchine fanno benissimo alcune cose, ma qualcuno deve sempre scegliere che cosa insegnare loro e controllare se hanno ragione. Quel qualcuno potrebbero essere proprio loro.</p>
+<h2 id="mettilo-in-pratica">Mettilo in pratica</h2>
+<ol>
+<li>Scegli un percorso noto, per esempio dalla porta della classe alla lavagna, e prova a scriverlo usando solo quattro comandi: avanti di un passo, gira a destra, gira a sinistra, fermati.</li>
+<li>Fai eseguire le istruzioni a qualcuno alla lettera, senza che possa interpretarle, e conta i bug.</li>
+<li>Disegna una griglia di 10 per 10 quadretti, crea un disegno semplice e trascrivilo in righe di 1 e 0; poi fallo ricostruire a un'altra persona.</li>
+<li>Apri Teachable Machine da un computer e addestra un modello a distinguere due oggetti di casa.</li>
+<li>Mostra al modello un oggetto simile ma diverso da quelli usati per addestrarlo e osserva come risponde.</li>
+<li>Aggiungi gli esempi che mancavano, riaddestra e confronta il risultato.</li>
+<li>Quando un assistente vocale o un'app ti risponde, chiediti: questa risposta l'ha indovinata o la sa? Come posso controllarla?</li>
+</ol>
+<h2 id="glossario">Glossario</h2>
 <ul>
-<li><strong>Troppa confusione con 40 bambini:</strong> usa un segnale fisso per il silenzio (mano alzata, tutti la alzano e smettono di parlare). Spiegalo all'inizio come regola del laboratorio.</li>
-<li><strong>Nessuno vuole fare il robot:</strong> fai tu il robot la prima volta. Si divertono a comandarti e dopo i volontari arrivano.</li>
-<li><strong>I tablet non funzionano o manca la rete:</strong> versione senza schermo. Un bambino fa la macchina e impara solo dalle carte-esempio che gli mostrano i compagni (tutte mele rosse). Poi gli mostri una mela verde: l'errore arriva uguale.</li>
-<li><strong>"Le macchine ci sostituiranno?":</strong> "Le macchine fanno benissimo alcune cose, ma qualcuno deve sempre scegliere cosa insegnare loro e controllare se hanno ragione. Quel qualcuno potreste essere voi."</li>
-<li><strong>Un bambino resta indietro con i pixel:</strong> affiancalo a un compagno che ha già finito, con il ruolo di "aiutante scienziato".</li>
+<li><strong>Algoritmo</strong>: sequenza ordinata di istruzioni precise da eseguire per arrivare a un risultato.</li>
+<li><strong>Programma</strong>: algoritmo scritto in una forma che un computer può eseguire.</li>
+<li><strong>Bug</strong>: errore in un programma, che fa comportare la macchina in modo diverso da quello voluto.</li>
+<li><strong>Pixel</strong>: il più piccolo quadratino di un'immagine digitale; ognuno è descritto da numeri che indicano il colore.</li>
+<li><strong>Intelligenza artificiale</strong>: insieme di tecniche che permettono a una macchina di svolgere compiti che sembrano richiedere intelligenza, come riconoscere immagini o rispondere a domande.</li>
+<li><strong>Apprendimento automatico (machine learning)</strong>: modo di costruire programmi in cui la macchina impara da molti esempi invece di ricevere tutte le regole.</li>
+<li><strong>Addestramento</strong>: fase in cui si mostrano gli esempi alla macchina perché impari.</li>
+<li><strong>Esempi di addestramento</strong>: i dati scelti dalle persone da cui la macchina impara; se sono pochi o sbagliati, la macchina sbaglia.</li>
+<li><strong>Stampa 3D</strong>: tecnica che costruisce un oggetto sovrapponendo strati sottili di materiale, seguendo un disegno digitale.</li>
 </ul>
-<h2>Da verificare prima</h2>
+<h2 id="fonti-e-approfondimenti">Fonti e approfondimenti</h2>
 <ul>
-<li>Rete della scuola: Teachable Machine funziona nel browser e non salva le immagini, ma ha bisogno di internet per aprirsi.</li>
-<li>Durata della stampa del portachiavi sulla A1: se è lunga, avviala la sera prima a metà e completala in aula, oppure porta un oggetto già stampato e mostra solo l'ultimo strato.</li>
-<li>Numero esatto di bambini per mattina e spazio disponibile per la griglia a pavimento.</li>
+<li><a href="https://teachablemachine.withgoogle.com/">Teachable Machine</a>, lo strumento gratuito di Google per addestrare un modello dal browser senza scrivere codice.</li>
+<li><a href="https://www.csunplugged.org/">CS Unplugged</a>, raccolta di attività per insegnare l'informatica senza computer, tra cui la rappresentazione delle immagini con i numeri.</li>
+<li><a href="https://programmailfuturo.it/">Programma il Futuro</a>, iniziativa italiana per l'introduzione al pensiero computazionale nella scuola.</li>
+<li><a href="https://code.org/">Code.org</a>, attività di programmazione per bambini, molte delle quali disponibili anche senza schermo.</li>
 </ul>
-  <p class="link-indietro-guida"><a href="scuole-elementari-medie.html">&larr; Tutte le guide: scuole elementari e medie</a></p>
+  <div id="presentazione"></div>
+  <p class="link-indietro-guida"><a href="scuole-elementari-medie.html">&larr; Tutti gli articoli: scuole elementari e medie</a></p>
 </main>
 
 <footer>

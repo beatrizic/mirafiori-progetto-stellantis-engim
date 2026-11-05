@@ -3,123 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guida Intelligenza Artificiale — Mirafiori</title>
-<meta name="description" content="Guida per il laboratorio Intelligenza Artificiale, 17-18 anni: Come “ragiona” un’IA generativa, il prompt in quattro parti, i falsi e la selezione automatica.">
+<title>Intelligenza Artificiale: La macchina che indovina — Mirafiori</title>
+<meta name="description" content="Come funziona un’IA generativa, come chiedere bene, come riconoscere un falso e perché può discriminare.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="barra" id="barra"></header>
 <script src="js/nav.js"></script>
 
-<section class="hero-legale">
-  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · Guida per il formatore</p>
+<section class="hero-legale hero-articolo">
+  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · 16-19 anni</p>
   <h1>Intelligenza Artificiale</h1>
-  <p class="sub">17-18 anni · Primo Levi · 4ASA · 30/11</p>
-  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa la guida</button></p>
+  <p class="sub">La macchina che indovina</p>
+  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 18 minuti</p>
+  <p class="azioni-guida"><a class="btn-pieno" href="#presentazione">Presentazione</a> <button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
 <main class="testo-legale testo-guida">
-<p><strong>Obiettivo:</strong> escono sapendo come "ragiona" davvero un'IA generativa, come ottenere risposte migliori e verificarle, come riconoscere un contenuto falso e perché un'IA che decide sulle persone può discriminare.</p>
-<p><strong>Attrezzatura:</strong> i telefoni dei ragazzi, autorizzati dalla scuola per l'incontro · tuo portatile e proiettore · sito televoto. Per le attività con il chatbot usano un'app o un sito che funzioni senza account. Chi non vuole usarne uno sul proprio telefono lavora in coppia con un compagno.</p>
-<p><strong>Da preparare:</strong> 6 domande-trappola testate il giorno prima con lo stesso chatbot · 8 immagini (4 reali, 4 generate con IA) in una cartella Drive condivisa tramite QR · schede di ricerca per 5 squadre · scheda "Prompt in 4 parti" · 12 CV fittizi stampati con la "regola" dell'IA · estratto semplificato dell'AI Act sui sistemi di selezione del personale.</p>
-<p><strong>Attenzione:</strong> è la prima ora della mattina. L'inizio deve svegliarli, quindi si comincia con un gioco, non con una spiegazione.</p>
-<p><strong>Come leggere la guida:</strong> il testo tra virgolette è la traccia del discorso, con gli esempi già pronti. Sotto ogni domanda trovi le risposte più probabili e come rilanciare.</p>
-<h2>1 · Apertura: facciamo noi l'intelligenza artificiale</h2>
-<p>"Buongiorno. Io sono Beatrice, insegno in ENGIM e lavoro con l'intelligenza artificiale e con le regole che la governano. Prima di parlarne, però, facciamo noi l'intelligenza artificiale. Svegliatevi, che serve tutto il cervello."</p>
-<p>Scrivi alla lavagna: "Oggi a scuola il professore ha...". "Il primo banco dice la parola che secondo lui viene dopo, la più probabile, quella che direbbero tutti. Poi il secondo banco aggiunge la successiva, e così via. Niente parole strane: vince la parola più ovvia." Fai girare la frase per tutta l'aula.</p>
-<p>Alla fine leggila ad alta voce. Di solito è grammaticalmente corretta, scorre bene ed è un po' assurda.</p>
-<p>"Avete appena fatto, in piccolo, quello che fa ChatGPT. Ogni volta che vi risponde, sceglie il pezzo di parola più probabile dopo quelli precedenti, poi il successivo, poi il successivo. Lo fa velocissimo, migliaia di volte per ogni risposta. Non sa cosa ha fatto il vostro professore oggi. Non sa niente del mondo nel senso in cui lo sapete voi. Ha letto una quantità enorme di testi e ha imparato cosa di solito viene dopo cosa. E lo fa così bene che sembra pensare."</p>
-<p>Televoto, domanda 1: "Quanto usi l'IA per la scuola?" (mai / qualche volta / ogni settimana / ogni giorno).</p>
-<p>"Nel quiz che abbiamo fatto ai ragazzi ENGIM, il 96% usa l'IA. Ma solo il 38% sa cos'è un prompt. È come se quasi tutti guidassero un'auto potentissima senza sapere dove sono i freni e senza aver mai visto il libretto. Oggi vediamo i freni, il libretto e anche qualche incidente."</p>
-<h2>2 · Come funziona, e perché sbaglia</h2>
-<p>"Vi spiego tre cose su come funziona un'IA generativa. Non servono formule: bastano tre idee."</p>
-<p><strong>Prima idea: impara dai dati.</strong> "Un modello come ChatGPT è stato addestrato su una quantità di testo che nessun essere umano potrebbe leggere in mille vite: libri, siti, enciclopedie, forum, codice. Da lì ha estratto regolarità: come si costruisce una frase, quali parole stanno insieme, come si risponde a una domanda. Tutto quello che sa viene da lì. Ma anche tutti i pregiudizi che ha vengono da lì. Se nei testi su cui ha imparato gli ingegneri sono quasi sempre uomini e le infermiere quasi sempre donne, l'IA tenderà a ripeterlo. Non perché pensa che sia giusto, ma perché è la cosa più probabile."</p>
-<p><strong>Seconda idea: prevede, non sa.</strong> "Quando non conosce una risposta, un'IA generativa non vi dice quasi mai "non lo so". Produce comunque la risposta più probabile. A volte è una risposta inventata, ma scritta in modo perfetto, con sicurezza, magari con una citazione o un titolo di libro che non esiste. Si chiama allucinazione. E il problema non è che sbaglia: anche noi sbagliamo. Il problema è che sbaglia con lo stesso tono con cui dice le cose giuste, quindi dal tono non potete capire se ha ragione."</p>
-<p><strong>Terza idea: il mondo si ferma a una data.</strong> "Il modello ha imparato fino a un certo momento. Se non è collegato al web, quello che è successo dopo per lui non esiste. E anche quando cerca sul web, sceglie lui le fonti, e non sempre sono le migliori."</p>
-<p>Domanda: "Se l'IA inventa una cosa con sicurezza e voi la copiate nel tema, di chi è la colpa?"</p>
+  <nav class="indice-articolo" aria-label="Indice dell'articolo">
+    <p class="etichetta-box">In questo articolo</p>
+    <ol>
+      <li><a href="#cosa-imparerai">Cosa imparerai</a></li>
+      <li><a href="#come-funziona-unia-generativa">Come funziona un&#x27;IA generativa</a></li>
+      <li><a href="#usare-bene-lia-il-prompt-e-il-ruolo-dellallenatore">Usare bene l&#x27;IA: il prompt e il ruolo dell&#x27;allenatore</a></li>
+      <li><a href="#vero-falso-o-generato">Vero, falso o generato?</a></li>
+      <li><a href="#cosa-dice-la-legge">Cosa dice la legge</a></li>
+      <li><a href="#quando-lia-decide-sulle-persone">Quando l&#x27;IA decide sulle persone</a></li>
+      <li><a href="#il-percorso-in-aula">Il percorso in aula</a></li>
+      <li><a href="#mettilo-in-pratica">Mettilo in pratica</a></li>
+      <li><a href="#glossario">Glossario</a></li>
+      <li><a href="#fonti-e-approfondimenti">Fonti e approfondimenti</a></li>
+    </ol>
+  </nav>
+<p>Chatbot, generatori di immagini e assistenti vocali sono entrati nella vita quotidiana degli studenti molto prima che qualcuno spiegasse loro come funzionano. Nel test d'ingresso del progetto Mirafiori quasi tutti i ragazzi (96%) dichiarano di usare l'intelligenza artificiale, ma solo il 38% sa che cos'è un prompt. È come guidare un'auto potentissima senza conoscere i freni e senza aver mai aperto il libretto. Questo articolo spiega come "ragiona" davvero un'IA generativa, come usarla bene per studiare, come riconoscere un contenuto falso e perché un'IA che decide sulle persone può discriminare, anche senza che nessuno lo voglia.</p>
+<h2 id="cosa-imparerai">Cosa imparerai</h2>
 <ul>
-<li><strong>Risposta probabile:</strong> "Dell'IA" oppure "di chi l'ha programmata".</li>
-<li><strong>Rilancio:</strong> "Il professore corregge il vostro tema, non quello dell'IA. Il nome in alto è il vostro. Usare l'IA va bene, la uso anch'io ogni giorno per lavoro. Firmare senza controllare no. E vale anche fuori da scuola: un avvocato, un medico, un giornalista che copia una risposta sbagliata ne risponde lui."</li>
+<li>Come un modello linguistico costruisce una risposta, parola dopo parola, e perché sembra pensare.</li>
+<li>Da dove vengono i suoi errori: pregiudizi nei dati, allucinazioni, informazioni ferme a una certa data.</li>
+<li>Come scrivere un prompt efficace in quattro parti e usare l'IA come allenatore, non come sostituto.</li>
+<li>Un metodo per verificare immagini e notizie che potrebbero essere generate o manipolate.</li>
+<li>Cosa dicono la legge italiana sull'IA e l'AI Act europeo, in particolare su deepfake, minori e selezione del personale.</li>
+<li>Perché, quando un'IA decide sulle persone, serve sempre una persona che la controlli.</li>
 </ul>
-<h2>3 · Attività "Caccia all'errore"</h2>
-<p>"Adesso mettiamo alla prova la macchina. Il vostro compito è farla sbagliare e dimostrarlo."</p>
-<p>Coppie, con il telefono di uno dei due. Ogni coppia riceve una domanda-trappola da fare al chatbot. Esempi da testare il giorno prima:</p>
+<h2 id="come-funziona-unia-generativa">Come funziona un'IA generativa</h2>
+<h3>Una macchina che prevede la parola successiva</h3>
+<p>Un modello linguistico come quelli dietro ChatGPT, Gemini o Claude non "sa" le cose nel senso in cui le sappiamo noi. Il suo compito di base è uno solo: dato un testo, prevedere quale pezzo di testo è più probabile che venga dopo.</p>
+<p>Il testo viene spezzato in piccole unità chiamate token. Un token può essere una parola intera, una sillaba o anche un solo segno di punteggiatura. Il modello calcola, per ogni token possibile, la probabilità che sia quello giusto in quel punto della frase. Ne sceglie uno, lo aggiunge al testo e ripete il calcolo. Una risposta di poche righe è il risultato di centinaia o migliaia di questi passaggi, fatti in una frazione di secondo.</p>
+<p>Per questo la stessa domanda può dare risposte diverse. Il modello non sceglie sempre il token più probabile in assoluto: un parametro chiamato temperatura introduce una dose di variazione. Con una temperatura bassa le risposte sono più prevedibili e ripetitive; con una alta sono più varie, ma anche più a rischio di errore.</p>
+<p>Il risultato è sorprendente: testi fluidi, grammaticalmente corretti, spesso utili. Ma la fluidità non è la prova che il contenuto sia vero. È solo la prova che il modello ha imparato molto bene come suonano i testi scritti dagli esseri umani.</p>
+<h3>L'addestramento: imparare dai dati</h3>
+<p>Prima di poter rispondere, il modello viene addestrato su una quantità enorme di testo: libri, siti web, enciclopedie, forum, codice informatico. Nessun essere umano riuscirebbe a leggerne nemmeno una piccola parte in tutta la vita. Durante l'addestramento il modello estrae regolarità statistiche: quali parole stanno insieme, come si costruisce una frase, come si risponde a una domanda, come è fatto un riassunto o una lettera formale.</p>
+<p>Dopo questa prima fase, i modelli vengono di solito rifiniti con l'aiuto di persone che valutano le risposte e indicano quali sono più utili, corrette e sicure. È qui che il modello impara a seguire le istruzioni e a rifiutare alcune richieste.</p>
+<p>Tutto ciò che il modello è in grado di fare viene da questi dati. E questo vale anche per i suoi difetti.</p>
+<h3>I pregiudizi nei dati</h3>
+<p>Se nei testi su cui un modello ha imparato gli ingegneri sono quasi sempre uomini e le infermiere quasi sempre donne, il modello tenderà a riprodurre questa associazione. Non perché "pensi" che sia giusto, ma perché è la continuazione statisticamente più probabile.</p>
+<p>Lo stesso accade con i generatori di immagini: se si chiede "un medico" o "un amministratore delegato" senza altre indicazioni, il risultato rispecchia spesso gli stereotipi più diffusi nei dati di partenza. Questo fenomeno si chiama bias, cioè distorsione sistematica. Le aziende cercano di correggerlo, ma non è possibile eliminarlo del tutto, perché i dati vengono da un mondo che a sua volta non è neutro.</p>
+<p>Per chi usa l'IA la conseguenza pratica è semplice: una risposta "media" non è una risposta neutrale. Riflette ciò che compare più spesso nei dati, non necessariamente ciò che è giusto o vero.</p>
+<h3>Le allucinazioni</h3>
+<p>Quando non ha l'informazione richiesta, un modello generativo raramente risponde "non lo so". Produce comunque la continuazione più probabile. A volte è una risposta inventata, ma scritta in modo impeccabile, con tono sicuro, magari corredata da una citazione, un titolo di libro o una sentenza che non esistono. Questo fenomeno si chiama allucinazione.</p>
+<p>Il problema non è che il modello sbagli: anche le persone sbagliano. Il problema è che sbaglia con lo stesso tono con cui dice le cose corrette, quindi dallo stile della risposta non si capisce se è affidabile.</p>
+<p>Le conseguenze possono essere serie. Nel caso Mata contro Avianca, negli Stati Uniti, nel 2023 alcuni avvocati sono stati sanzionati per aver depositato in tribunale un atto che citava sentenze inesistenti, inventate da ChatGPT. Non avevano verificato. La responsabilità è rimasta loro, non della macchina.</p>
+<p>Le allucinazioni sono più frequenti in alcune situazioni tipiche:</p>
 <ul>
-<li>un calcolo con più passaggi e numeri grandi;</li>
-<li>una domanda su un fatto locale molto preciso (la storia del vostro quartiere, un evento della scuola);</li>
-<li>"Dammi tre libri con autore e anno su [argomento di nicchia]" (spesso inventa titoli o autori);</li>
-<li>una domanda con una premessa falsa ("Perché Torino è la capitale d'Italia?").</li>
+<li>domande su fatti molto specifici o locali, poco presenti nei dati (la storia di un quartiere, un evento di una scuola);</li>
+<li>richieste di riferimenti precisi, come libri, autori, anni, articoli di legge;</li>
+<li>calcoli con molti passaggi o numeri grandi;</li>
+<li>domande con una premessa falsa, per esempio "Perché Torino è la capitale d'Italia?". In questi casi il modello tende ad assecondare la domanda invece di correggerla.</li>
 </ul>
-<p>Consegna: "Trovate l'errore e dimostratelo con una fonte vera, cercata da voi sul web. Non basta dire che è sbagliato: dovete mostrare dove si trova la risposta giusta." Ogni coppia racconta in poche frasi cosa ha trovato.</p>
-<p>"Avete notato qual è la domanda più pericolosa? Quella con la premessa falsa. Se chiedete "perché succede una cosa" che non succede, spesso l'IA vi asseconda invece di correggervi. Quindi il primo errore, molte volte, è nella domanda. E questo ci porta alla prossima parte: imparare a chiedere."</p>
-<h2>4 · Attività "Prompt da 30 e lode"</h2>
-<p>"Un prompt è semplicemente quello che scrivete all'IA. Ma la qualità di quello che ricevete dipende quasi tutta da come chiedete. Un buon prompt ha quattro parti." Scrivile alla lavagna:</p>
+<h3>Il mondo si ferma a una data</h3>
+<p>Ogni modello ha imparato fino a un certo momento, detto data limite delle conoscenze. Se non è collegato al web, quello che è successo dopo per lui non esiste: leggi nuove, risultati sportivi, prezzi, nomine. Anche quando può cercare online, è il modello a scegliere quali pagine leggere, e non sempre sceglie le fonti migliori.</p>
+<p>Quindi, per tutto ciò che cambia nel tempo, la regola è controllare la data e la fonte delle informazioni.</p>
+<h2 id="usare-bene-lia-il-prompt-e-il-ruolo-dellallenatore">Usare bene l'IA: il prompt e il ruolo dell'allenatore</h2>
+<h3>Il prompt in quattro parti</h3>
+<p>Un prompt è semplicemente il testo che si scrive all'IA. La qualità della risposta dipende in larga misura da come si chiede. Un prompt vago, come "spiegami la Rivoluzione francese", produce una risposta generica, lunga e poco utile. Un prompt costruito bene ha quattro parti.</p>
 <ol>
-<li><strong>Ruolo:</strong> chi deve essere l'IA. "Sei un professore di storia."</li>
-<li><strong>Contesto:</strong> chi siete voi e a cosa vi serve. "Sto preparando l'interrogazione di quarta liceo sulla Rivoluzione francese."</li>
-<li><strong>Compito:</strong> cosa deve fare, in modo preciso. "Fammi 5 domande che potrebbero farmi, dalla più facile alla più difficile."</li>
-<li><strong>Formato:</strong> come volete la risposta. "Per ogni domanda dammi una risposta in tre righe e dimmi dove posso verificarla."</li>
+<li><strong>Ruolo</strong>: chi deve essere l'IA. Per esempio: "Sei un professore di storia delle superiori."</li>
+<li><strong>Contesto</strong>: chi è l'utente e a cosa serve la risposta. "Sto preparando un'interrogazione di quarta sulla Rivoluzione francese."</li>
+<li><strong>Compito</strong>: cosa deve fare, in modo preciso. "Fammi cinque domande che potrebbero farmi, dalla più facile alla più difficile."</li>
+<li><strong>Formato</strong>: come deve essere la risposta. "Per ogni domanda dammi una risposta di tre righe e indicami dove posso verificarla."</li>
 </ol>
-<p>Consegna in coppia: "Scegliete un argomento che state studiando davvero. Prima scrivete il prompt pigro, quello che scrivereste di solito: "spiegami la Rivoluzione francese". Poi quello in quattro parti. Confrontate le due risposte."</p>
-<p>Domanda alla classe: "Quale delle due vi aiuta a studiare, e quale vi fa solo copiare?" Fai emergere che il prompt migliore non chiede il testo finito, ma domande, schemi, esempi, spiegazioni con parole diverse. "L'IA usata bene è un allenatore, non un sostituto. Se le fate fare il compito, vi allenate a copiare. Se le fate fare le domande, vi allenate a rispondere."</p>
-<p>Televoto, domanda 2: "Useresti l'IA per scrivere il tema?" Subito dopo, domanda 3: "E se il professore usasse l'IA per correggere il tuo tema?"</p>
-<p>Il ribaltamento divide quasi sempre la classe. Lascia discutere. Di solito chi ha detto sì alla prima dice no alla seconda. "Interessante. Quindi l'IA va bene quando la usiamo noi e ci preoccupa quando la usano su di noi. Tenete a mente questa sensazione: è esattamente il punto dell'ultima attività."</p>
-<h2>5 · Ricerca a squadre: "Vero, falso o generato?"</h2>
-<p>"Ora lavoriamo sull'altro lato dell'IA: non quello che usate voi, ma quello che vi arriva. Cinque squadre, cinque missioni. Vale solo una fonte che potete mostrare."</p>
-<p>Ogni squadra lavora dai telefoni e ha una scheda con la missione:</p>
+<p>La differenza tra le due versioni è evidente appena si provano una accanto all'altra. La seconda produce materiale su misura, verificabile e utile per studiare.</p>
+<p>Alcune buone abitudini completano il metodo:</p>
+<ul>
+<li>chiedere esplicitamente le fonti e poi controllarle davvero;</li>
+<li>chiedere al modello di segnalare quando non è sicuro;</li>
+<li>spezzare un compito complesso in più richieste successive;</li>
+<li>non inserire mai dati personali propri o altrui (nomi, indirizzi, numeri di telefono, informazioni sulla salute) in un servizio di cui non si conoscono le condizioni d'uso.</li>
+</ul>
+<h3>Allenatore, non sostituto</h3>
+<p>Il punto più importante non è tecnico ma di metodo. Se si chiede all'IA di scrivere il compito, ci si allena a copiare. Se le si chiede di fare domande, creare schemi, proporre esempi, spiegare lo stesso concetto con parole diverse o correggere un testo scritto da sé, ci si allena a ragionare e a rispondere.</p>
+<p>All'interrogazione, all'esame orale, al colloquio di lavoro o all'università non c'è il chatbot: c'è la persona. Usata come allenatore, l'IA è uno strumento di studio potentissimo; usata come sostituto, fa perdere proprio le competenze che servono.</p>
+<p>Molte università italiane si sono date linee guida sull'uso dell'IA. In generale non la vietano, ma chiedono trasparenza: se la si usa, va dichiarato, e il lavoro deve restare dello studente. È probabile che sia la stessa regola che si troverà anche nel mondo del lavoro.</p>
+<h3>Quando l'IA la usano gli altri</h3>
+<p>C'è un'asimmetria che vale la pena notare. Molti studenti trovano accettabile usare l'IA per scrivere un tema, ma si sentono a disagio all'idea che un professore la usi per correggerlo. L'IA sembra uno strumento comodo quando la usiamo noi, e diventa preoccupante quando viene usata per valutare noi. Questa sensazione è la chiave per capire perché le leggi distinguono tra gli usi dell'IA in base al rischio per le persone.</p>
+<h2 id="vero-falso-o-generato">Vero, falso o generato?</h2>
+<h3>Perché l'occhio non basta più</h3>
+<p>Le immagini generate con l'IA hanno avuto a lungo difetti riconoscibili: mani con troppe dita, scritte deformate, ombre incoerenti, orecchini diversi, sfondi che si sciolgono. Questi indizi esistono ancora, ma stanno diventando rari, perché i modelli migliorano rapidamente. Lo stesso vale per i video e per le voci clonate, che oggi possono imitare una persona reale a partire da pochi secondi di registrazione.</p>
+<p>Per questo è più utile un metodo che una lista di difetti da cercare.</p>
+<h3>Un metodo in quattro domande</h3>
 <ol>
-<li><strong>Squadra Immagini:</strong> "Tra le 8 immagini della cartella condivisa, quali sono generate con l'IA? Usate la ricerca inversa per immagini (Google Lens o TinEye) e gli indizi visivi. Dimostrate ogni risposta."</li>
-<li><strong>Squadra Deepfake:</strong> "Trovate un caso reale, in Italia, di deepfake o fotomontaggio con IA che ha coinvolto studenti o una scuola. Cosa è successo e cosa hanno deciso le autorità?"</li>
-<li><strong>Squadra Legge:</strong> "Cosa dice la legge italiana sull'IA del 2025 sui minori di 14 anni e sulla diffusione di contenuti falsi generati con IA?"</li>
-<li><strong>Squadra Scuola:</strong> "Trovate il regolamento sull'uso dell'IA di un'università italiana. Cosa permette agli studenti e cosa vieta?"</li>
-<li><strong>Squadra Etichette:</strong> "Le grandi piattaforme (Instagram, TikTok, YouTube) obbligano a segnalare i contenuti creati con IA? Come?"</li>
+<li><strong>Chi l'ha pubblicata per primo, e quando?</strong> Un contenuto senza una fonte originaria identificabile merita sospetto.</li>
+<li><strong>Esiste altrove?</strong> La ricerca inversa per immagini, con strumenti come Google Lens o TinEye, permette di trovare versioni precedenti, l'originale da cui è stato tratto un fotomontaggio o articoli che lo hanno già smentito.</li>
+<li><strong>Ci sono indizi visivi o sonori?</strong> Mani, scritte, luci, riflessi, labbra non sincronizzate con la voce. Utili quando ci sono; la loro assenza però non prova nulla.</li>
+<li><strong>Ci sono etichette o credenziali?</strong> Alcune aziende inseriscono filigrane invisibili nei contenuti generati, come SynthID, e lo standard C2PA permette di allegare credenziali che documentano l'origine di un file. Anche le piattaforme social chiedono di segnalare i contenuti creati con IA. Questi strumenti però non coprono tutte le immagini e dipendono anche dall'onestà di chi pubblica: l'assenza di un'etichetta non dimostra che un contenuto sia autentico.</li>
 </ol>
-<p>Ogni squadra prepara la risposta in due frasi, la fonte, e un consiglio per un ragazzo della loro età. Poi la presenta.</p>
-<p><strong>Cosa dici dopo ogni presentazione</strong></p>
+<h3>I deepfake e il danno alle persone</h3>
+<p>Un deepfake è un'immagine, un video o un audio falsificato con l'IA per far sembrare che una persona reale abbia detto o fatto qualcosa che non ha mai detto o fatto. La tecnologia è diventata facilissima da usare: esistono app che, partendo da una foto presa da un profilo social, generano immagini umilianti o di nudo.</p>
+<p>Per chi viene colpito le conseguenze sono pesanti, e la diffusione è rapidissima: un'immagine inviata in un gruppo può raggiungere centinaia di persone in poco tempo. Ogni inoltro allarga il danno. Chi riceve un contenuto del genere ha tre scelte concrete e alla portata di tutti: non inoltrarlo, non commentarlo, segnalarlo a un adulto di fiducia o alla piattaforma.</p>
+<h2 id="cosa-dice-la-legge">Cosa dice la legge</h2>
+<h3>La legge italiana sull'intelligenza artificiale</h3>
+<p>La legge 23 settembre 2025, n. 132, in vigore dal 10 ottobre 2025, è la prima legge italiana dedicata all'IA. Due punti riguardano da vicino i ragazzi.</p>
 <ul>
-<li><strong>Dopo Immagini:</strong> "Quante ne avete indovinate? Gli indizi classici, come le mani con sei dita o le scritte deformate, stanno sparendo, perché i modelli migliorano ogni mese. Per questo l'occhio non basta più. Serve il metodo: da dove viene questa immagine? Chi l'ha pubblicata per primo? Esiste altrove?"</li>
-<li><strong>Dopo Deepfake:</strong> "In questi casi la tecnologia è facilissima da usare, e le conseguenze per chi viene colpito sono pesantissime. Per chi la crea e la diffonde, invece, non è più uno scherzo: è un reato."</li>
-<li><strong>Dopo Legge:</strong> commenta quello che hanno trovato, verificando con il testo. "La legge italiana è arrivata dopo quella europea e si concentra su alcuni punti molto concreti per voi, tra cui la protezione dei minori e la diffusione di falsi."</li>
-<li><strong>Dopo Scuola:</strong> "Notate che le università non vietano l'IA in generale. Chiedono trasparenza: se la usate, dovete dirlo, e il lavoro deve restare vostro. È probabilmente la regola che troverete anche all'università e nel lavoro."</li>
-<li><strong>Dopo Etichette:</strong> "Le etichette esistono, ma dipendono dall'onestà di chi pubblica e dai controlli automatici, che non sono perfetti. Quindi l'assenza di etichetta non vuol dire che un contenuto è vero."</li>
+<li><strong>Minori di 14 anni (art. 4)</strong>: per accedere alle tecnologie di intelligenza artificiale serve il consenso di chi esercita la responsabilità genitoriale.</li>
+<li><strong>Deepfake (art. 26)</strong>: introduce nel codice penale l'articolo 612-quater, "Illecita diffusione di contenuti generati o alterati con sistemi di intelligenza artificiale". È punito con la reclusione da uno a cinque anni chi cagiona un danno ingiusto a una persona diffondendo senza il suo consenso immagini, video o voci falsificati o alterati con l'IA e idonei a ingannare sulla loro genuinità.</li>
 </ul>
-<h2>6 · Attività "Il selezionatore automatico"</h2>
-<p>"Ultimo scenario, il più serio, e quello che vi riguarderà presto. Un'azienda riceve mille candidature per venti posti. Nessuno ha il tempo di leggerle tutte, quindi usa un'IA che sceglie le venti da chiamare. L'IA ha imparato guardando chi l'azienda ha assunto negli ultimi dieci anni: le persone che sono state assunte e sono andate bene, lei le considera il modello da cercare."</p>
-<p>Gruppi da 4. Ogni gruppo riceve 12 CV fittizi e la "regola" che l'IA ha imparato dai dati passati. La regola contiene un bias nascosto: premia chi ha fatto un certo sport, chi non ha pause nel curriculum, chi ha un nome di un certo tipo.</p>
-<p>Consegna: "Siete l'IA. Applicate la regola e scegliete i 4 candidati da chiamare. Poi guardate chi è stato scartato e capite perché."</p>
-<p><strong>Discussione</strong></p>
+<p>Questo si aggiunge all'articolo 612-ter del codice penale, introdotto nel 2019, che punisce la diffusione di immagini o video sessualmente espliciti senza il consenso della persona rappresentata, anche da parte di chi li ha ricevuti e li diffonde per danneggiarla. In altre parole: creare o inoltrare un fotomontaggio offensivo non è uno scherzo tecnologico, ma può essere un reato.</p>
+<h3>L'AI Act europeo</h3>
+<p>Il Regolamento UE 2024/1689, chiamato AI Act, è la prima legge al mondo così ampia sull'intelligenza artificiale. Non regola la tecnologia in sé, ma i suoi usi, classificandoli per livello di rischio.</p>
 <ul>
-<li>"Chi è stato penalizzato?" Di solito emergono le donne con una pausa per maternità, chi ha un nome straniero, chi ha fatto un percorso non lineare. "L'IA non era cattiva, e nessuno l'ha programmata per discriminare. Ha fatto esattamente quello che le era stato chiesto: trovare persone simili a quelle del passato. Ma se il passato era ingiusto, l'IA copia l'ingiustizia, e la applica a mille persone in un secondo, senza che nessuno se ne accorga."</li>
-<li>Racconta il caso reale: "Nel 2018 è emerso che Amazon aveva abbandonato un sistema sperimentale di selezione dei curriculum. Penalizzava i CV che contenevano la parola "femminile", per esempio "capitana della squadra di calcio femminile". Aveva imparato da dieci anni di assunzioni in un settore quasi tutto maschile. Gli ingegneri hanno provato a correggerlo, ma alla fine l'hanno abbandonato, perché non potevano essere sicuri che non trovasse altri modi per discriminare."</li>
+<li><strong>Rischio inaccettabile</strong>: alcune pratiche sono vietate, con divieti in applicazione dal 2 febbraio 2025. Tra queste, i sistemi che riconoscono le emozioni delle persone sul luogo di lavoro e negli istituti di istruzione e quelli che assegnano un punteggio sociale alle persone in base al loro comportamento.</li>
+<li><strong>Alto rischio</strong>: sono ammessi, ma con obblighi severi. Nell'elenco rientrano i sistemi usati nell'istruzione (per esempio per valutare gli studenti o decidere l'ammissione) e quelli per la selezione e la gestione del personale. Chi li sviluppa e chi li usa deve garantire dati di qualità, documentazione, controlli contro le discriminazioni e supervisione umana. Con il pacchetto "Digital Omnibus" approvato nel 2026, gran parte di questi obblighi è stata rinviata al 2 dicembre 2027.</li>
+<li><strong>Rischio limitato</strong>: valgono soprattutto obblighi di trasparenza. Per esempio, una persona deve sapere quando sta interagendo con un chatbot, e i contenuti generati o manipolati con l'IA vanno resi riconoscibili.</li>
+<li><strong>Rischio minimo</strong>: la grande maggioranza degli usi quotidiani, come i filtri antispam, non ha obblighi specifici.</li>
 </ul>
-<p>"Per questo l'Unione Europea ha approvato una legge, l'AI Act. È la prima legge al mondo così ampia sull'intelligenza artificiale, e funziona per livelli di rischio. Alcune cose sono vietate del tutto: per esempio un'IA che riconosce le vostre emozioni a scuola o sul lavoro, o che dà un punteggio sociale alle persone. Altre sono considerate ad alto rischio, e la selezione del personale è tra queste. Chi usa un sistema così deve controllarlo, documentarlo, verificare che non discrimini, e ci deve sempre essere una persona che può guardare la decisione e cambiarla."</p>
-<p>Domanda: "Secondo voi è giusto che sia vietato riconoscere le emozioni a scuola, ma permesso, con controlli, selezionare i CV?" Lascia discutere: non c'è una risposta unica, ma la discussione fa capire la logica del rischio.</p>
-<h2>7 · Chiusura</h2>
-<p>Televoto, domanda 4: "Accetteresti di essere scartato da un'IA senza che una persona veda il tuo CV?" Commenta il risultato e collegalo alla regola del controllo umano.</p>
-<p>Le tre frasi alla lavagna:</p>
+<p>La logica è che più un sistema può incidere sui diritti e sul futuro di una persona, più deve essere controllato.</p>
+<h2 id="quando-lia-decide-sulle-persone">Quando l'IA decide sulle persone</h2>
+<h3>Il selezionatore automatico</h3>
+<p>Immaginiamo un'azienda che riceve mille candidature per venti posti. Nessuno ha il tempo di leggerle tutte, quindi si affida a un sistema di IA che sceglie le persone da chiamare al colloquio. Il sistema ha imparato osservando chi l'azienda ha assunto negli ultimi dieci anni: considera "buoni" i profili simili a quelli delle persone assunte e che hanno fatto carriera.</p>
+<p>Sembra ragionevole. Ma se in passato l'azienda ha assunto soprattutto uomini, o persone provenienti da certe scuole, o con percorsi senza interruzioni, il sistema imparerà a preferire esattamente questi profili. Non perché qualcuno lo abbia programmato per discriminare, ma perché ha fatto ciò che gli era stato chiesto: trovare persone simili a quelle del passato. Se il passato era ingiusto, l'IA copia l'ingiustizia e la applica a migliaia di persone in pochi secondi, senza che nessuno se ne accorga.</p>
+<h3>Il caso Amazon</h3>
+<p>Nel 2018 Reuters ha rivelato che Amazon aveva abbandonato un sistema sperimentale per valutare i curriculum. Il sistema penalizzava i CV che contenevano la parola "women's", "femminile", come in "capitana della squadra di calcio femminile". Aveva imparato da anni di assunzioni in un settore tecnologico in cui gli uomini erano la grande maggioranza. Gli ingegneri hanno provato a correggerlo, ma alla fine il progetto è stato abbandonato perché non era possibile garantire che il sistema non trovasse altri modi per discriminare.</p>
+<h3>Le variabili proxy</h3>
+<p>Il caso Amazon mostra un problema sottile. Si potrebbe pensare che basti togliere dai dati il genere, l'età o la nazionalità per avere un sistema imparziale. Non è così. L'IA può ricostruire queste informazioni da altri indizi, chiamati variabili proxy: il nome, lo sport praticato, la scuola frequentata, il quartiere di residenza, le pause nel curriculum. Una pausa di qualche anno, per esempio, è più frequente nei percorsi delle donne che hanno avuto figli. Se il sistema penalizza le pause, finisce per penalizzare le donne senza mai "vedere" il genere.</p>
+<p>Per questo la neutralità di un sistema non si dichiara: si verifica, misurando i suoi risultati su gruppi diversi di persone.</p>
+<h3>Il controllo umano</h3>
+<p>La risposta delle regole europee a questi rischi è il controllo umano. Il GDPR, all'articolo 22, stabilisce che una persona ha il diritto di non essere sottoposta a una decisione basata unicamente su un trattamento automatizzato quando questa produce effetti giuridici o la incide in modo significativo, come l'esclusione da una selezione. Sono previste eccezioni, ma anche in quei casi la persona deve poter ottenere l'intervento di un essere umano, esprimere la propria opinione e contestare la decisione. L'AI Act rafforza questo principio per tutti i sistemi ad alto rischio.</p>
+<p>Il controllo umano non è una formalità. Significa che una persona competente deve poter capire come il sistema è arrivato al risultato, accorgersi degli errori e cambiare la decisione.</p>
+<h2 id="il-percorso-in-aula">Il percorso in aula</h2>
+<ol>
+<li><strong>Il gioco della parola più probabile.</strong> La classe costruisce una frase aggiungendo, a turno, la parola più ovvia. Il risultato è scorrevole e un po' assurdo, ed è il modo più rapido per capire come lavora un modello linguistico.</li>
+<li><strong>Come funziona e perché sbaglia.</strong> Una spiegazione senza formule su addestramento, probabilità, bias, allucinazioni e data limite, collegata all'uso che i ragazzi fanno dell'IA per la scuola.</li>
+<li><strong>Caccia all'errore.</strong> In coppia, gli studenti pongono a un chatbot domande costruite per farlo sbagliare e devono dimostrare l'errore con una fonte trovata da loro.</li>
+<li><strong>Prompt a confronto.</strong> Ogni coppia scrive su un argomento che sta studiando prima un prompt generico, poi uno in quattro parti, e confronta le risposte. Segue un voto anonimo sull'uso dell'IA per scrivere e per correggere i compiti.</li>
+<li><strong>Ricerca a squadre.</strong> Cinque squadre indagano su immagini vere e generate, su un caso reale di deepfake, sulla legge italiana, sulle regole di un'università e sulle etichette dei social. Vale solo una fonte che si può mostrare.</li>
+<li><strong>Il selezionatore automatico.</strong> In gruppo, gli studenti fanno la parte dell'IA e applicano a una serie di curriculum fittizi una regola appresa dal passato. Scoprono chi viene scartato e perché, e discutono il caso Amazon e la logica dell'AI Act.</li>
+<li><strong>Chiusura.</strong> Un ultimo voto sulla possibilità di essere scartati da un'IA senza che una persona veda il proprio CV, tre idee da portare a casa e un biglietto anonimo su come cambierà il proprio uso dell'IA.</li>
+</ol>
+<h2 id="mettilo-in-pratica">Mettilo in pratica</h2>
+<ol>
+<li>Prima di fidarti di una risposta, chiediti se riguarda un fatto preciso, recente o locale: in questi casi verifica sempre.</li>
+<li>Scrivi i prompt in quattro parti: ruolo, contesto, compito, formato.</li>
+<li>Chiedi all'IA di farti domande, schemi ed esempi invece di farti scrivere il lavoro.</li>
+<li>Chiedi le fonti e aprile davvero.</li>
+<li>Non inserire mai dati personali tuoi o di altri in un chatbot.</li>
+<li>Se usi l'IA per un compito, dichiaralo.</li>
+<li>Davanti a un'immagine o un video sospetto, cerca la fonte originale e usa la ricerca inversa prima di condividerlo.</li>
+<li>Se ricevi un fotomontaggio offensivo su qualcuno, non inoltrarlo, non commentarlo e segnalalo.</li>
+</ol>
+<h2 id="glossario">Glossario</h2>
 <ul>
-<li>L'IA prevede la risposta più probabile: non sa, e a volte inventa.</li>
-<li>Un buon prompt ha ruolo, contesto, compito e formato.</li>
-<li>Un'IA che decide sulle persone deve avere sempre una persona che la controlla.</li>
+<li><strong>Intelligenza artificiale generativa</strong>: sistemi capaci di produrre testi, immagini, audio o video nuovi a partire da una richiesta.</li>
+<li><strong>Modello linguistico</strong>: sistema di IA addestrato su grandi quantità di testo per prevedere il token successivo in una sequenza.</li>
+<li><strong>Token</strong>: unità minima di testo elaborata dal modello; può essere una parola, una parte di parola o un segno.</li>
+<li><strong>Addestramento</strong>: fase in cui il modello estrae regolarità statistiche da un grande insieme di dati.</li>
+<li><strong>Temperatura</strong>: parametro che regola quanto le risposte del modello sono prevedibili o variabili.</li>
+<li><strong>Bias</strong>: distorsione sistematica nei risultati di un sistema, spesso ereditata dai dati di addestramento.</li>
+<li><strong>Allucinazione</strong>: risposta inventata ma presentata con sicurezza, come se fosse vera.</li>
+<li><strong>Data limite delle conoscenze</strong>: momento oltre il quale il modello non ha informazioni, salvo ricerche sul web.</li>
+<li><strong>Prompt</strong>: il testo con cui si formula una richiesta all'IA.</li>
+<li><strong>Deepfake</strong>: contenuto audio, video o immagine falsificato con l'IA per far credere che una persona reale abbia detto o fatto qualcosa.</li>
+<li><strong>Ricerca inversa per immagini</strong>: ricerca che parte da un'immagine per trovare dove compare online e le sue versioni precedenti.</li>
+<li><strong>Variabile proxy</strong>: informazione apparentemente neutra che permette di ricostruire indirettamente una caratteristica sensibile, come il genere.</li>
+<li><strong>Controllo umano</strong>: possibilità, per una persona competente, di verificare e modificare la decisione presa da un sistema automatico.</li>
+<li><strong>AI Act</strong>: Regolamento UE 2024/1689, che disciplina l'intelligenza artificiale in base al livello di rischio.</li>
 </ul>
-<p>Biglietto di uscita anonimo: "Un modo in cui userai l'IA diversamente da oggi."</p>
-<h2>Situazioni da gestire</h2>
+<h2 id="fonti-e-approfondimenti">Fonti e approfondimenti</h2>
 <ul>
-<li><strong>"Allora l'IA è inutile":</strong> "Al contrario, è utilissima. Ma è come un collega bravissimo che a volte mente con sicurezza. La usate, e controllate."</li>
-<li><strong>"I prof non se ne accorgono":</strong> non entrare nel ruolo del controllore. "Forse no. Ma all'esame orale, al colloquio di lavoro, all'università, ci siete voi, non il chatbot."</li>
-<li><strong>Il chatbot non sbaglia sulle domande-trappola:</strong> succede, i modelli migliorano. Trasformalo in discussione: "Questa volta ha ragione. Come fate a saperlo senza controllare?"</li>
-<li><strong>Una squadra non trova la fonte:</strong> suggerisci la parola chiave giusta ("deepfake scuola", "linee guida IA università") e sottolinea che saper cercare è già metà del lavoro.</li>
-<li><strong>Rete assente:</strong> le attività sui prompt e sul selezionatore funzionano su carta. La caccia all'errore e la ricerca le fai tu, proiettando dal tuo portatile.</li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Regolamento (UE) 2024/1689 sull'intelligenza artificiale (AI Act), EUR-Lex</a></li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">Regolamento (UE) 2016/679, GDPR, in particolare l'art. 22, EUR-Lex</a></li>
+<li>Legge 23 settembre 2025, n. 132, "Disposizioni e deleghe al Governo in materia di intelligenza artificiale", Gazzetta Ufficiale (<a href="https://www.normattiva.it">Normattiva</a>)</li>
+<li>Codice penale, artt. 612-ter e 612-quater</li>
+<li>Pacchetto "Digital Omnibus" sull'AI Act, approvato nel 2026</li>
+<li>Reuters, ottobre 2018: l'inchiesta sul sistema sperimentale di selezione dei curriculum abbandonato da Amazon</li>
+<li>Caso Mata contro Avianca, Tribunale distrettuale degli Stati Uniti per il distretto meridionale di New York, 2023</li>
+<li><a href="https://www.garanteprivacy.it">Garante per la protezione dei dati personali</a>, sezione su intelligenza artificiale e deepfake</li>
+<li>Strumenti: Google Lens, TinEye, standard C2PA per le credenziali dei contenuti</li>
 </ul>
-<h2>Da verificare prima</h2>
-<ul>
-<li>Con la scuola: conferma scritta, anche via mail, che per l'incontro i ragazzi possono usare il telefono, e copertura di rete o dati in aula.</li>
-<li>Testare le 6 domande-trappola e le 8 immagini il giorno prima.</li>
-<li>AI Act (Reg. UE 2024/1689): art. 5 sui divieti, allegato III sulla selezione del personale, data di applicazione degli obblighi per i sistemi ad alto rischio (è stato proposto un rinvio).</li>
-<li>L. 132/2025 sull'IA: articoli sui minori di 14 anni e sulla diffusione di contenuti generati o alterati con IA.</li>
-<li>Caso Amazon 2018, fonte Reuters.</li>
-</ul>
-  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutte le guide: scuole superiori</a></p>
+  <div id="presentazione">
+  <aside class="box-presentazione" aria-label="Presentazione">
+    <div>
+      <p class="etichetta-box">Presentazione usata in aula</p>
+      <p class="titolo-box">Intelligenza Artificiale · 20 slide</p>
+      <p class="nota-box">File PowerPoint, 2,7 MB. Si apre anche con Google Presentazioni e Keynote. Le note del relatore contengono indicazioni per chi conduce.</p>
+    </div>
+    <a class="btn-pieno" href="presentazioni/intelligenza-artificiale.pptx" download>Scarica la presentazione</a>
+  </aside></div>
+  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutti gli articoli: scuole superiori</a></p>
 </main>
 
 <footer>

@@ -3,136 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guida Digital Printing — Mirafiori</title>
-<meta name="description" content="Guida per il laboratorio Digital Printing, 18-19 anni: Come funziona la stampa 3D, dove si usa nel lavoro e un prototipo progettato per un cliente.">
+<title>Digital Printing: Dal file all’oggetto — Mirafiori</title>
+<meta name="description" content="Come funziona la stampa 3D, dove si usa nel lavoro, come si progetta un pezzo e quando conviene davvero.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="barra" id="barra"></header>
 <script src="js/nav.js"></script>
 
-<section class="hero-legale">
-  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · Guida per il formatore</p>
+<section class="hero-legale hero-articolo">
+  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · 16-19 anni</p>
   <h1>Digital Printing</h1>
-  <p class="sub">18-19 anni · Primo Levi · 5B · 23/11</p>
-  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa la guida</button></p>
+  <p class="sub">Dal file all’oggetto</p>
+  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 14 minuti</p>
+  <p class="azioni-guida"><a class="btn-pieno" href="#presentazione">Presentazione</a> <button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
 <main class="testo-legale testo-guida">
-<p><strong>Obiettivo:</strong> escono sapendo come funziona una stampante 3D e dove si usa davvero, avendo progettato un prototipo su misura per un cliente e sapendo stimarne tempo, materiale e costo.</p>
-<p><strong>Vincolo:</strong> tu esci prima della fine del laboratorio. La stampante deve aver finito in tempo per smontarla. L'ultima parte la classe resta con il docente e fa l'attività autonoma "Versione 2", descritta in fondo: va concordata prima con la scuola.</p>
-<p><strong>Attrezzatura:</strong> Bambu Lab A1 con bobina di PLA, piatto pulito, spatola e prolunga · tuo portatile con Bambu Studio e proiettore · 4-5 oggetti già stampati da far girare, compreso uno fallito con i fili. Le ricerche si fanno dai telefoni dei ragazzi. Per Tinkercad servono invece dei PC: dal telefono non è utilizzabile. Chiedi alla scuola il laboratorio informatico.</p>
-<p><strong>Tinkercad senza email:</strong> gli studenti entrano con il codice classe e un soprannome, senza creare un account. Prepara la classe la settimana prima e prova l'accesso da un PC della scuola.</p>
-<p><strong>Da stampare:</strong> 6 brief cliente · schede di ricerca per 5 squadre · 6 schede "Versione 2". Prepara anche una cartella Drive dove i gruppi caricano gli STL.</p>
-<p><strong>Come leggere la guida:</strong> il testo tra virgolette è la traccia del discorso, con gli esempi già pronti. Sotto ogni domanda trovi le risposte più probabili e come rilanciare.</p>
-<h2>1 · Apertura: un oggetto che nasce davanti a voi</h2>
-<p>Avvia la stampa di un oggetto piccolo davanti a loro, prima di presentarti. Poi fai girare gli oggetti già stampati, compreso quello fallito.</p>
-<p>"Buongiorno. Io sono Beatrice, insegno in ENGIM e oggi sono qui per il progetto che ENGIM porta avanti con Stellantis. Avete visto che ho acceso una macchina prima ancora di salutarvi. Non è maleducazione: è che lei ci mette più tempo di me. Mentre parliamo, sta costruendo un oggetto che fra un po' terrete in mano."</p>
-<p>"Intanto vi faccio girare alcune cose che ha già fatto. Guardatele bene, toccatele, giratele. E ditemi tre cose: quanto pesano, quanto pensate che siano costate, quanto tempo ci ha messo la macchina a farle."</p>
-<p>Raccogli le stime alla lavagna. Di solito sovrastimano il costo e sottostimano il tempo.</p>
-<p>"Questo portachiavi pesa pochi grammi e il materiale costa pochi centesimi. Ma la macchina ci ha messo quasi mezz'ora. Ecco la prima regola della stampa 3D, e ve la scrivo perché tornerà alla fine: il materiale costa poco, il tempo costa tanto."</p>
-<p>"E questo, con tutti i fili che pendono? È un errore. Non l'ho buttato apposta per voi, perché da un errore si impara più che da un oggetto perfetto. Fra poco saprete perché è successo, e saprete evitarlo."</p>
-<h2>2 · Come funziona, davvero</h2>
-<p>"La stampa 3D è una tecnologia che sembra nuovissima, ma ha quasi quarant'anni. Le prime stampanti sono nate negli anni Ottanta, erano enormi, costavano come un appartamento e le usavano solo le grandi aziende per i prototipi. Poi i brevetti sono scaduti, sono arrivati progetti open source e oggi una stampante come questa costa meno di uno smartphone di fascia alta. È successo quello che succede a molte tecnologie: prima è un privilegio, poi diventa uno strumento di tutti."</p>
-<p>"Il processo ha sempre tre passaggi." Scrivi alla lavagna: <strong>MODELLO → SLICER → STAMPA</strong>.</p>
+  <nav class="indice-articolo" aria-label="Indice dell'articolo">
+    <p class="etichetta-box">In questo articolo</p>
+    <ol>
+      <li><a href="#cosa-imparerai">Cosa imparerai</a></li>
+      <li><a href="#una-tecnologia-di-quarantanni">Una tecnologia di quarant&#x27;anni</a></li>
+      <li><a href="#modello-slicer-stampa">Modello, slicer, stampa</a></li>
+      <li><a href="#le-tecnologie">Le tecnologie</a></li>
+      <li><a href="#progettare-un-oggetto-che-si-stampa-bene">Progettare un oggetto che si stampa bene</a></li>
+      <li><a href="#dove-si-usa-nel-lavoro">Dove si usa nel lavoro</a></li>
+      <li><a href="#modelli-licenze-e-materiali">Modelli, licenze e materiali</a></li>
+      <li><a href="#progettare-per-un-cliente">Progettare per un cliente</a></li>
+      <li><a href="#quando-conviene-e-quando-no">Quando conviene, e quando no</a></li>
+      <li><a href="#sicurezza">Sicurezza</a></li>
+      <li><a href="#il-percorso-in-aula">Il percorso in aula</a></li>
+      <li><a href="#mettilo-in-pratica">Mettilo in pratica</a></li>
+      <li><a href="#glossario">Glossario</a></li>
+      <li><a href="#fonti-e-approfondimenti">Fonti e approfondimenti</a></li>
+    </ol>
+  </nav>
+<p>La stampa 3D trasforma un file in un oggetto che si può tenere in mano. Sembra una tecnologia nuovissima, ma ha quasi quarant'anni ed è già entrata nelle fabbriche di automobili, negli ospedali, negli studi dentistici e nelle cucine dei ristoranti. Capire come funziona aiuta a usarla bene, a non sprecare tempo e materiale e soprattutto a capire quando conviene e quando no. Questo articolo raccoglie i contenuti del laboratorio di Digital Printing e li approfondisce.</p>
+<h2 id="cosa-imparerai">Cosa imparerai</h2>
 <ul>
-<li><strong>Modello.</strong> "Si parte da un oggetto 3D al computer. Si può disegnare da zero, come farete oggi, scaricare da internet o ottenere con uno scanner 3D da un oggetto vero. Il file più usato si chiama STL. È curioso: un STL non descrive l'oggetto pieno, ma solo la sua pelle, fatta di migliaia di triangoli. Più triangoli, più la superficie è liscia."</li>
-<li><strong>Slicer.</strong> "Poi c'è un programma che si chiama slicer, cioè affettatore. Prende il modello e lo taglia in fette sottilissime, di solito due decimi di millimetro. Per ogni fetta calcola il percorso che farà l'ugello. È qui che si decidono le cose importanti: quanto deve essere pieno l'oggetto dentro, se servono supporti, a che velocità stampare. Ed è qui che si scopre il prezzo vero: tempo e grammi di materiale."</li>
-<li><strong>Stampa.</strong> "Infine la stampante. Questa è una FDM: prende un filo di plastica, lo scioglie a circa 220 gradi e lo deposita strato dopo strato, come una pasticciera che decora una torta con la sac à poche, ma con una precisione di decimi di millimetro. Guardatela: sta facendo proprio questo."</li>
+<li>Come è nata la stampa 3D e perché oggi è alla portata di tutti.</li>
+<li>Le tre fasi di ogni stampa: modello, slicer, stampa.</li>
+<li>Le principali tecnologie, dalla stampa a filamento a quella in metallo.</li>
+<li>Come progettare un oggetto che si stampa bene, a partire dalla regola dei 45 gradi.</li>
+<li>Dove si usa la stampa 3D nel lavoro, quali licenze hanno i modelli e quali materiali esistono.</li>
+<li>Come stimare tempo e costo, e quando conviene davvero rispetto alla produzione con uno stampo.</li>
 </ul>
-<p>"Non esiste solo questa tecnologia. Ci sono stampanti a resina, che induriscono un liquido con la luce: sono precisissime e le usano dentisti, orafi, modellisti. E ci sono stampanti industriali che fondono polvere di metallo con un laser: le usano l'aerospaziale, la medicina per le protesi e l'automotive. Nell'automobile, oggi, la stampa 3D non costruisce le auto: costruisce i prototipi e soprattutto le attrezzature che servono a costruirle, come maschere, supporti e strumenti per la linea di montaggio."</p>
-<p>Domanda: "Torniamo all'oggetto con i fili. Perché secondo voi è venuto male?"</p>
+<h2 id="una-tecnologia-di-quarantanni">Una tecnologia di quarant'anni</h2>
+<p>La stampa 3D fa parte della manifattura additiva: l'oggetto si costruisce aggiungendo materiale strato dopo strato. È l'opposto della manifattura sottrattiva tradizionale, in cui si parte da un blocco e si toglie materiale con frese, torni o trapani.</p>
+<p>Le tappe principali sono poche e chiare:</p>
 <ul>
-<li><strong>Risposte probabili:</strong> "La stampante si è rotta", "la plastica era sbagliata", "era troppo veloce".</li>
-<li><strong>Rilancio:</strong> "Più semplice. La stampante costruisce dal basso verso l'alto, e ogni strato deve appoggiarsi su quello sotto. Quell'oggetto aveva una parte sospesa nel vuoto, senza niente sotto. La plastica calda è caduta e ha fatto i fili. Si chiama sbalzo, e si risolve in due modi: aggiungendo supporti, che poi si staccano, o progettando meglio. Quando progettate, chiedetevi sempre: cosa c'è sotto questo strato?"</li>
+<li><strong>1986</strong>: Chuck Hull brevetta la stereolitografia, la prima tecnica di stampa 3D, che indurisce una resina liquida con la luce.</li>
+<li><strong>1989</strong>: Scott Crump brevetta la modellazione a deposizione fusa (FDM), la stampa a filamento di plastica.</li>
+<li><strong>2005</strong>: Adrian Bowyer avvia RepRap, un progetto open source per costruire stampanti 3D in grado di stampare parte dei propri pezzi.</li>
+<li><strong>circa 2009</strong>: scadono i brevetti principali della tecnologia FDM e nasce un mercato di stampanti economiche per scuole, laboratori e appassionati.</li>
 </ul>
-<h2>3 · Ricerca a squadre: "Dove si stampa già oggi"</h2>
-<p>"Prima di progettare, voglio che scopriate da soli quanto questa tecnologia è già entrata nel mondo del lavoro. Cinque squadre, cinque domande. Una regola: vale solo una fonte che potete mostrare, come il sito di un'azienda, un giornale con nome e data o un'università."</p>
-<p>Ogni squadra lavora dai telefoni e ha una scheda con la domanda:</p>
+<p>Per decenni le stampanti sono state macchine enormi e costosissime, usate solo dalle grandi aziende per i prototipi. Oggi una buona stampante a filamento costa meno di uno smartphone di fascia alta. È un percorso comune a molte tecnologie: prima privilegio di pochi, poi strumento di tutti.</p>
+<h2 id="modello-slicer-stampa">Modello, slicer, stampa</h2>
+<p>Ogni stampa 3D attraversa sempre tre fasi.</p>
+<h3>Il modello</h3>
+<p>Si parte da un oggetto tridimensionale al computer. Si può disegnare da zero con un programma di modellazione, scaricare da un archivio online oppure ottenere con uno scanner 3D a partire da un oggetto reale.</p>
+<p>Il formato più diffuso è l'STL. Un file STL non descrive l'oggetto pieno, ma solo la sua superficie esterna, scomposta in migliaia di triangoli: più triangoli ci sono, più la superficie è liscia. Altri formati, come 3MF, conservano anche colori, materiali e impostazioni di stampa.</p>
+<p>Per chi comincia, Tinkercad è uno strumento ideale: è gratuito, funziona nel browser e si basa su un'idea semplice. Tutto è costruito con forme piene e forme "buco". Un portapenne è un cilindro pieno con dentro un cilindro buco; raggruppando le due forme, il buco scava il pieno. Le misure si scrivono in millimetri, non si regolano a occhio: un oggetto reale deve avere dimensioni precise.</p>
+<h3>Lo slicer</h3>
+<p>Lo slicer, letteralmente "affettatore", è il programma che prende il modello e lo taglia in strati orizzontali sottilissimi. Per ogni strato calcola il percorso che farà la testina della stampante e produce le istruzioni per la macchina, in un linguaggio chiamato G-code.</p>
+<p>È nello slicer che si prendono le decisioni più importanti e che si scopre il "prezzo vero" di un oggetto: il tempo di stampa e i grammi di materiale necessari.</p>
+<h3>La stampa</h3>
+<p>Infine la stampante esegue le istruzioni. In una stampante a filamento, un filo di plastica viene spinto in un ugello riscaldato, si scioglie e viene depositato in linee sottili, strato dopo strato, come una pasticciera che decora una torta con la sac à poche, ma con una precisione di decimi di millimetro. Ogni strato si salda a quello sotto e l'oggetto cresce dal basso verso l'alto.</p>
+<h2 id="le-tecnologie">Le tecnologie</h2>
+<h3>A filamento (FDM)</h3>
+<p>È la più diffusa nelle scuole, nei laboratori e nelle case. È economica, semplice da usare e adatta a prototipi, oggetti funzionali e modelli. Si riconosce dalle sottili righe orizzontali degli strati sulla superficie.</p>
+<h3>A resina</h3>
+<p>Le stampanti a resina, per stereolitografia o tecniche simili, induriscono una resina liquida con una luce ultravioletta, strato dopo strato. Sono molto più precise e producono superfici lisce, per questo le usano odontotecnici, orafi e modellisti. Le resine liquide richiedono però guanti, ambienti aerati e un trattamento finale di lavaggio e indurimento.</p>
+<h3>A polvere (SLS)</h3>
+<p>Nella sinterizzazione laser selettiva un laser fonde, strato dopo strato, una polvere di plastica, di solito nylon. La polvere non fusa sostiene il pezzo durante la stampa, quindi non servono supporti. Si ottengono pezzi robusti e funzionali. Sono macchine industriali.</p>
+<h3>In metallo</h3>
+<p>Esistono stampanti che fondono polveri metalliche con un laser o un fascio di elettroni. Producono componenti per l'aerospazio, protesi e impianti medici, pezzi per auto ad alte prestazioni. Sono macchine costose, usate in ambito industriale.</p>
+<h2 id="progettare-un-oggetto-che-si-stampa-bene">Progettare un oggetto che si stampa bene</h2>
+<h3>La domanda del progettista: cosa c'è sotto?</h3>
+<p>La stampante costruisce dal basso verso l'alto, e ogni strato deve appoggiarsi su quello precedente. Se una parte del modello è sospesa nel vuoto, la plastica fusa cade e si formano fili e grovigli. Si chiama sbalzo.</p>
+<p>La regola pratica è quella dei 45 gradi: una parete inclinata fino a circa 45 gradi rispetto alla verticale si stampa senza problemi, perché ogni strato sporge solo un po' rispetto a quello sotto. Oltre, servono supporti.</p>
+<p>Ci sono due modi per risolvere uno sbalzo:</p>
+<ul>
+<li><strong>aggiungere supporti</strong>: strutture temporanee generate dallo slicer, che poi si staccano, con un costo in tempo, materiale e finitura;</li>
+<li><strong>progettare meglio</strong>: orientare il pezzo in modo diverso, smussare gli angoli a 45 gradi, dividere l'oggetto in due parti da incastrare.</li>
+</ul>
+<p>La seconda strada è quasi sempre migliore. Si chiama progettare per la produzione: tenere conto fin dal disegno di come l'oggetto verrà realizzato.</p>
+<h3>Le impostazioni chiave</h3>
+<p>Alcuni parametri decidono tempo, robustezza e aspetto dell'oggetto. I valori indicati sono tipici: ogni filamento ha le sue impostazioni consigliate.</p>
+<ul>
+<li><strong>Altezza dello strato</strong>: di solito 0,2 mm. Strati più sottili danno superfici più lisce ma allungano i tempi.</li>
+<li><strong>Diametro dell'ugello</strong>: di solito 0,4 mm. Determina la larghezza delle linee e il livello di dettaglio.</li>
+<li><strong>Temperatura</strong>: il PLA si stampa intorno ai 190-220 °C; il piatto è riscaldato per aiutare l'adesione del primo strato.</li>
+<li><strong>Riempimento</strong>: l'interno di un oggetto non è pieno ma riempito con una griglia. Un riempimento basso, tra il 10 e il 20%, basta per molti oggetti e fa risparmiare molto tempo e materiale.</li>
+<li><strong>Pareti</strong>: il numero di perimetri esterni influisce sulla robustezza più del riempimento.</li>
+<li><strong>Orientamento</strong>: appoggiare l'oggetto sul lato più largo riduce sbalzi e rischi di distacco.</li>
+</ul>
+<h3>Il primo strato</h3>
+<p>Molti fallimenti nascono nel primo strato: piatto sporco, distanza sbagliata tra ugello e piatto, oggetto con poca superficie d'appoggio. Un piatto pulito e un oggetto ben appoggiato risolvono la maggior parte dei problemi.</p>
+<h2 id="dove-si-usa-nel-lavoro">Dove si usa nel lavoro</h2>
+<h3>Industria automobilistica</h3>
+<p>Nell'auto la stampa 3D raramente produce i pezzi della vettura finita. Si usa soprattutto per i prototipi, che permettono di provare forme e incastri in pochi giorni invece che in settimane, e per le attrezzature della produzione: maschere, supporti, dime e strumenti per la linea di montaggio, costruiti su misura per una postazione o un operatore. Si usa anche per piccole serie di componenti speciali e per pezzi di ricambio difficili da reperire.</p>
+<h3>Medicina</h3>
+<p>La medicina è uno dei campi in cui la stampa 3D dà il meglio, perché ogni corpo è diverso. Si stampano protesi e plantari su misura, apparecchi dentali, guide chirurgiche e modelli anatomici ricavati dalle immagini di TAC e risonanza, che permettono ai chirurghi di studiare e provare un intervento prima di eseguirlo.</p>
+<h3>Mestieri</h3>
+<p>La stampa 3D è entrata in molti mestieri: in cucina per stampi e decorazioni su misura, nella moda per accessori e prototipi, nell'edilizia per plastici e, in forma sperimentale, per costruire strutture in calcestruzzo, nel design per i prototipi, nell'odontotecnica per modelli e apparecchi. In ogni caso vale la stessa domanda: cosa fa la macchina, e cosa resta alla persona? La macchina esegue; ideare, progettare, scegliere e rifinire restano compiti umani.</p>
+<h2 id="modelli-licenze-e-materiali">Modelli, licenze e materiali</h2>
+<h3>Gratis non vuol dire libero</h3>
+<p>Su archivi online come Printables e Thingiverse si trovano milioni di modelli gratuiti. Un modello 3D però è un'opera dell'ingegno, come una canzone o una fotografia, e chi lo pubblica sceglie a quali condizioni concederlo. Molti usano le licenze Creative Commons:</p>
+<ul>
+<li><strong>CC BY</strong>: si può usare, modificare e anche vendere, citando l'autore;</li>
+<li><strong>CC BY-NC</strong>: si può stampare per sé, ma non per uso commerciale;</li>
+<li><strong>CC BY-SA</strong>: le modifiche vanno condivise con la stessa licenza.</li>
+</ul>
+<p>Scaricare gratis non significa poterne fare quello che si vuole. Prima di vendere oggetti stampati da modelli altrui bisogna controllare la licenza. Inoltre alcuni oggetti è illegale stamparli e detenerli, anche se il file circola online, e marchi e personaggi protetti non si possono riprodurre liberamente.</p>
+<h3>I materiali</h3>
+<ul>
+<li><strong>PLA</strong>: il più usato. Facile da stampare, rigido, adatto a prototipi e oggetti decorativi. Deriva da fonti vegetali come l'amido di mais, ma è biodegradabile solo in impianti di compostaggio industriale: in un prato o nel mare resta a lungo.</li>
+<li><strong>PETG</strong>: più resistente agli urti e al calore del PLA, adatto a oggetti funzionali.</li>
+<li><strong>ABS e ASA</strong>: robusti e resistenti al calore, ma più difficili da stampare e con emissioni che richiedono ambienti ventilati.</li>
+<li><strong>TPU</strong>: flessibile, per guarnizioni, cover e parti morbide.</li>
+<li><strong>Resine</strong>: per la stampa ad alta precisione, da maneggiare con protezioni.</li>
+</ul>
+<p>Anche la stampa 3D ha un costo ambientale: un buon progettista usa il materiale che serve, non di più, e riduce sprechi e stampe fallite progettando bene.</p>
+<h2 id="progettare-per-un-cliente">Progettare per un cliente</h2>
+<p>Nel lavoro reale nessun cliente chiede un oggetto: chiede di risolvere un problema. Un supporto che tenga il telefono inclinato durante le videochiamate, un gancio per appendere le cuffie al bordo della scrivania, un organizer per i cavi. Il percorso professionale ha alcune tappe fisse:</p>
 <ol>
-<li><strong>Squadra Auto:</strong> "Come usano la stampa 3D le case automobilistiche? Trovate un esempio concreto, se possibile del gruppo Stellantis."</li>
-<li><strong>Squadra Medicina:</strong> "Trovate un caso reale di stampa 3D in medicina: protesi, modelli per preparare un intervento, apparecchi su misura."</li>
-<li><strong>Squadra Mestiere:</strong> "Scegliete un mestiere che vi interessa (edilizia, moda, cucina, design, odontotecnica) e trovate come usa la stampa 3D."</li>
-<li><strong>Squadra Licenze:</strong> "Cercate un modello 3D gratuito su un archivio online come Printables o Thingiverse. Che licenza ha? Si può stampare e vendere?"</li>
-<li><strong>Squadra Materiali:</strong> "Che differenza c'è tra PLA, PETG e resina? Quanto costa un chilo di filamento? Il PLA è davvero biodegradabile?"</li>
+<li><strong>Capire il problema</strong> e i vincoli: dimensioni massime, tempo di stampa, robustezza, aspetto, costo.</li>
+<li><strong>Fare uno schizzo su carta</strong> con le misure. Nessun progettista serio parte dal software.</li>
+<li><strong>Modellare</strong> l'oggetto ed esportare il file.</li>
+<li><strong>Verificare nello slicer</strong> tempo e materiale, e correggere se si superano i vincoli.</li>
+<li><strong>Stampare un prototipo</strong>, provarlo e preparare una seconda versione migliorata.</li>
 </ol>
-<p>Ogni squadra prepara la risposta in due frasi, la fonte, e una cosa che li ha sorpresi. Poi la presenta.</p>
-<p><strong>Cosa dici dopo ogni presentazione</strong></p>
+<p>Quando un oggetto supera il tempo o il materiale previsto, i trucchi del mestiere sono sempre gli stessi: meno riempimento, pareti più sottili dove non servono, oggetto ruotato sul lato più largo, angoli smussati per evitare i supporti.</p>
+<h3>Quanto costa davvero</h3>
+<p>Un portachiavi pesa pochi grammi e il materiale costa pochi centesimi, ma la stampante può impiegare quasi mezz'ora. È la regola fondamentale della stampa 3D: il materiale costa poco, il tempo costa tanto. Il costo del materiale si calcola dividendo il prezzo della bobina per il suo peso e moltiplicando per i grammi indicati dallo slicer; a questo si aggiungono energia, usura della macchina e soprattutto il tempo di progettazione.</p>
+<h2 id="quando-conviene-e-quando-no">Quando conviene, e quando no</h2>
+<p>Immaginiamo che il cliente sia soddisfatto del prototipo e chieda: "E se ne volessi 500?". Se ogni pezzo richiede 30 minuti, 500 pezzi sono 250 ore di stampa: più di dieci giorni con la macchina sempre accesa.</p>
+<p>Per grandi quantità la produzione industriale usa lo stampaggio a iniezione: si costruisce uno stampo in metallo, che costa molto all'inizio, ma poi produce un pezzo ogni pochi secondi a un costo bassissimo. Esiste un punto di pareggio: sotto una certa quantità conviene la stampa 3D, sopra conviene lo stampo.</p>
+<p>La stampa 3D vince quando:</p>
 <ul>
-<li><strong>Dopo Auto:</strong> "Notate che quasi mai si stampa il pezzo dell'auto finita. Si stampa per provare, per costruire strumenti, per produrre pochi pezzi speciali. È la stessa logica che userete voi tra poco."</li>
-<li><strong>Dopo Medicina:</strong> "Qui la stampa 3D vince perché ogni corpo è diverso. Una protesi su misura, un modello del cuore di quel paziente da studiare prima dell'operazione. Quando ogni pezzo deve essere unico, lo stampo non ha senso."</li>
-<li><strong>Dopo Mestiere:</strong> commenta il mestiere scelto e collega sempre alla stessa domanda: "Cosa fa la macchina, e cosa resta alla persona?"</li>
-<li><strong>Dopo Licenze:</strong> "Questo è un punto che molti ignorano. Un modello 3D è un'opera di qualcuno, come una canzone o una foto. Molti sono gratuiti con licenze Creative Commons: alcune permettono di stamparli ma non di venderli, altre chiedono di citare l'autore. Scaricare gratis non vuol dire poterne fare quello che si vuole. E ci sono oggetti che è illegale stampare, anche se il file circola."</li>
-<li><strong>Dopo Materiali:</strong> "Il PLA nasce da amido vegetale, ma biodegradabile non vuol dire che sparisce nel prato: si degrada solo in impianti industriali. Anche la stampa 3D ha un costo ambientale, e un buon progettista usa il materiale che serve, non di più."</li>
+<li>i pezzi sono pochi;</li>
+<li>ogni pezzo è diverso dagli altri, come nel caso di protesi o oggetti personalizzati;</li>
+<li>serve provare un'idea prima di investire in uno stampo;</li>
+<li>la forma è troppo complessa per altri metodi.</li>
 </ul>
-<h2>4 · Prime mosse su Tinkercad</h2>
-<p>"Adesso tocca a voi progettare. Usiamo Tinkercad, un programma gratuito che funziona nel browser. È semplice, ma ci si fanno cose vere: è il primo passo di quasi tutti i progettisti."</p>
-<p>Entrano con il codice classe. Proietti il tuo schermo e lavorano in parallelo.</p>
+<p>È per questo che le aziende la usano soprattutto per prototipi, attrezzature e personalizzazioni.</p>
+<h2 id="sicurezza">Sicurezza</h2>
+<ul>
+<li>L'ugello raggiunge temperature superiori ai 200 °C e il piatto è caldo: non si toccano durante e subito dopo la stampa.</li>
+<li>Si stampa in ambienti aerati, soprattutto con materiali diversi dal PLA e con le resine.</li>
+<li>Le resine liquide si maneggiano con guanti e si smaltiscono secondo le indicazioni del produttore.</li>
+<li>Una stampante in funzione non va lasciata incustodita per lunghi periodi senza un sistema di monitoraggio.</li>
+</ul>
+<h2 id="il-percorso-in-aula">Il percorso in aula</h2>
 <ol>
-<li><strong>Forme e buchi:</strong> "In Tinkercad tutto è fatto di due tipi di forme: piene e buco. Un portapenne è un cilindro pieno con dentro un cilindro buco. Tutto il resto è una combinazione di queste due idee."</li>
-<li><strong>Misure:</strong> "Un oggetto vero ha misure precise, in millimetri. Fate un cubo di 30 per 30 per 30 e un buco al centro di 10. Usate i numeri, non il trascinamento a occhio."</li>
-<li><strong>Raggruppa:</strong> "Selezionate tutto e raggruppate: il buco scava il pieno. È il comando più importante di Tinkercad."</li>
-<li><strong>Sfida:</strong> "Fate un portachiavi con il vostro nome, spesso 3 millimetri, con il foro per l'anello." Stampi subito il primo che finisce.</li>
+<li><strong>Un oggetto che nasce davanti a tutti.</strong> Il laboratorio si apre avviando una stampa e facendo circolare oggetti già stampati, compreso uno venuto male. I ragazzi stimano peso, costo e tempo, e di solito sovrastimano il costo e sottostimano il tempo.</li>
+<li><strong>Come funziona.</strong> Si ripercorrono la storia della tecnologia e le tre fasi modello, slicer, stampa, osservando la macchina al lavoro e analizzando l'oggetto fallito per capire cosa sia uno sbalzo.</li>
+<li><strong>Ricerca a squadre.</strong> Ogni squadra cerca dal telefono una risposta documentata: come usano la stampa 3D le case automobilistiche, un caso in medicina, un mestiere a scelta, la licenza di un modello gratuito, le differenze tra i materiali.</li>
+<li><strong>Primi passi su Tinkercad.</strong> Forme piene e buchi, misure in millimetri, raggruppamento, e la sfida di un portachiavi con il proprio nome.</li>
+<li><strong>Prototipo per un cliente.</strong> I gruppi ricevono un brief con vincoli di dimensione, tempo e assenza di supporti, partono da uno schizzo su carta, modellano e verificano tempo e grammi nello slicer.</li>
+<li><strong>Presentazione al cliente.</strong> Ogni gruppo presenta problema, soluzione, tempo e costo, e risponde alla domanda decisiva: e se ne volessi 500?</li>
+<li><strong>Versione 2.</strong> I gruppi correggono il modello in base ai commenti ricevuti; le nuove versioni vengono stampate dopo l'incontro.</li>
 </ol>
-<p>Gira tra i banchi. L'errore più frequente: il buco non attraversa tutto l'oggetto. Fallo vedere ruotando il modello, e dì alla classe: "Il computer fa esattamente quello che gli dite. Se il buco è più corto, resterà un muro."</p>
-<h2>5 · Attività "Prototipo per un cliente"</h2>
-<p>"Adesso lavorate come un piccolo studio di progettazione. Un cliente vi porta un problema, voi gli portate un prototipo. Nella vita reale funziona esattamente così: nessun cliente vi chiede un oggetto, vi chiede di risolvere un problema."</p>
-<p>Sei gruppi da 3-4. Ogni gruppo pesca un brief:</p>
-<ul>
-<li>un supporto da scrivania per il telefono, che lo tenga inclinato durante le videochiamate;</li>
-<li>un gancio per appendere le cuffie al bordo del banco;</li>
-<li>un organizer per cavi da fissare sotto la scrivania;</li>
-<li>un segnaposto con nome per un evento di 50 persone;</li>
-<li>un fermaporta per le aule;</li>
-<li>un porta-badge per una fiera.</li>
-</ul>
-<p>Ogni brief ha tre vincoli: dimensione massima 8 x 8 x 6 cm, stampa entro 40 minuti, nessun supporto.</p>
+<h2 id="mettilo-in-pratica">Mettilo in pratica</h2>
 <ol>
-<li><strong>Schizzo su carta con le misure.</strong> "Prima la carta, poi il computer. Nessun progettista serio parte dal software: parte dal problema e da un disegno."</li>
-<li><strong>Modello su Tinkercad</strong> ed esportazione dell'STL nella cartella Drive.</li>
-<li><strong>Prova nello slicer.</strong> Importi i file in Bambu Studio sul tuo portatile e proietti tempo di stampa e grammi di filamento di ogni gruppo. Chi supera i vincoli annota cosa deve cambiare: lo farà nella "Versione 2".</li>
+<li>Crea un account su Tinkercad e prova a modellare un oggetto semplice con una forma piena e una forma buco.</li>
+<li>Scarica un modello da un archivio online e controlla la sua licenza prima di usarlo.</li>
+<li>Apri un modello in uno slicer gratuito e osserva come cambiano tempo e grammi modificando riempimento e altezza dello strato.</li>
+<li>Prima di stampare, guarda il modello di lato e chiediti: cosa c'è sotto questo strato?</li>
+<li>Calcola il costo del materiale dividendo il prezzo della bobina per il suo peso e moltiplicando per i grammi del modello.</li>
+<li>Pensa a un oggetto utile per la tua vita o il tuo futuro lavoro, e fai uno schizzo con le misure.</li>
 </ol>
-<p>Domanda quando un gruppo supera il tempo: "Cosa potete togliere senza che l'oggetto perda la sua funzione?" Porta ai trucchi veri del mestiere: meno riempimento interno, pareti più sottili, oggetto ruotato sul lato più largo, angoli smussati per evitare gli sbalzi.</p>
-<p>Avvia la stampa del prototipo più veloce, se rientra nei tempi prima della tua uscita.</p>
-<h2>6 · Presentazione al cliente</h2>
-<p>"Adesso io sono il cliente. Avete poco tempo per convincermi."</p>
-<p>Ogni gruppo presenta: problema, soluzione, tempo di stampa, costo del materiale (circa 2,5 centesimi al grammo per il PLA, da verificare sul prezzo della tua bobina). Fai a ogni gruppo una domanda scomoda, da cliente vero. La più importante è: "Bello. E se ne volessi 500?"</p>
-<p>È il momento chiave della giornata. "Facciamo i conti insieme. Se il vostro oggetto ci mette 30 minuti, 500 pezzi sono 250 ore di stampa, più di dieci giorni con la macchina accesa giorno e notte. Per 500 pezzi la stampa 3D non conviene: si fa uno stampo, che costa tanto all'inizio ma poi produce un pezzo in pochi secondi. La stampa 3D vince quando i pezzi sono pochi, quando ognuno è diverso, o quando dovete provare un'idea prima di investire nello stampo. Ecco perché le aziende la usano soprattutto per i prototipi."</p>
-<h2>7 · Chiusura e passaggio di consegne</h2>
-<p>Consegna i pezzi stampati. Gli altri modelli li stampi in ENGIM e li fai avere alla classe tramite la scuola.</p>
-<p>Le tre frasi alla lavagna:</p>
+<h2 id="glossario">Glossario</h2>
 <ul>
-<li>Modello, slicer, stampa: l'errore si previene nel modello.</li>
-<li>Il materiale costa poco, il tempo costa tanto.</li>
-<li>La stampa 3D conviene per pochi pezzi, su misura o da provare.</li>
+<li><strong>Manifattura additiva</strong>: produzione per aggiunta di materiale, strato dopo strato.</li>
+<li><strong>FDM</strong>: stampa a deposizione di filamento fuso.</li>
+<li><strong>STL</strong>: formato di file che descrive la superficie di un oggetto con triangoli.</li>
+<li><strong>Slicer</strong>: programma che divide il modello in strati e genera le istruzioni per la stampante.</li>
+<li><strong>G-code</strong>: linguaggio di istruzioni eseguito dalla stampante.</li>
+<li><strong>Ugello</strong>: punta riscaldata da cui esce la plastica fusa.</li>
+<li><strong>Strato</strong>: singola fetta orizzontale dell'oggetto, di solito spessa 0,2 mm.</li>
+<li><strong>Riempimento</strong>: struttura interna di un oggetto stampato, espressa in percentuale.</li>
+<li><strong>Sbalzo</strong>: parte del modello che sporge nel vuoto senza appoggio sottostante.</li>
+<li><strong>Supporto</strong>: struttura temporanea che sostiene gli sbalzi durante la stampa.</li>
+<li><strong>Prototipo</strong>: primo esemplare di un oggetto, realizzato per provarlo prima della produzione.</li>
+<li><strong>Stampaggio a iniezione</strong>: produzione in serie con uno stampo in cui si inietta plastica fusa.</li>
+<li><strong>Creative Commons</strong>: famiglia di licenze che indica come si può usare un'opera.</li>
 </ul>
-<p>Spiega alla classe e al docente l'attività autonoma, poi smonti la stampante.</p>
-<h2>8 · Attività autonoma "Versione 2" (con il docente)</h2>
-<p>Ogni gruppo compila la scheda e corregge il modello su Tinkercad:</p>
-<ol>
-<li>Cosa ha detto il cliente e cosa cambiamo.</li>
-<li>Nuove misure, e il vincolo che prima non rispettavamo.</li>
-<li>Esportiamo la versione 2 e la carichiamo nella cartella Drive con il nome del gruppo.</li>
-<li>Biglietto di uscita individuale: "Un oggetto che stamperei per la mia vita o per il mio futuro lavoro."</li>
-</ol>
-<p>Tu stampi in ENGIM le versioni 2 e le mandi alla classe. Così vedono il risultato del loro lavoro anche dopo l'incontro.</p>
-<h2>Situazioni da gestire</h2>
+<h2 id="fonti-e-approfondimenti">Fonti e approfondimenti</h2>
 <ul>
-<li><strong>La stampa iniziale fallisce:</strong> usala. "Ottimo, adesso vediamo insieme perché." Spesso è il piatto sporco o il primo strato che non aderisce.</li>
-<li><strong>Tinkercad non si apre sui PC della scuola:</strong> passa allo schizzo con misure su carta per tutti, e modella tu dal portatile, proiettando, i due progetti più votati.</li>
-<li><strong>Gruppi molto veloci:</strong> chiedi una seconda versione dello stesso oggetto che usi il 30% di materiale in meno.</li>
-<li><strong>Gruppi bloccati:</strong> dai una forma di partenza (per il supporto telefono: un parallelepipedo con una fessura inclinata).</li>
-<li><strong>Sei in ritardo:</strong> riduci le presentazioni a tre gruppi scelti a sorte. Gli altri presentano per iscritto nella scheda "Versione 2".</li>
+<li>Tinkercad, ambiente gratuito di modellazione 3D nel browser: <a href="https://www.tinkercad.com">tinkercad.com</a></li>
+<li>Creative Commons, spiegazione delle licenze: <a href="https://creativecommons.org/licenses/?lang=it">creativecommons.org</a></li>
+<li>Progetto RepRap: <a href="https://reprap.org">reprap.org</a></li>
+<li>Printables, archivio di modelli 3D: <a href="https://www.printables.com">printables.com</a></li>
+<li>Thingiverse, archivio di modelli 3D: <a href="https://www.thingiverse.com">thingiverse.com</a></li>
+<li>Brevetti originali: stereolitografia di Charles (Chuck) Hull, 1986; modellazione a deposizione fusa di S. Scott Crump, 1989.</li>
 </ul>
-<h2>Da verificare prima</h2>
-<ul>
-<li>Con la scuola: chi resta con la classe nell'ultima parte, conferma scritta dell'uso dei telefoni, laboratorio informatico con almeno 12 PC.</li>
-<li>Trasporto della A1 e presa elettrica vicino alla cattedra.</li>
-<li>Prezzo reale della bobina di PLA per il calcolo del costo al grammo.</li>
-<li>Accesso a Tinkercad e Drive dalla rete della scuola.</li>
-<li>Esempio concreto di uso della stampa 3D in Stellantis, da avere pronto se la squadra Auto non lo trova.</li>
-</ul>
-  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutte le guide: scuole superiori</a></p>
+  <div id="presentazione">
+  <aside class="box-presentazione" aria-label="Presentazione">
+    <div>
+      <p class="etichetta-box">Presentazione usata in aula</p>
+      <p class="titolo-box">Digital Printing · 19 slide</p>
+      <p class="nota-box">File PowerPoint, 2,7 MB. Si apre anche con Google Presentazioni e Keynote. Le note del relatore contengono indicazioni per chi conduce.</p>
+    </div>
+    <a class="btn-pieno" href="presentazioni/digital-printing.pptx" download>Scarica la presentazione</a>
+  </aside></div>
+  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutti gli articoli: scuole superiori</a></p>
 </main>
 
 <footer>

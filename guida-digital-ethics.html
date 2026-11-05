@@ -3,92 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guida Digital Ethics — Mirafiori</title>
-<meta name="description" content="Guida per il laboratorio Digital Ethics, 17-18 anni: Dilemmi della guida autonoma, chi è responsabile quando una macchina sbaglia, il tribunale dell’IA.">
+<title>Digital Ethics: Quando decide una macchina — Mirafiori</title>
+<meta name="description" content="Dilemmi della guida autonoma, responsabilità, controllo umano e casi reali di algoritmi che hanno sbagliato.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="barra" id="barra"></header>
 <script src="js/nav.js"></script>
 
-<section class="hero-legale">
-  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · Guida per il formatore</p>
+<section class="hero-legale hero-articolo">
+  <p class="eyebrow"><a href="scuole-superiori.html">Scuole superiori</a> · 16-19 anni</p>
   <h1>Digital Ethics</h1>
-  <p class="sub">17-18 anni · Primo Levi · 4B · 14/12</p>
-  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa la guida</button></p>
+  <p class="sub">Quando decide una macchina</p>
+  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 13 minuti</p>
+  <p class="azioni-guida"><button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
 <main class="testo-legale testo-guida">
-<p><strong>Obiettivo:</strong> escono sapendo riconoscere un dilemma etico legato alla tecnologia, argomentare una posizione e capire chi è responsabile quando una macchina sbaglia.</p>
-<p><strong>Da preparare:</strong> televoto con 5 dilemmi · 3 schede caso per il tribunale (una per caso, con fatti essenziali e fonte) · cartellini "accusa", "difesa", "giuria" · cartellone per il manifesto finale · telefoni dei ragazzi o PC della scuola, che servono solo per la ricerca durante il tribunale.</p>
-<p><strong>Regola della giornata, da dire all'inizio:</strong> "Oggi non ci sono risposte giuste. C'è chi argomenta bene e chi argomenta male." Tu non dai mai la tua opinione prima che la classe abbia votato.</p>
-<p><strong>Come leggere la guida:</strong> il testo tra virgolette è la traccia del discorso, con gli esempi già pronti. Sotto ogni domanda trovi le risposte più probabili e come rilanciare.</p>
-<h2>1 · Apertura</h2>
-<p>"Buongiorno. Oggi non vi spiego quasi niente. Oggi decidete voi."</p>
-<p>Televoto, domanda 1: "Se una macchina può fare una cosa meglio di una persona, deve farla lei?" (sì / no / dipende). Di solito vince "dipende".</p>
-<p>"Bene, "dipende" è la parola più importante della mattina. Il nostro lavoro di oggi è capire da cosa dipende."</p>
-<h2>2 · La macchina che deve scegliere</h2>
-<p>"Stellantis, che finanzia questo progetto, costruisce auto. E le auto stanno imparando a guidare da sole. Esistono cinque livelli di guida autonoma: al livello 2, quello delle auto di oggi, l'auto aiuta ma guida la persona. Al livello 5 non c'è più il volante. Più si sale, più la macchina deve decidere da sola anche nei momenti peggiori."</p>
-<p>Presenta i dilemmi uno alla volta, con voto anonimo e una breve discussione dopo ciascuno:</p>
+  <nav class="indice-articolo" aria-label="Indice dell'articolo">
+    <p class="etichetta-box">In questo articolo</p>
+    <ol>
+      <li><a href="#cosa-imparerai">Cosa imparerai</a></li>
+      <li><a href="#quando-una-macchina-deve-scegliere">Quando una macchina deve scegliere</a></li>
+      <li><a href="#quattro-principi-per-governare-le-macchine">Quattro principi per governare le macchine</a></li>
+      <li><a href="#tre-casi-reali">Tre casi reali</a></li>
+      <li><a href="#la-risposta-europea-lai-act">La risposta europea: l&#x27;AI Act</a></li>
+      <li><a href="#lavoro-e-automazione">Lavoro e automazione</a></li>
+      <li><a href="#il-percorso-in-aula">Il percorso in aula</a></li>
+      <li><a href="#mettilo-in-pratica">Mettilo in pratica</a></li>
+      <li><a href="#glossario">Glossario</a></li>
+      <li><a href="#fonti-e-approfondimenti">Fonti e approfondimenti</a></li>
+    </ol>
+  </nav>
+<p>Le macchine prendono sempre più decisioni che riguardano le persone: un'auto che frena o sterza da sola, un algoritmo che assegna un voto, un sistema che riconosce un volto o seleziona un curriculum. Quando funzionano bene sono utilissime; quando sbagliano, l'errore si ripete su larga scala e spesso senza che nessuno se ne accorga. Questo articolo affronta le domande etiche che queste tecnologie aprono: chi decide come deve comportarsi una macchina, chi risponde dei suoi errori, quali principi la legge europea ha scelto per governarle. È il materiale di riferimento del laboratorio Digital Ethics del progetto Mirafiori, pensato per ragazzi dai 17 ai 18 anni, ma utile a chiunque voglia ragionare su tecnologia e responsabilità.</p>
+<h2 id="cosa-imparerai">Cosa imparerai</h2>
+<ul>
+<li>Riconoscere un dilemma etico legato alla tecnologia e distinguere i diversi piani della questione.</li>
+<li>Conoscere i livelli di guida autonoma e capire perché più autonomia significa più decisioni morali affidate alla macchina.</li>
+<li>Usare quattro principi guida: trasparenza, responsabilità, controllo umano ed equità.</li>
+<li>Analizzare casi reali in cui un sistema automatico ha prodotto un'ingiustizia.</li>
+<li>Capire la logica per livelli di rischio dell'AI Act europeo.</li>
+<li>Argomentare una posizione, anche quella che non si condivide.</li>
+</ul>
+<h2 id="quando-una-macchina-deve-scegliere">Quando una macchina deve scegliere</h2>
+<h3>I livelli di guida autonoma</h3>
+<p>Lo standard internazionale SAE J3016 descrive sei livelli di automazione della guida, da 0 a 5. Al livello 0 guida interamente la persona. Ai livelli 1 e 2, quelli di molte auto oggi in commercio, il veicolo assiste (mantiene la corsia, regola la velocità, frena in emergenza) ma il conducente deve restare attento e responsabile. Al livello 3 l'auto guida da sola in condizioni precise e chiede alla persona di riprendere il controllo quando serve. Ai livelli 4 e 5 il veicolo gestisce tutta la guida, prima in aree definite e infine ovunque, fino a non avere più bisogno del volante.</p>
+<p>Salendo di livello cambia una cosa fondamentale: decisioni che prima prendeva una persona in una frazione di secondo, d'istinto, ora vanno stabilite in anticipo, scritte nel software, da qualcuno che non sarà presente al momento dell'incidente.</p>
+<h3>Il dilemma del carrello, su strada</h3>
+<p>La filosofia morale discute da decenni il "dilemma del carrello": è giusto deviare un carrello fuori controllo per salvare cinque persone sapendo che ne colpirà una? Con le auto a guida autonoma il dilemma esce dai libri. Se i freni cedono, l'auto deve proseguire e investire due pedoni che attraversano con il rosso, oppure sterzare contro un muro mettendo in pericolo il passeggero? E cambia qualcosa se il passeggero siamo noi? Se i pedoni sono bambini o anziani? Se hanno torto perché attraversano col rosso?</p>
+<p>Nella realtà questi scenari estremi sono rari e gli ingegneri lavorano soprattutto per evitarli, riducendo velocità e rischi in anticipo. Ma il dilemma resta utile perché rende visibile una domanda di fondo: chi ha il diritto di decidere le priorità che una macchina applicherà?</p>
+<h3>La Moral Machine</h3>
+<p>Il MIT ha trasformato questa domanda in un esperimento su scala mondiale. Sul sito della Moral Machine milioni di persone di moltissimi Paesi hanno scelto, scenario dopo scenario, chi un'auto senza freni avrebbe dovuto salvare. I risultati, pubblicati sulla rivista Nature nel 2018, mostrano alcune preferenze condivise quasi ovunque, come salvare più vite piuttosto che meno e gli esseri umani piuttosto che gli animali, ma anche differenze culturali marcate su altri criteri, come l'età o il rispetto delle regole.</p>
+<p>Ne emerge anche una contraddizione nota agli studiosi: molte persone vogliono che le auto degli altri siano programmate per salvare il maggior numero di vite, ma preferirebbero comprare per sé un'auto che protegga prima di tutto chi sta a bordo. Una sola regola giusta per tutti, quindi, non esiste. Esiste la necessità di decidere in modo trasparente e di rendere conto delle scelte fatte.</p>
+<h2 id="quattro-principi-per-governare-le-macchine">Quattro principi per governare le macchine</h2>
+<p>Per orientarsi tra casi così diversi, il dibattito internazionale e la legislazione europea fanno riferimento a pochi principi ricorrenti.</p>
+<h3>Trasparenza</h3>
+<p>Una persona deve sapere quando sta interagendo con un sistema automatico e deve poter capire, almeno nelle linee essenziali, perché una decisione che la riguarda è stata presa in un certo modo. Una decisione che non si può spiegare non si può nemmeno contestare.</p>
+<h3>Responsabilità</h3>
+<p>Se una macchina sbaglia, qualcuno ne risponde: chi l'ha progettata, chi l'ha messa in commercio, chi ha scelto di usarla. La macchina non va in tribunale. Il rischio da evitare è che la tecnologia diventi un modo per dire "non è colpa di nessuno": un errore senza responsabili tende a ripetersi.</p>
+<h3>Controllo umano</h3>
+<p>Per le decisioni importanti ci deve essere una persona in grado di verificare, fermare o cambiare ciò che la macchina propone. Il GDPR lo prevede già: l'art. 22 riconosce il diritto a non essere sottoposti a decisioni basate unicamente su un trattamento automatizzato che producano effetti giuridici o incidano in modo analogo significativamente sulla persona, salvo eccezioni e con garanzie come la possibilità di ottenere l'intervento umano e di contestare la decisione.</p>
+<h3>Equità</h3>
+<p>Un sistema non deve trattare peggio alcune persone per il loro genere, l'origine, l'età o altre caratteristiche. È il principio più difficile da garantire, perché i pregiudizi spesso non sono scritti da nessuno: arrivano dai dati del passato da cui il sistema ha imparato.</p>
+<h2 id="tre-casi-reali">Tre casi reali</h2>
+<p>I dilemmi diventano più chiari quando si guardano casi accaduti davvero. In tutti e tre la tecnologia ha prodotto un danno, ma la domanda interessante è sempre la stessa: la colpa è della macchina o delle persone che hanno deciso come usarla?</p>
+<h3>L'algoritmo dei voti di maturità</h3>
+<p>Nel 2020, nel Regno Unito, la pandemia impedì lo svolgimento degli esami A-level, l'equivalente della maturità. Per assegnare i voti l'ente regolatore Ofqual usò un algoritmo che correggeva le valutazioni dei docenti anche in base ai risultati storici di ciascuna scuola. Molti studenti brillanti di scuole con risultati medi più bassi si videro abbassare il voto, con conseguenze sull'accesso all'università. Dopo forti proteste il governo ritirò i voti dell'algoritmo e tornò alle valutazioni degli insegnanti.</p>
+<p>L'obiettivo dichiarato era evitare voti gonfiati: un fine ragionevole. Il problema era che il sistema giudicava i singoli studenti in base alla storia della loro scuola, cioè a qualcosa che non dipendeva da loro.</p>
+<h3>L'arresto sbagliato</h3>
+<p>Nel gennaio 2020, a Detroit, Robert Williams fu arrestato davanti alla sua famiglia perché un sistema di riconoscimento facciale aveva associato il suo volto all'immagine sgranata di un uomo ripreso da una telecamera durante un furto. Non era lui. Il caso è diventato uno dei più citati sui limiti del riconoscimento facciale, che in diversi studi ha mostrato tassi di errore più alti su alcuni gruppi di persone.</p>
+<p>Qui la difesa della tecnologia ha un argomento serio: il sistema fornisce un'indicazione, e l'errore decisivo è stato di chi non ha verificato prima di arrestare. È proprio il punto del controllo umano: una risposta della macchina è un indizio, non una prova.</p>
+<h3>Le foto raccolte dal web</h3>
+<p>Clearview AI, un'azienda statunitense, ha costruito un enorme database di riconoscimento facciale raccogliendo miliardi di fotografie pubblicate online, anche sui social, per offrire un servizio di identificazione principalmente alle forze dell'ordine. Nel 2022 il Garante per la protezione dei dati personali italiano l'ha sanzionata con una multa di 20 milioni di euro, vietandole di continuare a trattare i dati di persone che si trovano in Italia. Provvedimenti analoghi sono arrivati da altre autorità europee.</p>
+<p>L'argomento della difesa era che le foto fossero pubbliche. La risposta delle autorità è stata che una foto pubblicata per mostrarla agli amici non autorizza chiunque a usarla per scopi completamente diversi, come l'identificazione biometrica.</p>
+<h2 id="la-risposta-europea-lai-act">La risposta europea: l'AI Act</h2>
+<p>L'Unione europea ha approvato nel 2024 il Regolamento sull'intelligenza artificiale, noto come AI Act (Reg. UE 2024/1689), la prima legge così ampia al mondo su questa tecnologia. Il suo criterio di fondo è il rischio: più un sistema può incidere sui diritti delle persone, più regole deve rispettare.</p>
+<ul>
+<li><strong>Rischio inaccettabile.</strong> Alcune pratiche sono vietate (art. 5), con divieti in applicazione dal 2 febbraio 2025. Tra queste il social scoring, cioè dare un punteggio alle persone in base al loro comportamento sociale, e il riconoscimento delle emozioni sul luogo di lavoro e negli istituti di istruzione, salvo ragioni mediche o di sicurezza.</li>
+<li><strong>Alto rischio.</strong> Sistemi ammessi ma soggetti a obblighi stringenti: gestione dei rischi, qualità dei dati, documentazione, trasparenza, sorveglianza umana. Nell'elenco (allegato III) ci sono, tra gli altri, i sistemi usati nell'istruzione e quelli per selezionare e gestire il personale. Con il pacchetto "Digital Omnibus" approvato nel 2026 gran parte degli obblighi per l'alto rischio è stata rinviata al 2 dicembre 2027.</li>
+<li><strong>Rischio limitato.</strong> Obblighi di trasparenza, per esempio far sapere a una persona che sta parlando con un chatbot o che un contenuto è generato artificialmente.</li>
+<li><strong>Rischio minimo.</strong> La gran parte delle applicazioni, come i filtri antispam o i videogiochi, senza obblighi specifici.</li>
+</ul>
+<p>Una domanda interessante da discutere è perché sia vietato riconoscere le emozioni di uno studente in classe ma permesso, con controlli, usare un sistema per selezionare i curriculum. La risposta del legislatore sta nel rapporto tra benefici, invasività e possibilità di controllo: non esiste una soluzione unica, e capire la logica del rischio è più utile che imparare l'elenco a memoria.</p>
+<p>In Italia la legge 23 settembre 2025, n. 132, in vigore dal 10 ottobre 2025, ha aggiunto regole nazionali, tra cui il consenso dei genitori per l'accesso all'IA dei minori di 14 anni e un nuovo reato per la diffusione di contenuti falsi generati con l'IA che causano un danno ingiusto (art. 612-quater del codice penale).</p>
+<h2 id="lavoro-e-automazione">Lavoro e automazione</h2>
+<p>La domanda che riguarda più da vicino chi sta per entrare nel mondo del lavoro è: quale parte del mio futuro lavoro farà una macchina?</p>
+<p>L'esperienza delle ondate tecnologiche precedenti suggerisce una distinzione utile. Raramente scompaiono mestieri interi da un giorno all'altro; più spesso cambiano i compiti che li compongono. Le attività ripetitive, standardizzabili o basate su calcoli tendono a essere automatizzate. Restano centrali, e anzi acquistano valore, le attività che richiedono relazione con le persone, giudizio in situazioni nuove, creatività, manualità esperta e assunzione di responsabilità.</p>
+<p>Questo non rende il cambiamento indolore: chi svolge soprattutto compiti automatizzabili deve aggiornarsi, e la transizione pone problemi sociali reali. Ma sposta la domanda da "il mio lavoro esisterà?" a "quali competenze mi permetteranno di lavorare insieme alle macchine, invece che contro di esse?".</p>
+<h2 id="il-percorso-in-aula">Il percorso in aula</h2>
+<p>Il laboratorio è costruito come un esercizio di argomentazione: non ci sono risposte giuste, ci sono ragionamenti più o meno solidi. Chi conduce non esprime la propria opinione prima che la classe abbia votato.</p>
 <ol>
-<li>"I freni si rompono. L'auto può andare dritto e investire due pedoni che attraversano con il rosso, o sterzare e colpire un muro, mettendo in pericolo il passeggero. Cosa deve fare?"</li>
-<li>"Stesso scenario, ma il passeggero sei tu. Hai cambiato voto?"</li>
-<li>"Compreresti un'auto programmata per sacrificare il guidatore se salva più persone?"</li>
-<li>"Chi deve decidere come è programmata l'auto: chi la costruisce, chi la compra, o lo Stato?"</li>
+<li><strong>La domanda di partenza.</strong> Un voto anonimo chiede se una macchina che fa una cosa meglio di una persona debba farla lei. Di solito vince "dipende", e il laboratorio serve a capire da cosa.</li>
+<li><strong>I dilemmi della guida autonoma.</strong> Dopo una presentazione dei livelli SAE, la classe vota su una serie di dilemmi, compreso quello in cui il passeggero è chi vota, e discute i risultati alla luce della Moral Machine.</li>
+<li><strong>I quattro principi.</strong> Trasparenza, responsabilità, controllo umano ed equità vengono introdotti e applicati alla domanda su chi risponde di un incidente causato da un'auto autonoma.</li>
+<li><strong>Il tribunale dell'IA.</strong> La classe si divide in tre gruppi, uno per ciascun caso reale, con ruoli di accusa, difesa e giuria. Dopo la preparazione con ricerca di argomenti, arringhe e repliche, la giuria emette una sentenza motivata. La domanda finale chiede se sia stata condannata la macchina o le persone che l'hanno usata.</li>
+<li><strong>Lavoro e automazione.</strong> Un voto sul futuro del lavoro desiderato apre la discussione su quali compiti passeranno alle macchine e quali resteranno alle persone.</li>
+<li><strong>Il manifesto della classe.</strong> Ogni gruppo propone due regole per un'IA giusta; le cinque più votate formano un manifesto firmato dalla classe. Un biglietto di uscita anonimo chiede su quale dilemma si è cambiata idea.</li>
 </ol>
-<p>Il dilemma 3 è il cuore: quasi tutti vogliono che le auto degli altri salvino il maggior numero di persone, ma non vogliono comprarla per sé. "Questa contraddizione è stata misurata davvero. Un esperimento del MIT, la Moral Machine, ha raccolto milioni di risposte da tutto il mondo, e i Paesi rispondono in modo diverso. Quindi una sola regola giusta per tutti non c'è."</p>
-<h2>3 · Chi è responsabile?</h2>
-<p>Scrivi alla lavagna quattro parole: <strong>TRASPARENZA · RESPONSABILITÀ · CONTROLLO UMANO · EQUITÀ</strong>.</p>
-<ul>
-<li><strong>Trasparenza:</strong> "Devo sapere che sto parlando con una macchina, e devo poter capire perché ha deciso così."</li>
-<li><strong>Responsabilità:</strong> "Se la macchina sbaglia, qualcuno ne risponde. La macchina non va in tribunale."</li>
-<li><strong>Controllo umano:</strong> "Per le decisioni importanti ci deve essere una persona che può fermarla o decidere diversamente."</li>
-<li><strong>Equità:</strong> "La macchina non deve trattare peggio alcune persone per il loro genere, origine, età."</li>
-</ul>
-<p>Domanda: "Un'auto a guida autonoma investe una persona. Chi è responsabile? Il proprietario, il programmatore, l'azienda, o nessuno?"</p>
-<ul>
-<li><strong>Risposte probabili:</strong> "L'azienda", "chi stava al volante", "è un incidente, nessuno".</li>
-<li><strong>Rilancio:</strong> "Se rispondete "nessuno", allora la tecnologia diventa un modo per non essere mai responsabili. È proprio questo il rischio che le leggi, come l'AI Act europeo, cercano di evitare."</li>
-</ul>
-<h2>4 · Il tribunale dell'IA</h2>
-<p>"Adesso processiamo tre macchine. Sono tutti casi veri."</p>
-<p>Tre gruppi, uno per caso. Dentro ogni gruppo: 3 di accusa, 3 di difesa, 2 giurati. Gli altri due gruppi fanno da giuria popolare quando non è il loro turno.</p>
-<p><strong>Caso 1 · L'algoritmo dei voti di maturità.</strong> Nel 2020 nel Regno Unito gli esami furono annullati per il Covid. Un algoritmo calcolò i voti partendo dai risultati passati della scuola. Molti studenti bravi di scuole meno prestigiose furono declassati. Dopo le proteste, il governo ritirò i voti dell'algoritmo.</p>
-<p><strong>Caso 2 · L'arresto sbagliato.</strong> Nel 2020 a Detroit un uomo fu arrestato davanti alla sua famiglia perché un sistema di riconoscimento facciale lo aveva confuso con il volto di un ladro ripreso da una telecamera. Non era lui.</p>
-<p><strong>Caso 3 · Le foto prese dal web.</strong> Un'azienda americana ha raccolto miliardi di foto dai social per costruire un database di riconoscimento facciale da vendere alla polizia. Nel 2022 il Garante italiano della privacy l'ha multata per 20 milioni di euro.</p>
-<p>Come si svolge ogni caso:</p>
+<h2 id="mettilo-in-pratica">Mettilo in pratica</h2>
 <ol>
-<li><strong>Preparazione:</strong> accusa e difesa cercano argomenti, anche sul telefono o sul PC.</li>
-<li><strong>Arringhe:</strong> accusa, poi difesa.</li>
-<li><strong>Repliche.</strong></li>
-<li><strong>Sentenza:</strong> i giurati del gruppo e la giuria popolare votano con il televoto (colpevole / non colpevole / colpevole qualcun altro). I due giurati motivano in una frase.</li>
+<li>Quando un servizio prende una decisione automatica su di te (un rifiuto, un blocco, un punteggio), chiedi su quali criteri si basa e se puoi ottenere una revisione da parte di una persona.</li>
+<li>Prima di fidarti del risultato di un sistema automatico, chiediti con quali dati è stato addestrato e chi potrebbe esserne penalizzato.</li>
+<li>Distingui sempre lo strumento da chi decide di usarlo: chiedi chi è responsabile, non solo cosa ha fatto la macchina.</li>
+<li>Davanti a un dilemma, prova a difendere la posizione opposta alla tua: capirai meglio la tua.</li>
+<li>Pensa al lavoro che vorresti fare e scrivi quali compiti potrebbero essere automatizzati e quali competenze umane resteranno decisive.</li>
+<li>Segui le notizie sull'applicazione dell'AI Act: i suoi obblighi entreranno in vigore gradualmente nei prossimi anni.</li>
 </ol>
-<p>Domanda dopo ogni sentenza: "Avete condannato la macchina o le persone che l'hanno usata?" Di solito la classe arriva da sola a separare lo strumento da chi decide di usarlo.</p>
-<p><strong>Come aiutare la difesa</strong>, che di solito è in difficoltà: suggerisci argomenti veri. Nel caso 1 l'obiettivo era evitare voti gonfiati. Nel caso 2 l'errore finale è stato della polizia, che non ha verificato. Nel caso 3 le foto erano pubbliche.</p>
-<h2>5 · Lavoro e automazione</h2>
-<p>"Ultimo dilemma, quello che vi riguarda di più. Fra dieci anni, quale lavoro farà una macchina al posto vostro?"</p>
-<p>Televoto: "Pensi che il lavoro che vorresti fare esisterà ancora fra 20 anni?" (sì, uguale / sì, ma diverso / no / non lo so).</p>
-<p>Gira la domanda: "Quali parti del lavoro le macchine faranno meglio? E quali resteranno vostre?" Fai emergere che di solito spariscono i compiti, non i mestieri interi: ripetizione e calcolo vanno alle macchine; relazione, giudizio e responsabilità restano alle persone.</p>
-<h2>6 · Il manifesto della classe</h2>
-<p>"Chiudiamo scrivendo le regole. Se foste voi a fare la legge, quali sarebbero le 5 regole per un'IA giusta?"</p>
-<p>Ogni gruppo propone 2 regole, la classe le vota e le 5 più votate vanno sul cartellone, firmato dalla 4B. Lascialo alla classe, o fotografalo per la restituzione del progetto.</p>
-<p>Biglietto di uscita anonimo: "Su quale dilemma hai cambiato idea oggi, e perché?"</p>
-<h2>Situazioni da gestire</h2>
+<h2 id="glossario">Glossario</h2>
 <ul>
-<li><strong>La classe vuole sapere cosa pensi tu:</strong> rispondi solo alla fine, e spiega il ragionamento, non solo la conclusione.</li>
-<li><strong>La discussione si polarizza o diventa personale:</strong> riporta al caso. "Non stiamo giudicando chi di voi ha ragione, stiamo giudicando la macchina."</li>
-<li><strong>Nessuno vuole fare la difesa:</strong> assegna i ruoli a sorte. Difendere una posizione che non si condivide è l'esercizio più utile della giornata.</li>
-<li><strong>Avanza tempo:</strong> dilemma extra. "A scuola una telecamera con IA riconosce chi copia durante le verifiche. La mettereste?" Collegalo al divieto dell'AI Act sul riconoscimento delle emozioni negli istituti scolastici.</li>
+<li><strong>Dilemma etico</strong>: situazione in cui ogni scelta possibile comporta un costo morale e non esiste una soluzione priva di conseguenze.</li>
+<li><strong>Livelli SAE</strong>: classificazione internazionale (standard J3016) dei livelli di automazione della guida, da 0 a 5.</li>
+<li><strong>Bias algoritmico</strong>: distorsione sistematica nei risultati di un sistema automatico, spesso ereditata dai dati di addestramento.</li>
+<li><strong>Riconoscimento facciale</strong>: tecnologia che identifica o verifica una persona confrontando il suo volto con immagini archiviate.</li>
+<li><strong>Dato biometrico</strong>: dato relativo a caratteristiche fisiche o comportamentali, come il volto o l'impronta digitale, usato per identificare una persona.</li>
+<li><strong>Social scoring</strong>: attribuzione di un punteggio alle persone in base al loro comportamento sociale, vietata dall'AI Act.</li>
+<li><strong>Sistema ad alto rischio</strong>: sistema di IA che, secondo l'AI Act, può incidere in modo rilevante su salute, sicurezza o diritti e deve rispettare obblighi specifici.</li>
+<li><strong>Controllo umano</strong>: possibilità per una persona di verificare, correggere o fermare la decisione di un sistema automatico.</li>
+<li><strong>Automazione</strong>: affidamento a macchine o software di compiti prima svolti da persone.</li>
 </ul>
-<h2>Da verificare prima</h2>
+<h2 id="fonti-e-approfondimenti">Fonti e approfondimenti</h2>
 <ul>
-<li>Caso 1: algoritmo Ofqual, voti A-level 2020.</li>
-<li>Caso 2: arresto di Robert Williams a Detroit, gennaio 2020.</li>
-<li>Caso 3: provvedimento del Garante privacy su Clearview AI, 2022, 20 milioni di euro.</li>
-<li>Esperimento Moral Machine del MIT, pubblicato su Nature nel 2018.</li>
-<li>Livelli SAE della guida autonoma (0-5).</li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj">Regolamento UE 2024/1689 (AI Act), testo ufficiale</a>, in particolare art. 5 e allegato III.</li>
+<li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">Regolamento UE 2016/679 (GDPR), testo ufficiale</a>, art. 22.</li>
+<li><a href="https://www.moralmachine.net">Moral Machine, MIT</a>, e l'articolo <a href="https://www.nature.com/articles/s41586-018-0637-6">The Moral Machine experiment, Nature, 2018</a>.</li>
+<li><a href="https://www.garanteprivacy.it">Garante per la protezione dei dati personali</a>, provvedimento del 2022 nei confronti di Clearview AI.</li>
+<li>SAE International, standard J3016 sui livelli di automazione della guida.</li>
+<li>Legge 23 settembre 2025, n. 132, disposizioni e deleghe in materia di intelligenza artificiale.</li>
+<li>Cronache sul caso Ofqual e sui voti A-level del 2020 e sull'arresto di Robert Williams a Detroit (gennaio 2020), riportati dalla stampa internazionale.</li>
 </ul>
-  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutte le guide: scuole superiori</a></p>
+  <div id="presentazione"></div>
+  <p class="link-indietro-guida"><a href="scuole-superiori.html">&larr; Tutti gli articoli: scuole superiori</a></p>
 </main>
 
 <footer>
