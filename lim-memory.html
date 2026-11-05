@@ -85,7 +85,7 @@
   }
   .dorso::before { content: ''; position: absolute; inset: 10px; border: 2px dashed rgba(255,255,255,0.25); border-radius: 11px; }
   .dorso::after {
-    content: '?'; display: flex; align-items: center; justify-content: center;
+    content: attr(data-n); display: flex; align-items: center; justify-content: center;
     width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--accento);
   }
   .carta:hover .dorso { filter: brightness(1.12); }
@@ -93,7 +93,12 @@
   .fronte .simbolo { font-size: 30cqh; line-height: 1; flex: none; }
   .fronte .parola { font-family: var(--font-display); color: var(--blu); font-size: 14cqw; line-height: 1.05; max-width: 100%; overflow-wrap: normal; }
   .fronte .frase { font-size: 7.5cqw; font-weight: 600; line-height: 1.2; color: var(--nero); max-width: 100%; }
-  .dorso { font-size: 18cqh; }
+  .dorso { font-size: 30cqh; }
+  .fronte .numero-angolo {
+    position: absolute; top: 5cqh; left: 4cqw; min-width: 1.7em; height: 1.7em; padding: 0 0.3em; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bianco-2); color: var(--blu); font-weight: 700; font-size: 11cqh;
+  }
   .carta.trovata .fronte { border-color: var(--colore, #2e9d5b); background: #f3fbf6; }
   .carta.trovata { cursor: default; }
   .carta.sbagliata .fronte { border-color: var(--accento); animation: scuoti 0.4s ease; }
@@ -163,10 +168,10 @@
     <section class="come-si-gioca" aria-labelledby="regole-titolo">
       <h2 id="regole-titolo">Come si gioca</h2>
       <ol>
-        <li>Una squadra alla volta sceglie due carte. Un bambino della squadra viene alla LIM e le tocca.</li>
+        <li>Ogni carta ha un numero. Una squadra alla volta, dal proprio posto, dice due numeri: l'insegnante li tocca sulla LIM.</li>
         <li>Se le carte sono la parola e il suo significato, la coppia è trovata: la squadra guadagna un punto e gioca ancora.</li>
         <li>A ogni coppia appare una scoperta e una domanda per tutta la classe: si risponde insieme prima di continuare.</li>
-        <li>Se le carte non sono una coppia, si girano di nuovo e tocca alla squadra successiva. Tenete bene a mente dove erano.</li>
+        <li>Se le carte non sono una coppia, si girano di nuovo e tocca alla squadra successiva. Ricordatevi i numeri!</li>
         <li>Vince la squadra con più coppie. Con una sola squadra gioca tutta la classe insieme, contro il numero di tentativi.</li>
       </ol>
     </section>
@@ -376,11 +381,12 @@
       b.type = 'button';
       b.className = 'carta';
       b.dataset.id = c.id;
+      b.dataset.n = pos + 1;
       b.setAttribute('aria-label', `Carta ${pos + 1}, coperta`);
       const fronte = c.tipo === 'parola'
         ? `<span class="parola">${d.parola}</span>`
         : `<span class="simbolo" aria-hidden="true">${d.simbolo}</span><span class="frase">${d.frase}</span>`;
-      b.innerHTML = `<span class="carta-interno"><span class="faccia dorso" aria-hidden="true"></span><span class="faccia fronte">${fronte}</span></span>`;
+      b.innerHTML = `<span class="carta-interno"><span class="faccia dorso" aria-hidden="true" data-n="${pos + 1}"></span><span class="faccia fronte"><span class="numero-angolo" aria-hidden="true">${pos + 1}</span>${fronte}</span></span>`;
       b.dataset.testo = c.tipo === 'parola' ? d.parola : d.frase;
       b.addEventListener('click', () => gira(b));
       g.appendChild(b);
@@ -423,13 +429,13 @@
     });
     $('turno').textContent = numSquadre === 1
       ? `Tentativi: ${tentativi} · Coppie: ${trovate}/${COPPIE_PER_PARTITA}`
-      : `Tocca ai ${squadre[turno].nome}!`;
+      : `Tocca ai ${squadre[turno].nome}: scegliete due numeri!`;
   }
 
   function gira(carta) {
     if (bloccato || carta.classList.contains('girata') || carta.classList.contains('trovata')) return;
     carta.classList.add('girata');
-    carta.setAttribute('aria-label', `Carta scoperta: ${carta.dataset.testo}`);
+    carta.setAttribute('aria-label', `Carta ${carta.dataset.n}: ${carta.dataset.testo}`);
     tono(520, 0.06);
     girate.push(carta);
     if (girate.length < 2) return;
@@ -442,7 +448,7 @@
     } else {
       setTimeout(() => { a.classList.add('sbagliata'); b.classList.add('sbagliata'); tono(200, 0.18); }, 500);
       setTimeout(() => {
-        [a, b].forEach((c) => { c.classList.remove('girata', 'sbagliata'); c.setAttribute('aria-label', 'Carta coperta'); });
+        [a, b].forEach((c) => { c.classList.remove('girata', 'sbagliata'); c.setAttribute('aria-label', `Carta ${c.dataset.n}, coperta`); });
         girate = []; bloccato = false;
         if (numSquadre > 1) turno = (turno + 1) % squadre.length;
         aggiornaSquadre();
