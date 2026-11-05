@@ -230,8 +230,33 @@ footer .link-legali a:hover { color: var(--accento); }
 .testo-guida ol li { margin-bottom: 0.5rem; }
 .testo-guida h2 + p strong:first-child { color: var(--blu); }
 .link-indietro-guida { margin-top: 3rem; }
+.scheda-guida .info-guida { margin-top: 0.4rem; color: var(--grigio); font-size: 0.82rem; }
+.meta-articolo { color: var(--grigio); font-size: 0.92rem; margin-top: 0.8rem; }
+.btn-pieno {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0.6rem 1.4rem;
+  border: 1px solid var(--blu); border-radius: 999px; background: var(--blu); color: var(--bianco) !important;
+  font-size: 0.92rem; font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+.btn-pieno:hover { background: var(--accento); border-color: var(--accento); }
+.btn-pieno:focus-visible { outline: 3px solid var(--blu-chiaro); outline-offset: 2px; }
+.azioni-guida { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+.etichetta-box { margin: 0 0 0.4rem; color: var(--accento); font-size: 0.8rem !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.indice-articolo { margin: 0 0 2.6rem; padding: 1.3rem 1.5rem; background: var(--bianco-2); border-radius: 14px; }
+.indice-articolo ol { margin: 0; }
+.indice-articolo li { margin-bottom: 0.25rem; }
+.indice-articolo a { color: var(--blu); text-decoration: none; }
+.indice-articolo a:hover { text-decoration: underline; }
+.testo-guida h2 { scroll-margin-top: 5rem; }
+.testo-guida h3 { font-size: clamp(1.15rem, 2.4vw, 1.4rem); margin-top: 1.8rem; }
+.box-presentazione {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem;
+  margin-top: 3rem; padding: 1.6rem; border: 1px solid var(--linea); border-left: 0; border-radius: 14px; background: var(--bianco);
+  box-shadow: 0 8px 24px rgba(14,42,82,0.08);
+}
+.box-presentazione .titolo-box { margin: 0 0 0.3rem; font-family: var(--font-display); font-size: 1.5rem !important; color: var(--blu); }
+.box-presentazione .nota-box { margin: 0; color: var(--grigio); font-size: 0.9rem !important; max-width: 52ch; }
 @media print {
-  .barra, footer, .azioni-guida, .link-indietro-guida, .hero-legale .eyebrow { display: none !important; }
+  .barra, footer, .azioni-guida, .link-indietro-guida, .hero-legale .eyebrow, .indice-articolo, .box-presentazione { display: none !important; }
   .hero-legale { padding: 0 0 1rem; background: none; }
   .testo-legale { padding: 0; max-width: none; }
   body { font-size: 11pt; }
