@@ -317,3 +317,8 @@ footer .link-legali a:hover { color: var(--accento); }
   .box-perche { flex-direction: column; text-align: center; align-items: center; }
 }
 .nav-alto + .hero-articolo { padding-top: 2.6rem; }
+.scheda-gioco { background: var(--blu); border-color: var(--blu); color: var(--bianco); }
+.scheda-gioco h2 { color: var(--bianco); }
+.scheda-gioco p, .scheda-gioco .dove-guida { color: #d6e2f5; }
+.scheda-gioco .eta-guida { background: var(--accento); color: var(--bianco); }
+.scheda-gioco .apri-guida { color: var(--bianco); }

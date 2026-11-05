@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory delle macchine — Mirafiori</title>
+<meta name="description" content="Gioco memory a squadre da proiettare sulla LIM: parole e concetti dei laboratori digitali per primaria e secondaria di primo grado.">
+<meta name="author" content="Beatrice Zicola">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .memory-pagina { background: var(--bianco-2); min-height: 100vh; }
+  .memory-pagina .barra { background: rgba(244,246,250,0.92); }
+  .gioco { max-width: 1400px; margin: 0 auto; padding: 1.2rem 1.4rem 2.4rem; }
+
+  /* ---------- schermata iniziale ---------- */
+  .avvio { max-width: 860px; margin: 1.6rem auto 0; text-align: center; }
+  .avvio h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); margin-bottom: 0.2em; }
+  .avvio .sub { font-size: 1.2rem; color: var(--blu); max-width: 52ch; }
+  .scelta { margin: 2rem 0 0; padding: 0; border: 0; }
+  .scelta legend { font-family: var(--font-display); font-size: 1.5rem; color: var(--blu); margin: 0 auto 0.8rem; }
+  .opzioni { display: flex; flex-wrap: wrap; gap: 0.9rem; justify-content: center; }
+  .opzione input { position: absolute; opacity: 0; pointer-events: none; }
+  .opzione span {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
+    min-width: 170px; min-height: 84px; padding: 0.9rem 1.4rem; border-radius: 18px; cursor: pointer;
+    background: var(--bianco); border: 3px solid var(--linea); color: var(--blu); font-weight: 700; font-size: 1.15rem;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .opzione span small { font-weight: 500; color: var(--grigio); font-size: 0.9rem; }
+  .opzione input:checked + span { border-color: var(--blu-chiaro); box-shadow: 0 0 0 4px rgba(29,95,214,0.15); }
+  .opzione input:focus-visible + span { outline: 3px solid var(--blu-chiaro); outline-offset: 3px; }
+  .opzione span:hover { transform: translateY(-2px); }
+  .btn-grande {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 64px; padding: 0.8rem 2.6rem; margin-top: 2.2rem;
+    border: 0; border-radius: 999px; background: var(--accento); color: #fff; font-family: var(--font-display); font-size: 1.8rem;
+    letter-spacing: 0.03em; cursor: pointer; box-shadow: 0 10px 24px rgba(230,57,70,0.3);
+  }
+  .btn-grande:hover { transform: translateY(-2px); }
+  .btn-grande:focus-visible, .btn-tondo:focus-visible, .carta:focus-visible { outline: 4px solid var(--blu-chiaro); outline-offset: 3px; }
+  .come-si-gioca { margin: 2.6rem auto 0; padding: 1.4rem 1.6rem; background: var(--bianco); border-radius: 18px; text-align: left; max-width: 720px; }
+  .come-si-gioca h2 { font-size: 1.5rem; }
+  .come-si-gioca ol { list-style: decimal; padding-left: 1.4rem; list-style-position: outside; margin: 0; }
+  .come-si-gioca li { margin-bottom: 0.35rem; }
+
+  /* ---------- tavolo ---------- */
+  .tavolo { display: none; }
+  .tavolo.attivo { display: block; }
+  .testata-gioco { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem; margin-bottom: 1rem; }
+  .squadre { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .squadra {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 1rem 0.5rem 0.6rem; border-radius: 999px;
+    background: var(--bianco); border: 3px solid transparent; font-weight: 700; color: var(--nero); font-size: 1.1rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .squadra .pallino { width: 26px; height: 26px; border-radius: 50%; }
+  .squadra .punti { font-family: var(--font-display); font-size: 1.7rem; color: var(--blu); min-width: 1.4ch; text-align: center; }
+  .squadra.di-turno { border-color: var(--colore); transform: scale(1.06); box-shadow: 0 8px 20px rgba(14,42,82,0.12); }
+  .turno { font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2.1rem); color: var(--blu); }
+  .comandi { display: flex; gap: 0.5rem; }
+  .btn-tondo {
+    min-width: 48px; min-height: 48px; padding: 0.4rem 0.9rem; border-radius: 999px; border: 2px solid var(--linea);
+    background: var(--bianco); color: var(--blu); font-weight: 700; font-size: 0.95rem; cursor: pointer;
+  }
+  .btn-tondo:hover { border-color: var(--blu-chiaro); }
+
+  .griglia {
+    display: grid; gap: clamp(0.5rem, 1.2vw, 1rem);
+    grid-template-columns: repeat(var(--colonne, 4), 1fr);
+    max-width: calc((100vh - 250px) * 1.45); margin: 0 auto;
+  }
+  .carta {
+    position: relative; aspect-ratio: 3 / 2; border: 0; padding: 0; background: none; cursor: pointer; perspective: 900px;
+    font-family: var(--font-testo);
+  }
+  .carta-interno { position: absolute; inset: 0; transition: transform 0.45s ease; transform-style: preserve-3d; }
+  .carta.girata .carta-interno, .carta.trovata .carta-interno { transform: rotateY(180deg); }
+  .faccia {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
+    padding: 0.5rem; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; text-align: center;
+  }
+  .dorso {
+    background: var(--blu); color: #fff; box-shadow: 0 6px 14px rgba(14,42,82,0.18);
+    font-family: var(--font-display); font-size: clamp(1.8rem, 3.4vw, 3.2rem);
+  }
+  .dorso::before { content: ''; position: absolute; inset: 10px; border: 2px dashed rgba(255,255,255,0.25); border-radius: 11px; }
+  .dorso::after {
+    content: '?'; display: flex; align-items: center; justify-content: center;
+    width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--accento);
+  }
+  .carta:hover .dorso { filter: brightness(1.12); }
+  .fronte { transform: rotateY(180deg); background: var(--bianco); border: 4px solid var(--linea); color: var(--nero); }
+  .fronte .simbolo { font-size: clamp(2rem, 4.6vw, 4.2rem); line-height: 1; }
+  .fronte .parola { font-family: var(--font-display); color: var(--blu); font-size: clamp(1.3rem, 2.8vw, 2.6rem); line-height: 1.05; }
+  .fronte .frase { font-size: clamp(0.8rem, 1.3vw, 1.2rem); font-weight: 600; line-height: 1.25; color: var(--nero); }
+  .carta.trovata .fronte { border-color: var(--colore, #2e9d5b); background: #f3fbf6; }
+  .carta.trovata { cursor: default; }
+  .carta.sbagliata .fronte { border-color: var(--accento); animation: scuoti 0.4s ease; }
+  @keyframes scuoti { 25% { transform: rotateY(180deg) translateX(-6px); } 75% { transform: rotateY(180deg) translateX(6px); } }
+
+  /* ---------- finestre ---------- */
+  .velo { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 1.4rem; background: rgba(14,42,82,0.55); }
+  .velo.aperto { display: flex; }
+  .finestra { width: min(860px, 100%); max-height: 92vh; overflow: auto; padding: clamp(1.4rem, 3vw, 2.6rem); border-radius: 24px; background: var(--bianco); text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.3); }
+  .finestra .etichetta { color: var(--accento); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1rem; margin-bottom: 0.3rem; }
+  .finestra .simbolo-grande { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1; margin-bottom: 0.4rem; }
+  .finestra h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 0.3em; }
+  .finestra .spiegazione { font-size: clamp(1.15rem, 2.2vw, 1.6rem); max-width: 40ch; color: var(--nero); }
+  .domanda-classe { margin: 1.4rem auto 0; padding: 1rem 1.3rem; border-radius: 16px; background: var(--bianco-2); max-width: 46ch; }
+  .domanda-classe strong { display: block; color: var(--blu); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+  .domanda-classe p { margin: 0; font-size: clamp(1.05rem, 2vw, 1.45rem); font-weight: 600; max-width: none; }
+  .classifica { list-style: none; margin: 1.4rem auto 0; padding: 0; max-width: 520px; }
+  .classifica li { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 1rem; margin-bottom: 0.5rem; border-radius: 14px; background: var(--bianco-2); font-size: 1.3rem; font-weight: 700; }
+  .classifica li:first-child { background: #fff6d6; }
+  .classifica .pallino { width: 26px; height: 26px; border-radius: 50%; flex: none; }
+  .classifica .pt { margin-left: auto; font-family: var(--font-display); color: var(--blu); font-size: 1.8rem; }
+  .azioni-finestra { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-top: 1.6rem; }
+  .azioni-finestra .btn-grande { margin-top: 0; font-size: 1.5rem; min-height: 58px; }
+  .btn-secondario { background: var(--bianco); color: var(--blu); border: 3px solid var(--blu); box-shadow: none; }
+
+  .firma-gioco { text-align: center; color: var(--grigio); font-size: 0.85rem; margin-top: 1.6rem; }
+
+  /* schermo intero: niente menu, più spazio alle carte */
+  :fullscreen .barra, :fullscreen footer { display: none; }
+  .schermo-intero .barra, .schermo-intero footer { display: none !important; }
+  .schermo-intero .griglia { max-width: calc((100vh - 130px) * 1.45); }
+
+  @media (max-width: 700px) {
+    .griglia { --colonne: 4 !important; max-width: none; }
+    .fronte .frase { display: none; }
+    .testata-gioco { justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .carta-interno { transition: none; }
+    .carta.sbagliata .fronte { animation: none; }
+  }
+</style>
+</head>
+<body class="memory-pagina">
+<header class="barra" id="barra"></header>
+<script src="js/nav.js"></script>
+
+<main class="gioco">
+
+  <!-- ===== schermata iniziale ===== -->
+  <section class="avvio" id="avvio" aria-labelledby="titolo-gioco">
+    <p class="eyebrow" style="color:var(--accento);font-weight:600;margin-bottom:0.6rem;">Gioco per la LIM · tutta la classe</p>
+    <h1 id="titolo-gioco">Il memory delle macchine</h1>
+    <p class="sub">Trova le coppie: la parola e il suo significato. A ogni coppia trovata, una scoperta e una domanda per tutta la classe.</p>
+
+    <fieldset class="scelta">
+      <legend>Chi gioca?</legend>
+      <div class="opzioni" id="scelta-mazzo"></div>
+    </fieldset>
+
+    <fieldset class="scelta">
+      <legend>Quante squadre?</legend>
+      <div class="opzioni" id="scelta-squadre"></div>
+    </fieldset>
+
+    <button type="button" class="btn-grande" id="btn-inizia">Si gioca!</button>
+
+    <section class="come-si-gioca" aria-labelledby="regole-titolo">
+      <h2 id="regole-titolo">Come si gioca</h2>
+      <ol>
+        <li>Una squadra alla volta sceglie due carte. Un bambino della squadra viene alla LIM e le tocca.</li>
+        <li>Se le carte sono la parola e il suo significato, la coppia è trovata: la squadra guadagna un punto e gioca ancora.</li>
+        <li>A ogni coppia appare una scoperta e una domanda per tutta la classe: si risponde insieme prima di continuare.</li>
+        <li>Se le carte non sono una coppia, si girano di nuovo e tocca alla squadra successiva. Tenete bene a mente dove erano.</li>
+        <li>Vince la squadra con più coppie. Con una sola squadra gioca tutta la classe insieme, contro il numero di tentativi.</li>
+      </ol>
+    </section>
+  </section>
+
+  <!-- ===== tavolo di gioco ===== -->
+  <section class="tavolo" id="tavolo" aria-label="Tavolo di gioco">
+    <div class="testata-gioco">
+      <div class="squadre" id="squadre" aria-live="polite"></div>
+      <p class="turno" id="turno" aria-live="polite"></p>
+      <div class="comandi">
+        <button type="button" class="btn-tondo" id="btn-suono" aria-pressed="true" title="Suoni">Suoni sì</button>
+        <button type="button" class="btn-tondo" id="btn-intero" title="Schermo intero">Schermo intero</button>
+        <button type="button" class="btn-tondo" id="btn-esci" title="Torna alla scelta">Ricomincia</button>
+      </div>
+    </div>
+    <div class="griglia" id="griglia"></div>
+  </section>
+
+  <p class="firma-gioco">© 2026 Beatrice Zicola · toBea · www.tobea.it — gioco realizzato per il progetto Mirafiori</p>
+</main>
+
+<!-- ===== finestra "Lo sapevi?" ===== -->
+<div class="velo" id="velo-scoperta" role="dialog" aria-modal="true" aria-labelledby="scoperta-titolo">
+  <div class="finestra">
+    <p class="etichetta" id="scoperta-chi">Coppia trovata!</p>
+    <div class="simbolo-grande" id="scoperta-simbolo" aria-hidden="true"></div>
+    <h2 id="scoperta-titolo"></h2>
+    <p class="spiegazione" id="scoperta-testo"></p>
+    <div class="domanda-classe">
+      <strong>Domanda per la classe</strong>
+      <p id="scoperta-domanda"></p>
+    </div>
+    <div class="azioni-finestra">
+      <button type="button" class="btn-grande" id="btn-continua">Continua</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== finestra finale ===== -->
+<div class="velo" id="velo-fine" role="dialog" aria-modal="true" aria-labelledby="fine-titolo">
+  <div class="finestra">
+    <div class="simbolo-grande" aria-hidden="true">🏆</div>
+    <h2 id="fine-titolo">Tutte le coppie trovate!</h2>
+    <p class="spiegazione" id="fine-testo"></p>
+    <ol class="classifica" id="classifica"></ol>
+    <div class="azioni-finestra">
+      <button type="button" class="btn-grande" id="btn-rigioca">Rigioca</button>
+      <button type="button" class="btn-grande btn-secondario" id="btn-cambia">Cambia mazzo</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="loghi-footer">
+    <img src="img/logo-engim.png" alt="Logo ENGIM Piemonte">
+    <img src="img/logo-stellantis.png" alt="Logo Stellantis">
+  </div>
+  <p class="link-legali"><a href="privacy.html">Privacy</a> · <a href="cookie.html">Cookie</a></p>
+</footer>
+
+<script>
+(function () {
+  // ---------------- mazzi ----------------
+  // Ogni coppia: una carta PAROLA e una carta SIGNIFICATO (simbolo + frase breve).
+  const MAZZI = {
+    primaria: {
+      nome: 'Primaria', eta: '10-11 anni',
+      coppie: [
+        { parola: 'Algoritmo', simbolo: '📋', frase: 'Istruzioni in fila, una dopo l’altra',
+          scoperta: 'Un algoritmo è una lista di istruzioni precise, da seguire in ordine. Anche una ricetta è un algoritmo!',
+          domanda: 'Quale algoritmo usate ogni mattina, prima di venire a scuola?' },
+        { parola: 'Robot', simbolo: '🤖', frase: 'Esegue gli ordini, ma non pensa',
+          scoperta: 'Un robot fa esattamente quello che gli diciamo, parola per parola. Se l’istruzione è sbagliata, sbaglia anche lui.',
+          domanda: 'Che istruzioni dareste a un robot per arrivare dalla porta alla lavagna?' },
+        { parola: 'Bug', simbolo: '🐞', frase: 'Un errore nel programma',
+          scoperta: 'Un errore in un programma si chiama bug, “insetto” in inglese. I programmatori passano tanto tempo a cercarli e correggerli.',
+          domanda: 'Se il robot sbatte contro il banco, di chi è l’errore: del robot o di chi ha scritto le istruzioni?' },
+        { parola: 'Pixel', simbolo: '🟦', frase: 'Un quadratino di colore',
+          scoperta: 'Ogni foto sullo schermo è fatta di tantissimi quadratini colorati, i pixel. Da vicinissimo si vedono!',
+          domanda: 'Quanti quadratini servono, secondo voi, per disegnare un cuore?' },
+        { parola: 'Numeri', simbolo: '🔢', frase: 'Il computer salva tutto così',
+          scoperta: 'Per il computer ogni immagine, suono o parola è fatta di numeri. 1 può voler dire “colorato” e 0 “bianco”.',
+          domanda: 'Se 1 è colorato e 0 è bianco, che cosa disegna la riga 0 1 1 0?' },
+        { parola: 'Esempi', simbolo: '🍎', frase: 'Così una macchina impara',
+          scoperta: 'L’intelligenza artificiale impara guardando tantissimi esempi. Più esempi vari vede, meglio riconosce le cose.',
+          domanda: 'Che esempi mostrereste a una macchina per insegnarle cos’è un gatto?' },
+        { parola: 'Errore', simbolo: '🍏', frase: 'Ciò che la macchina non ha mai visto',
+          scoperta: 'Se la macchina ha visto solo mele rosse, una mela verde può confonderla. Non è stupida: le mancava l’esempio giusto.',
+          domanda: 'Come possiamo aiutare la macchina a non sbagliare più?' },
+        { parola: 'Stampante 3D', simbolo: '🧁', frase: 'Costruisce strato dopo strato',
+          scoperta: 'La stampante 3D costruisce un oggetto a strati, come una torta: un velo sopra l’altro, seguendo un programma.',
+          domanda: 'Che oggetto vorreste stampare per la vostra classe?' },
+        { parola: 'Controllare', simbolo: '🔍', frase: 'La regola degli scienziati',
+          scoperta: 'Le macchine indovinano molto bene, ma non sanno davvero. Per questo quello che ci dicono va sempre controllato.',
+          domanda: 'Quando una macchina vi dice una cosa, voi che cosa fate?' },
+        { parola: 'Sensore', simbolo: '👁️', frase: 'Gli occhi e le orecchie della macchina',
+          scoperta: 'I sensori fanno sentire alla macchina luce, suoni, movimento. La porta che si apre da sola ne ha uno!',
+          domanda: 'Quali macchine con un sensore incontrate tutti i giorni?' }
+      ]
+    },
+    medie: {
+      nome: 'Medie', eta: '13-14 anni',
+      coppie: [
+        { parola: 'Prompt', simbolo: '✍️', frase: 'La richiesta che scrivi all’IA',
+          scoperta: 'Un prompt è quello che scriviamo all’IA. Più è chiaro e preciso, più utile è la risposta.',
+          domanda: 'Come rendereste più preciso il prompt “parlami dei vulcani”?' },
+        { parola: 'Allucinazione', simbolo: '🌀', frase: 'Una risposta inventata, detta con sicurezza',
+          scoperta: 'A volte l’IA inventa una risposta che sembra giusta: un libro, una data, un nome che non esistono. Si chiama allucinazione.',
+          domanda: 'Se copiate in una ricerca una risposta inventata, chi ne risponde?' },
+        { parola: 'Probabilità', simbolo: '🎲', frase: 'L’IA sceglie la parola più probabile',
+          scoperta: 'Un chatbot non sa le cose: sceglie, una dopo l’altra, la parola più probabile. È bravissimo a indovinare.',
+          domanda: 'Completate: “Stasera a cena mia mamma ha cucinato…”. Quale parola sceglierebbe l’IA?' },
+        { parola: 'Dati', simbolo: '📚', frase: 'Ciò da cui l’IA impara',
+          scoperta: 'L’IA impara da enormi quantità di testi e immagini. Quello che sa, e anche quello che sbaglia, viene da lì.',
+          domanda: 'Se un’IA ha visto solo foto di cani, che cosa risponderà davanti a un gatto?' },
+        { parola: 'Pregiudizio', simbolo: '⚖️', frase: 'Un errore imparato dai dati',
+          scoperta: 'Se nei dati gli ingegneri sono quasi sempre uomini, l’IA tenderà a ripeterlo. Si chiama bias, cioè pregiudizio.',
+          domanda: 'Disegnate un “ingegnere”: com’è venuto? E se lo chiedessimo a un’IA?' },
+        { parola: 'Deepfake', simbolo: '🎭', frase: 'Foto o video falsi creati con l’IA',
+          scoperta: 'Con l’IA si possono creare foto, video e voci false che sembrano vere. Usarli per fare del male a qualcuno è un reato.',
+          domanda: 'Che cosa fareste se in una chat arrivasse un deepfake di un compagno?' },
+        { parola: 'Inoltrare', simbolo: '📤', frase: 'Anche tu diffondi',
+          scoperta: 'Chi inoltra un contenuto falso o offensivo allarga il danno. Fermarsi prima è la scelta più forte.',
+          domanda: 'Le tre mosse giuste: non inoltrare, non commentare e…?' },
+        { parola: 'Fonte', simbolo: '📰', frase: 'Dove verifichi un’informazione',
+          scoperta: 'Una fonte affidabile ha un autore, una data, un nome riconoscibile. Vale più di mille condivisioni.',
+          domanda: 'Quale fonte usereste per controllare una notizia che vi sembra strana?' },
+        { parola: 'Ricerca inversa', simbolo: '🔎', frase: 'Scoprire da dove viene un’immagine',
+          scoperta: 'Con la ricerca inversa per immagini si scopre se una foto esiste già altrove e chi l’ha pubblicata per prima.',
+          domanda: 'Mani con sei dita, scritte storte: quali altri indizi rivelano un’immagine generata?' },
+        { parola: 'Stampa 3D', simbolo: '🖨️', frase: 'Dal file all’oggetto, a strati',
+          scoperta: 'In cucina, in estetica e nell’industria la stampa 3D crea oggetti su misura partendo da un disegno al computer.',
+          domanda: 'In quale mestiere che vi piace potrebbe servire una stampante 3D?' }
+      ]
+    }
+  };
+
+  const COLORI = [
+    { nome: 'Rossi', colore: '#e63946' }, { nome: 'Blu', colore: '#1d5fd6' },
+    { nome: 'Verdi', colore: '#2e9d5b' }, { nome: 'Gialli', colore: '#e0a800' }
+  ];
+  const COPPIE_PER_PARTITA = 8;   // 16 carte: griglia 4x4, leggibile sulla LIM
+
+  // ---------------- stato ----------------
+  let mazzoScelto = 'primaria';
+  let numSquadre = 2;
+  let squadre = [];
+  let turno = 0;
+  let girate = [];
+  let bloccato = false;
+  let trovate = 0;
+  let tentativi = 0;
+  let coppieInGioco = [];
+  let suono = true;
+
+  const $ = (id) => document.getElementById(id);
+
+  // ---------------- schermata iniziale ----------------
+  function creaOpzioni() {
+    const m = $('scelta-mazzo');
+    Object.entries(MAZZI).forEach(([id, mz]) => {
+      m.insertAdjacentHTML('beforeend',
+        `<label class="opzione"><input type="radio" name="mazzo" value="${id}" ${id === mazzoScelto ? 'checked' : ''}>
+         <span>${mz.nome}<small>${mz.eta}</small></span></label>`);
+    });
+    const s = $('scelta-squadre');
+    [1, 2, 3, 4].forEach((n) => {
+      s.insertAdjacentHTML('beforeend',
+        `<label class="opzione"><input type="radio" name="squadre" value="${n}" ${n === numSquadre ? 'checked' : ''}>
+         <span>${n === 1 ? 'Tutti insieme' : n + ' squadre'}<small>${n === 1 ? 'una sola squadra' : 'a turno'}</small></span></label>`);
+    });
+    m.addEventListener('change', (e) => { mazzoScelto = e.target.value; });
+    s.addEventListener('change', (e) => { numSquadre = Number(e.target.value); });
+  }
+
+  function mescola(a) {
+    const x = a.slice();
+    for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; }
+    return x;
+  }
+
+  // ---------------- partita ----------------
+  function iniziaPartita() {
+    squadre = COLORI.slice(0, numSquadre).map((c) => ({ ...c, punti: 0 }));
+    if (numSquadre === 1) squadre[0] = { nome: 'Classe', colore: '#1d5fd6', punti: 0 };
+    turno = 0; girate = []; bloccato = false; trovate = 0; tentativi = 0;
+    coppieInGioco = mescola(MAZZI[mazzoScelto].coppie).slice(0, COPPIE_PER_PARTITA);
+
+    const carte = [];
+    coppieInGioco.forEach((c, i) => {
+      carte.push({ id: i, tipo: 'parola' });
+      carte.push({ id: i, tipo: 'significato' });
+    });
+
+    const g = $('griglia');
+    g.innerHTML = '';
+    mescola(carte).forEach((c, pos) => {
+      const d = coppieInGioco[c.id];
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carta';
+      b.dataset.id = c.id;
+      b.setAttribute('aria-label', `Carta ${pos + 1}, coperta`);
+      const fronte = c.tipo === 'parola'
+        ? `<span class="parola">${d.parola}</span>`
+        : `<span class="simbolo" aria-hidden="true">${d.simbolo}</span><span class="frase">${d.frase}</span>`;
+      b.innerHTML = `<span class="carta-interno"><span class="faccia dorso" aria-hidden="true"></span><span class="faccia fronte">${fronte}</span></span>`;
+      b.dataset.testo = c.tipo === 'parola' ? d.parola : d.frase;
+      b.addEventListener('click', () => gira(b));
+      g.appendChild(b);
+    });
+
+    $('avvio').hidden = true;
+    $('tavolo').classList.add('attivo');
+    aggiornaSquadre();
+    window.scrollTo({ top: 0 });
+  }
+
+  function aggiornaSquadre() {
+    const box = $('squadre');
+    box.innerHTML = '';
+    squadre.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'squadra' + (i === turno ? ' di-turno' : '');
+      el.style.setProperty('--colore', s.colore);
+      el.innerHTML = `<span class="pallino" style="background:${s.colore}"></span><span>${s.nome}</span><span class="punti">${s.punti}</span>`;
+      box.appendChild(el);
+    });
+    $('turno').textContent = numSquadre === 1
+      ? `Tentativi: ${tentativi} · Coppie: ${trovate}/${COPPIE_PER_PARTITA}`
+      : `Tocca ai ${squadre[turno].nome}!`;
+  }
+
+  function gira(carta) {
+    if (bloccato || carta.classList.contains('girata') || carta.classList.contains('trovata')) return;
+    carta.classList.add('girata');
+    carta.setAttribute('aria-label', `Carta scoperta: ${carta.dataset.testo}`);
+    tono(520, 0.06);
+    girate.push(carta);
+    if (girate.length < 2) return;
+
+    bloccato = true;
+    tentativi++;
+    const [a, b] = girate;
+    if (a.dataset.id === b.dataset.id) {
+      setTimeout(() => coppiaTrovata(a, b), 650);
+    } else {
+      setTimeout(() => { a.classList.add('sbagliata'); b.classList.add('sbagliata'); tono(200, 0.18); }, 500);
+      setTimeout(() => {
+        [a, b].forEach((c) => { c.classList.remove('girata', 'sbagliata'); c.setAttribute('aria-label', 'Carta coperta'); });
+        girate = []; bloccato = false;
+        if (numSquadre > 1) turno = (turno + 1) % squadre.length;
+        aggiornaSquadre();
+      }, 1700);
+    }
+  }
+
+  function coppiaTrovata(a, b) {
+    const s = squadre[turno];
+    [a, b].forEach((c) => { c.classList.remove('girata'); c.classList.add('trovata'); c.style.setProperty('--colore', s.colore); c.disabled = true; });
+    s.punti++; trovate++; girate = [];
+    aggiornaSquadre();
+    fanfara();
+    const d = coppieInGioco[Number(a.dataset.id)];
+    $('scoperta-chi').textContent = numSquadre === 1 ? 'Coppia trovata!' : `Coppia trovata dai ${s.nome}!`;
+    $('scoperta-simbolo').textContent = d.simbolo;
+    $('scoperta-titolo').textContent = d.parola;
+    $('scoperta-testo').textContent = d.scoperta;
+    $('scoperta-domanda').textContent = d.domanda;
+    apri('velo-scoperta', 'btn-continua');
+  }
+
+  function continua() {
+    chiudi('velo-scoperta');
+    bloccato = false;
+    if (trovate === COPPIE_PER_PARTITA) fine();
+  }
+
+  function fine() {
+    const ord = squadre.slice().sort((x, y) => y.punti - x.punti);
+    const lista = $('classifica');
+    lista.innerHTML = '';
+    if (numSquadre === 1) {
+      $('fine-testo').textContent = `Bravissimi! Tutta la classe ha trovato le ${COPPIE_PER_PARTITA} coppie in ${tentativi} tentativi. La prossima volta riuscite a farne meno?`;
+    } else {
+      const max = ord[0].punti;
+      const vincitori = ord.filter((s) => s.punti === max).map((s) => s.nome);
+      $('fine-testo').textContent = vincitori.length > 1 ? `Pareggio tra ${vincitori.join(' e ')}!` : `Vincono i ${vincitori[0]}!`;
+      ord.forEach((s) => lista.insertAdjacentHTML('beforeend',
+        `<li><span class="pallino" style="background:${s.colore}"></span>${s.nome}<span class="pt">${s.punti}</span></li>`));
+    }
+    apri('velo-fine', 'btn-rigioca');
+  }
+
+  // ---------------- finestre ----------------
+  let ultimoFocus = null;
+  function apri(id, focusId) { ultimoFocus = document.activeElement; $(id).classList.add('aperto'); $(focusId).focus(); }
+  function chiudi(id) { $(id).classList.remove('aperto'); if (ultimoFocus && ultimoFocus.focus) ultimoFocus.focus(); }
+
+  // ---------------- suoni (nessun file esterno) ----------------
+  let ctx = null;
+  function tono(freq, durata, ritardo = 0) {
+    if (!suono) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'triangle'; o.frequency.value = freq;
+      const t = ctx.currentTime + ritardo;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + durata);
+      o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + durata + 0.05);
+    } catch (e) { /* audio non disponibile: si gioca in silenzio */ }
+  }
+  function fanfara() { [523, 659, 784, 1047].forEach((f, i) => tono(f, 0.22, i * 0.11)); }
+
+  // ---------------- comandi ----------------
+  $('btn-inizia').addEventListener('click', iniziaPartita);
+  $('btn-continua').addEventListener('click', continua);
+  $('btn-rigioca').addEventListener('click', () => { chiudi('velo-fine'); iniziaPartita(); });
+  $('btn-cambia').addEventListener('click', () => { chiudi('velo-fine'); tornaAllaScelta(); });
+  $('btn-esci').addEventListener('click', () => { if (confirm('Vuoi ricominciare? La partita in corso si perde.')) tornaAllaScelta(); });
+  $('btn-suono').addEventListener('click', (e) => {
+    suono = !suono; e.currentTarget.setAttribute('aria-pressed', String(suono)); e.currentTarget.textContent = suono ? 'Suoni sì' : 'Suoni no';
+  });
+  $('btn-intero').addEventListener('click', () => {
+    const el = document.documentElement;
+    if (!document.fullscreenElement && el.requestFullscreen) el.requestFullscreen().catch(() => document.body.classList.toggle('schermo-intero'));
+    else if (document.fullscreenElement) document.exitFullscreen();
+    else document.body.classList.toggle('schermo-intero');
+  });
+  document.addEventListener('fullscreenchange', () => {
+    const on = !!document.fullscreenElement;
+    document.body.classList.toggle('schermo-intero', on);
+    $('btn-intero').textContent = on ? 'Esci da schermo intero' : 'Schermo intero';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('velo-scoperta').classList.contains('aperto')) continua();
+  });
+
+  function tornaAllaScelta() {
+    $('tavolo').classList.remove('attivo');
+    $('avvio').hidden = false;
+    bloccato = false;
+  }
+
+  creaOpzioni();
+})();
+</script>
+</body>
+</html>

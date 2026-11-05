@@ -29,7 +29,8 @@
       label: 'Scuole esterne',
       figli: [
         { href: 'scuole-superiori.html', label: 'Superiori' },
-        { href: 'scuole-elementari-medie.html', label: 'Elementari e medie' }
+        { href: 'scuole-elementari-medie.html', label: 'Elementari e medie' },
+        { href: 'lim-memory.html', label: 'Giochi per la LIM' }
       ],
       sezione: ['guida-digital-citizenship.html', 'guida-cloud.html', 'guida-digital-printing.html',
         'guida-intelligenza-artificiale.html', 'guida-digital-ethics.html', 'guida-stem-primaria.html', 'guida-stem-medie.html']
