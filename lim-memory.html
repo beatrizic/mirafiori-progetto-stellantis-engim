@@ -70,13 +70,14 @@
   }
   .carta {
     position: relative; aspect-ratio: 3 / 2; border: 0; padding: 0; background: none; cursor: pointer; perspective: 900px;
+    container-type: size;
     font-family: var(--font-testo);
   }
   .carta-interno { position: absolute; inset: 0; transition: transform 0.45s ease; transform-style: preserve-3d; }
   .carta.girata .carta-interno, .carta.trovata .carta-interno { transform: rotateY(180deg); }
   .faccia {
     position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem;
-    padding: 0.5rem; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; text-align: center;
+    padding: 7cqh 7cqw; border-radius: 16px; backface-visibility: hidden; overflow: hidden; -webkit-backface-visibility: hidden; text-align: center;
   }
   .dorso {
     background: var(--blu); color: #fff; box-shadow: 0 6px 14px rgba(14,42,82,0.18);
@@ -89,9 +90,10 @@
   }
   .carta:hover .dorso { filter: brightness(1.12); }
   .fronte { transform: rotateY(180deg); background: var(--bianco); border: 4px solid var(--linea); color: var(--nero); }
-  .fronte .simbolo { font-size: clamp(2rem, 4.6vw, 4.2rem); line-height: 1; }
-  .fronte .parola { font-family: var(--font-display); color: var(--blu); font-size: clamp(1.3rem, 2.8vw, 2.6rem); line-height: 1.05; }
-  .fronte .frase { font-size: clamp(0.8rem, 1.3vw, 1.2rem); font-weight: 600; line-height: 1.25; color: var(--nero); }
+  .fronte .simbolo { font-size: 30cqh; line-height: 1; flex: none; }
+  .fronte .parola { font-family: var(--font-display); color: var(--blu); font-size: 14cqw; line-height: 1.05; max-width: 100%; overflow-wrap: normal; }
+  .fronte .frase { font-size: 7.5cqw; font-weight: 600; line-height: 1.2; color: var(--nero); max-width: 100%; }
+  .dorso { font-size: 18cqh; }
   .carta.trovata .fronte { border-color: var(--colore, #2e9d5b); background: #f3fbf6; }
   .carta.trovata { cursor: default; }
   .carta.sbagliata .fronte { border-color: var(--accento); animation: scuoti 0.4s ease; }
@@ -126,7 +128,6 @@
 
   @media (max-width: 700px) {
     .griglia { --colonne: 4 !important; max-width: none; }
-    .fronte .frase { display: none; }
     .testata-gioco { justify-content: center; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -236,70 +237,76 @@
       nome: 'Primaria', eta: '10-11 anni',
       coppie: [
         { parola: 'Algoritmo', simbolo: '📋', frase: 'Istruzioni in fila, una dopo l’altra',
-          scoperta: 'Un algoritmo è una lista di istruzioni precise, da seguire in ordine. Anche una ricetta è un algoritmo!',
-          domanda: 'Quale algoritmo usate ogni mattina, prima di venire a scuola?' },
-        { parola: 'Robot', simbolo: '🤖', frase: 'Esegue gli ordini, ma non pensa',
-          scoperta: 'Un robot fa esattamente quello che gli diciamo, parola per parola. Se l’istruzione è sbagliata, sbaglia anche lui.',
-          domanda: 'Che istruzioni dareste a un robot per arrivare dalla porta alla lavagna?' },
+          scoperta: 'Un algoritmo è una sequenza di istruzioni precise, da seguire in ordine per arrivare a un risultato. Come una ricetta: non è una magia!',
+          domanda: 'Quale algoritmo seguite ogni mattina prima di venire a scuola?' },
+        { parola: 'Programma', simbolo: '💻', frase: 'Un algoritmo scritto per il computer',
+          scoperta: 'Un programma è un algoritmo scritto in modo che il computer possa eseguirlo. Il computer lo segue velocissimo, ma senza capire.',
+          domanda: 'Nel gioco del robot, chi era il programmatore e chi era il computer?' },
         { parola: 'Bug', simbolo: '🐞', frase: 'Un errore nel programma',
-          scoperta: 'Un errore in un programma si chiama bug, “insetto” in inglese. I programmatori passano tanto tempo a cercarli e correggerli.',
-          domanda: 'Se il robot sbatte contro il banco, di chi è l’errore: del robot o di chi ha scritto le istruzioni?' },
-        { parola: 'Pixel', simbolo: '🟦', frase: 'Un quadratino di colore',
-          scoperta: 'Ogni foto sullo schermo è fatta di tantissimi quadratini colorati, i pixel. Da vicinissimo si vedono!',
-          domanda: 'Quanti quadratini servono, secondo voi, per disegnare un cuore?' },
-        { parola: 'Numeri', simbolo: '🔢', frase: 'Il computer salva tutto così',
-          scoperta: 'Per il computer ogni immagine, suono o parola è fatta di numeri. 1 può voler dire “colorato” e 0 “bianco”.',
+          scoperta: 'Un bug è un errore nel programma: la macchina fa qualcosa di diverso da quello che volevamo. Di solito l’errore è nelle istruzioni, non nella macchina.',
+          domanda: 'Se il robot sbatte contro il banco, chi ha sbagliato: il robot o il programma?' },
+        { parola: 'Precisione', simbolo: '📏', frase: 'Istruzioni chiare, niente “un pochino”',
+          scoperta: 'Una macchina non sa che cosa vuol dire “vai un pochino di là”. Le istruzioni devono essere precise e nell’ordine giusto.',
+          domanda: 'Come trasformereste “vai di là” in un’istruzione precisa per il robot?' },
+        { parola: 'Pixel', simbolo: '🟦', frase: 'Il quadratino più piccolo di un’immagine',
+          scoperta: 'Ogni immagine sullo schermo è fatta di tantissimi quadratini, i pixel. La macchina non vede un gatto: vede tanti quadratini colorati.',
+          domanda: 'Che disegno segreto avete scoperto colorando la griglia?' },
+        { parola: 'Numeri', simbolo: '🔢', frase: 'Per il computer ogni colore è un numero',
+          scoperta: 'Il computer ricorda ogni pixel come un numero. Nel nostro gioco 1 voleva dire colorato e 0 voleva dire bianco.',
           domanda: 'Se 1 è colorato e 0 è bianco, che cosa disegna la riga 0 1 1 0?' },
-        { parola: 'Esempi', simbolo: '🍎', frase: 'Così una macchina impara',
-          scoperta: 'L’intelligenza artificiale impara guardando tantissimi esempi. Più esempi vari vede, meglio riconosce le cose.',
-          domanda: 'Che esempi mostrereste a una macchina per insegnarle cos’è un gatto?' },
-        { parola: 'Errore', simbolo: '🍏', frase: 'Ciò che la macchina non ha mai visto',
-          scoperta: 'Se la macchina ha visto solo mele rosse, una mela verde può confonderla. Non è stupida: le mancava l’esempio giusto.',
-          domanda: 'Come possiamo aiutare la macchina a non sbagliare più?' },
-        { parola: 'Stampante 3D', simbolo: '🧁', frase: 'Costruisce strato dopo strato',
-          scoperta: 'La stampante 3D costruisce un oggetto a strati, come una torta: un velo sopra l’altro, seguendo un programma.',
-          domanda: 'Che oggetto vorreste stampare per la vostra classe?' },
-        { parola: 'Controllare', simbolo: '🔍', frase: 'La regola degli scienziati',
-          scoperta: 'Le macchine indovinano molto bene, ma non sanno davvero. Per questo quello che ci dicono va sempre controllato.',
-          domanda: 'Quando una macchina vi dice una cosa, voi che cosa fate?' },
-        { parola: 'Sensore', simbolo: '👁️', frase: 'Gli occhi e le orecchie della macchina',
-          scoperta: 'I sensori fanno sentire alla macchina luce, suoni, movimento. La porta che si apre da sola ne ha uno!',
-          domanda: 'Quali macchine con un sensore incontrate tutti i giorni?' }
+        { parola: 'Intelligenza artificiale', simbolo: '🧠', frase: 'Una macchina che impara dagli esempi',
+          scoperta: 'L’intelligenza artificiale non riceve tutte le regole: impara guardando tanti esempi, come abbiamo fatto con le mele e le banane.',
+          domanda: 'Che differenza c’è tra il robot che obbedisce e la macchina che impara?' },
+        { parola: 'Addestramento', simbolo: '🏋️', frase: 'Mostrare gli esempi alla macchina',
+          scoperta: 'L’addestramento è il momento in cui mostriamo gli esempi alla macchina perché impari. Sono le persone a scegliere quali esempi usare.',
+          domanda: 'Che esempi mostrereste a una macchina per insegnarle che cos’è un cane?' },
+        { parola: 'Esempi', simbolo: '🍏', frase: 'Se mancano, la macchina sbaglia',
+          scoperta: 'La macchina aveva visto solo mele rosse e davanti alla mela verde ha sbagliato. Non era stupida: le mancavano gli esempi giusti.',
+          domanda: 'Come abbiamo aiutato la macchina a riconoscere anche la mela verde?' },
+        { parola: 'Indovinare', simbolo: '🎯', frase: 'La macchina indovina, ma non sa',
+          scoperta: 'La macchina indovina molto bene perché ha visto tanti esempi, ma non sa davvero. Per questo bisogna sempre controllare.',
+          domanda: 'Allora: la macchina sa le cose o le indovina?' },
+        { parola: 'Stampa 3D', simbolo: '🧁', frase: 'Costruisce un oggetto strato dopo strato',
+          scoperta: 'La stampante 3D segue un programma e costruisce l’oggetto a strati, come una torta: un velo sopra l’altro.',
+          domanda: 'Che oggetto vorreste stampare per la vostra classe?' }
       ]
     },
     medie: {
       nome: 'Medie', eta: '13-14 anni',
       coppie: [
-        { parola: 'Prompt', simbolo: '✍️', frase: 'La richiesta che scrivi all’IA',
-          scoperta: 'Un prompt è quello che scriviamo all’IA. Più è chiaro e preciso, più utile è la risposta.',
-          domanda: 'Come rendereste più preciso il prompt “parlami dei vulcani”?' },
-        { parola: 'Allucinazione', simbolo: '🌀', frase: 'Una risposta inventata, detta con sicurezza',
-          scoperta: 'A volte l’IA inventa una risposta che sembra giusta: un libro, una data, un nome che non esistono. Si chiama allucinazione.',
-          domanda: 'Se copiate in una ricerca una risposta inventata, chi ne risponde?' },
-        { parola: 'Probabilità', simbolo: '🎲', frase: 'L’IA sceglie la parola più probabile',
-          scoperta: 'Un chatbot non sa le cose: sceglie, una dopo l’altra, la parola più probabile. È bravissimo a indovinare.',
+        { parola: 'Chatbot', simbolo: '💬', frase: 'Un programma con cui si dialoga',
+          scoperta: 'Un chatbot, come ChatGPT, è un programma con cui si parla per iscritto o a voce. Risponde in modo fluido, ma non sempre ha ragione.',
+          domanda: 'Per che cosa avete usato un chatbot l’ultima volta?' },
+        { parola: 'Probabilità', simbolo: '🎲', frase: 'Sceglie la parola più probabile',
+          scoperta: 'Un’IA che scrive sceglie, una dopo l’altra, la parola più probabile dopo quelle precedenti. Indovina benissimo, ma indovinare non è sapere.',
           domanda: 'Completate: “Stasera a cena mia mamma ha cucinato…”. Quale parola sceglierebbe l’IA?' },
-        { parola: 'Dati', simbolo: '📚', frase: 'Ciò da cui l’IA impara',
-          scoperta: 'L’IA impara da enormi quantità di testi e immagini. Quello che sa, e anche quello che sbaglia, viene da lì.',
-          domanda: 'Se un’IA ha visto solo foto di cani, che cosa risponderà davanti a un gatto?' },
-        { parola: 'Pregiudizio', simbolo: '⚖️', frase: 'Un errore imparato dai dati',
-          scoperta: 'Se nei dati gli ingegneri sono quasi sempre uomini, l’IA tenderà a ripeterlo. Si chiama bias, cioè pregiudizio.',
-          domanda: 'Disegnate un “ingegnere”: com’è venuto? E se lo chiedessimo a un’IA?' },
-        { parola: 'Deepfake', simbolo: '🎭', frase: 'Foto o video falsi creati con l’IA',
-          scoperta: 'Con l’IA si possono creare foto, video e voci false che sembrano vere. Usarli per fare del male a qualcuno è un reato.',
-          domanda: 'Che cosa fareste se in una chat arrivasse un deepfake di un compagno?' },
-        { parola: 'Inoltrare', simbolo: '📤', frase: 'Anche tu diffondi',
-          scoperta: 'Chi inoltra un contenuto falso o offensivo allarga il danno. Fermarsi prima è la scelta più forte.',
-          domanda: 'Le tre mosse giuste: non inoltrare, non commentare e…?' },
-        { parola: 'Fonte', simbolo: '📰', frase: 'Dove verifichi un’informazione',
-          scoperta: 'Una fonte affidabile ha un autore, una data, un nome riconoscibile. Vale più di mille condivisioni.',
-          domanda: 'Quale fonte usereste per controllare una notizia che vi sembra strana?' },
-        { parola: 'Ricerca inversa', simbolo: '🔎', frase: 'Scoprire da dove viene un’immagine',
-          scoperta: 'Con la ricerca inversa per immagini si scopre se una foto esiste già altrove e chi l’ha pubblicata per prima.',
-          domanda: 'Mani con sei dita, scritte storte: quali altri indizi rivelano un’immagine generata?' },
-        { parola: 'Stampa 3D', simbolo: '🖨️', frase: 'Dal file all’oggetto, a strati',
-          scoperta: 'In cucina, in estetica e nell’industria la stampa 3D crea oggetti su misura partendo da un disegno al computer.',
-          domanda: 'In quale mestiere che vi piace potrebbe servire una stampante 3D?' }
+        { parola: 'Allucinazione', simbolo: '🌀', frase: 'Una risposta inventata, detta con sicurezza',
+          scoperta: 'Un’allucinazione è una risposta inventata dall’IA, presentata con la stessa sicurezza di una risposta giusta. Dal tono non si capisce.',
+          domanda: 'Se copiate in una ricerca una risposta inventata, di chi è la responsabilità?' },
+        { parola: 'Prompt', simbolo: '✍️', frase: 'La richiesta che scrivi all’IA',
+          scoperta: 'Il prompt è la richiesta che si scrive all’IA. Più è chiaro e preciso, più la risposta è utile.',
+          domanda: 'Come rendereste più preciso il prompt “parlami dei vulcani”?' },
+        { parola: 'Stereotipo', simbolo: '⚖️', frase: 'Un’idea semplificata imparata dai dati',
+          scoperta: 'Se nei dati gli ingegneri sono quasi sempre uomini, l’IA tenderà a ripeterlo. Non perché sia giusto, ma perché è la cosa più probabile.',
+          domanda: 'Se chiedete a un’IA il disegno di un ingegnere, chi vi aspettate di vedere? Perché?' },
+        { parola: 'Deepfake', simbolo: '🎭', frase: 'Volto o voce falsi creati con l’IA',
+          scoperta: 'Un deepfake è un’immagine, un video o un audio in cui il volto o la voce di una persona reale sono creati o modificati con l’IA.',
+          domanda: 'È ancora uno scherzo se lo vedono duecento persone in un’ora?' },
+        { parola: 'Inoltrare', simbolo: '📤', frase: 'Chi inoltra allarga il danno',
+          scoperta: 'Chi riceve un falso e lo inoltra lo fa arrivare a più persone. Le mosse giuste: non inoltrare, non commentare, dirlo a un adulto di cui ti fidi.',
+          domanda: 'Che cosa fareste se un falso su un compagno arrivasse nella chat di classe?' },
+        { parola: 'Ricerca inversa', simbolo: '🔎', frase: 'Da dove viene un’immagine?',
+          scoperta: 'La ricerca inversa parte da un’immagine invece che dalle parole e scopre se è già comparsa altrove, magari in un’altra versione.',
+          domanda: 'Quali domande vi fate davanti a una foto che vi sembra strana?' },
+        { parola: 'Filigrana', simbolo: '💧', frase: 'Un segno che rivela l’origine',
+          scoperta: 'Alcuni sistemi lasciano nelle immagini generate un segno, spesso invisibile, chiamato filigrana. Se manca, però, non vuol dire che l’immagine sia vera.',
+          domanda: 'Bastano gli indizi visivi, come le mani strane, per capire se una foto è falsa?' },
+        { parola: 'Mestieri', simbolo: '👩‍🍳', frase: 'Cambiano, non spariscono soltanto',
+          scoperta: 'La tecnologia fa alcune parti del lavoro, ma servono persone che sappiano usarla: la mano dell’estetista, l’idea del cuoco, il video del parrucchiere.',
+          domanda: 'In un mestiere che vi piace, cosa fa la macchina e cosa resta alla persona?' },
+        { parola: 'Stampa 3D', simbolo: '🖨️', frase: 'Dal disegno all’oggetto, a strati',
+          scoperta: 'In cucina si può stampare uno stampo per biscotti su misura, disegnato al computer la mattina e pronto il pomeriggio.',
+          domanda: 'Quale oggetto su misura servirebbe nel mestiere che vi interessa?' }
       ]
     }
   };
@@ -382,8 +389,27 @@
     $('avvio').hidden = true;
     $('tavolo').classList.add('attivo');
     aggiornaSquadre();
+    requestAnimationFrame(adattaTesti);
     window.scrollTo({ top: 0 });
   }
+
+  // Riduce il carattere finché parola e frase stanno dentro la carta (parole lunghe, schermi piccoli).
+  function adattaTesti() {
+    document.querySelectorAll('.fronte').forEach((f) => {
+      f.querySelectorAll('.parola, .frase').forEach((t) => { t.style.fontSize = ''; });
+      f.querySelectorAll('.parola, .frase').forEach((t) => {
+        let dim = parseFloat(getComputedStyle(t).fontSize);
+        let giri = 0;
+        while ((t.scrollWidth > t.clientWidth + 1 || f.scrollHeight > f.clientHeight + 1) && dim > 9 && giri < 40) {
+          dim *= 0.93; t.style.fontSize = dim + 'px'; giri++;
+        }
+      });
+    });
+  }
+  let attesaResize = null;
+  window.addEventListener('resize', () => { clearTimeout(attesaResize); attesaResize = setTimeout(adattaTesti, 150); });
+  document.addEventListener('fullscreenchange', () => setTimeout(adattaTesti, 200));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => adattaTesti());
 
   function aggiornaSquadre() {
     const box = $('squadre');
