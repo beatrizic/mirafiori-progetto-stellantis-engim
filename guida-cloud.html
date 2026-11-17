@@ -8,6 +8,79 @@
 <link rel="stylesheet" href="css/style.css">
 <meta name="author" content="Beatrice Zicola">
 <meta name="copyright" content="© 2026 Beatrice Zicola · toBea">
+<style>
+  /* Vero o falso sul cloud: pagina da proiettare sulla LIM. Usa i colori e i caratteri del sito. */
+  .vf { container-type: inline-size; text-align: left; margin: 1.2rem 0 2.6rem; padding: 1.1rem 1.2rem 1.4rem; background: var(--bianco-2); border: 2px solid var(--linea); border-radius: 18px; --giusto: #1b7a45; --giusto-chiaro: #dff3e6; --sbagliato: #c02632; --sbagliato-chiaro: #fbe3e0; }
+  .vf p { max-width: none; margin: 0; }
+  .vf button { font: inherit; color: inherit; cursor: pointer; }
+  .vf button:focus-visible { outline: 4px solid var(--blu-chiaro); outline-offset: 3px; }
+
+  .vf-testata { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.2rem; padding-bottom: 0.9rem; border-bottom: 2px solid var(--linea); }
+  .vf-titolo { font-family: var(--font-display); color: var(--blu); font-size: clamp(1.3rem, 2cqw, 1.9rem); letter-spacing: 0.02em; }
+  .dots { display: flex; gap: 0.45rem; flex: 1; flex-wrap: wrap; }
+  .dot { width: clamp(30px, 2.8cqw, 44px); height: clamp(30px, 2.8cqw, 44px); border-radius: 50%; border: 2px solid var(--linea); background: var(--bianco); display: grid; place-items: center; font-weight: 700; font-size: clamp(0.85rem, 1.2cqw, 1.15rem); color: var(--grigio); }
+  .dot.now { border-color: var(--blu-chiaro); color: var(--blu-chiaro); border-width: 4px; }
+  .dot.ok { background: var(--giusto); border-color: var(--giusto); color: #fff; }
+  .dot.ko { background: var(--sbagliato); border-color: var(--sbagliato); color: #fff; }
+  .score { font-weight: 700; color: var(--blu); font-size: clamp(1rem, 1.5cqw, 1.4rem); font-variant-numeric: tabular-nums; }
+  .small-btn { min-height: 48px; padding: 0.4rem 1.1rem; border-radius: 999px; border: 2px solid var(--linea); background: var(--bianco); color: var(--blu); font-weight: 600; font-size: 1rem; }
+  .small-btn:hover { border-color: var(--blu-chiaro); }
+
+  .vf-campo { display: flex; flex-direction: column; gap: clamp(0.9rem, 2.4vh, 2rem); padding-top: 1.2rem; }
+  .vf .kicker { color: var(--accento); font-weight: 600; font-size: clamp(1rem, 1.6cqw, 1.5rem); }
+  .vf .scenario { color: var(--nero); font-size: clamp(1.25rem, 2.5cqw, 2.5rem); line-height: 1.3; max-width: 46ch !important; }
+  .vf .scenario.shrunk { font-size: clamp(0.95rem, 1.5cqw, 1.4rem); color: var(--grigio); max-width: 90ch !important; }
+  .vf .statement { font-size: clamp(1.9rem, 4.4cqw, 4.4rem); line-height: 1.12; margin: 0; max-width: 26ch; text-wrap: balance; padding-left: clamp(0.9rem, 1.6cqw, 1.6rem); border-left: 8px solid var(--accento); }
+  .vf .statement.shrunk { font-size: clamp(1.3rem, 2.4cqw, 2.3rem); max-width: 46ch; border-left-width: 5px; }
+
+  .answers { display: flex; flex-wrap: wrap; gap: clamp(0.9rem, 2.5cqw, 2.2rem); }
+  .ans { flex: 1 1 220px; min-height: clamp(76px, 13cqw, 170px); border-radius: 20px; border: 4px solid var(--blu); background: var(--bianco); color: var(--blu) !important; font-family: var(--font-display) !important; font-size: clamp(2rem, 4.6cqw, 4.4rem) !important; letter-spacing: 0.04em; transition: transform 0.12s ease, background 0.12s ease; }
+  .ans:hover:not(:disabled), .ans.picked { background: var(--blu); color: var(--bianco) !important; }
+  .ans:active:not(:disabled) { transform: scale(0.98); }
+  .ans:disabled { cursor: default; }
+  .ans:disabled:not(.picked) { opacity: 0.35; }
+  .vf .hint { color: var(--grigio); font-size: clamp(0.9rem, 1.2cqw, 1.1rem); }
+  .vf .wait { color: var(--blu-chiaro); font-weight: 700; font-size: clamp(1.4rem, 2.6cqw, 2.5rem); }
+  .vf .wait span { animation: vf-blink 1s infinite both; }
+  .vf .wait span:nth-child(2) { animation-delay: 0.2s; }
+  .vf .wait span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes vf-blink { 0%, 80%, 100% { opacity: 0.15; } 40% { opacity: 1; } }
+
+  .esito { border-radius: 22px; border: 4px solid var(--giusto); background: var(--giusto-chiaro); padding: clamp(1.1rem, 2.6cqw, 2.4rem); display: flex; flex-direction: column; gap: clamp(0.6rem, 1.6vh, 1.2rem); animation: vf-pop 0.25s ease-out both; }
+  .esito.ko { border-color: var(--sbagliato); background: var(--sbagliato-chiaro); }
+  @keyframes vf-pop { from { transform: translateY(12px); opacity: 0.4; } to { transform: none; opacity: 1; } }
+  .vf .verdict { font-family: var(--font-display); color: var(--giusto); font-size: clamp(1.6rem, 3.2cqw, 3rem); letter-spacing: 0.02em; line-height: 1.1; }
+  .vf .esito.ko .verdict { color: var(--sbagliato); }
+  .vf .truth { font-weight: 700; font-size: clamp(1.25rem, 2.3cqw, 2.2rem); }
+  .vf .truth b { display: inline-block; padding: 0 0.7rem; border-radius: 10px; background: var(--blu); color: var(--bianco); letter-spacing: 0.03em; }
+  .vf .why { font-size: clamp(1.05rem, 1.8cqw, 1.75rem); line-height: 1.38; max-width: 72ch !important; }
+  .ask { background: var(--bianco); border-radius: 14px; border-left: 8px solid var(--blu-chiaro); padding: clamp(0.7rem, 1.4cqw, 1.2rem) clamp(0.9rem, 1.8cqw, 1.6rem); display: flex; flex-direction: column; gap: 0.3rem; }
+  .vf .ask-label { color: var(--blu-chiaro); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: clamp(0.85rem, 1.2cqw, 1.15rem); }
+  .vf .ask-text { color: var(--blu); font-weight: 700; font-size: clamp(1.2rem, 2.1cqw, 2.05rem); line-height: 1.3; max-width: 60ch !important; }
+  .vf .ask-answer { margin-top: 0.4rem !important; font-size: clamp(1.05rem, 1.8cqw, 1.75rem); line-height: 1.4; max-width: 74ch !important; }
+  .show { align-self: flex-start; margin-top: 0.4rem; min-height: 52px; padding: 0.5rem 1.4rem; border-radius: 999px; border: 3px solid var(--blu-chiaro); background: var(--bianco); color: var(--blu-chiaro) !important; font-weight: 700 !important; font-size: clamp(1.05rem, 1.6cqw, 1.5rem) !important; }
+  .show:hover { background: var(--blu-chiaro); color: var(--bianco) !important; }
+  .foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+  .vf .theme { color: var(--grigio); font-size: clamp(0.95rem, 1.3cqw, 1.25rem); }
+  .next { min-height: 60px; padding: 0.6rem 2rem; border: 0; border-radius: 999px; background: var(--accento); color: #fff !important; font-family: var(--font-display) !important; font-size: clamp(1.3rem, 2.1cqw, 1.9rem) !important; letter-spacing: 0.03em; box-shadow: 0 10px 24px rgba(230,57,70,0.3); }
+  .next:hover { transform: translateY(-2px); }
+
+  .vf .end-title { font-size: clamp(2rem, 4.6cqw, 4.2rem); margin: 0; }
+  .vf .recap { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+  .vf .recap li { display: grid; grid-template-columns: auto auto 1fr; gap: 0.9rem; align-items: center; background: var(--bianco); border: 2px solid var(--linea); border-radius: 12px; padding: 0.6rem 1rem; font-size: clamp(1rem, 1.6cqw, 1.5rem); line-height: 1.3; }
+  .mark { font-weight: 700; width: 1.4em; text-align: center; }
+  .mark.ok { color: var(--giusto); } .mark.ko { color: var(--sbagliato); }
+  .tag { font-weight: 700; font-size: 0.8em; padding: 0.1rem 0.6rem; border-radius: 8px; background: var(--blu); color: var(--bianco); min-width: 4.6em; text-align: center; }
+
+  .vf h3 { margin: 0; }
+  .vf .recap { padding: 0; list-style: none; }
+  .vf:fullscreen, .vf.vf-pieno { margin: 0; border: 0; border-radius: 0; padding: 1.4rem clamp(1.2rem, 3vw, 3rem) 2rem; overflow: auto; background: var(--bianco-2); }
+  .vf.vf-pieno { position: fixed; inset: 0; z-index: 200; }
+  .vf:fullscreen .vf-campo, .vf.vf-pieno .vf-campo { min-height: 78vh; justify-content: center; }
+  @container (max-width: 820px) { .dots { order: 9; flex-basis: 100%; } .vf-titolo { flex: 1; } }
+  @media print { .vf-sezione { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .esito, .wait span, .ans, .next { animation: none; transition: none; } .wait span { opacity: 1; } }
+</style>
 </head>
 <body>
 <header class="barra" id="barra"></header>
@@ -24,13 +97,14 @@
   <p class="sub">Il computer di qualcun altro</p>
   <p class="autrice-articolo">A cura di <strong>Beatrice Zicola</strong> · toBea</p>
   <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 14 minuti</p>
-  <p class="azioni-guida"><a class="btn-pieno" href="#presentazione">Presentazione</a> <button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
+  <p class="azioni-guida"><a class="btn-pieno" href="#vero-o-falso">Vero o falso</a> <a class="btn-pieno" href="#presentazione">Presentazione</a> <button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
 <main class="testo-legale testo-guida">
   <nav class="indice-articolo" aria-label="Indice dell'articolo">
     <p class="etichetta-box">In questo articolo</p>
     <ol>
+      <li><a href="#vero-o-falso">Per cominciare: vero o falso</a></li>
       <li><a href="#cosa-imparerai">Cosa imparerai</a></li>
       <li><a href="#il-computer-di-qualcun-altro">Il computer di qualcun altro</a></li>
       <li><a href="#di-chi-sono-i-dati-e-chi-decide-le-regole">Di chi sono i dati, e chi decide le regole</a></li>
@@ -45,6 +119,20 @@
     </ol>
   </nav>
 <p>Ogni giorno carichiamo foto, documenti e messaggi "nel cloud" senza chiederci dove finiscano davvero. La parola fa pensare a qualcosa di leggero e sospeso, ma il cloud è fatto di edifici, computer, cavi e contratti. Capire come funziona serve a non perdere i propri file, a scegliere con consapevolezza cosa affidare a un servizio e a lavorare in gruppo come si fa oggi all'università e nelle aziende. Questo articolo raccoglie i concetti del laboratorio sul cloud e li approfondisce.</p>
+<section class="vf-sezione" aria-labelledby="vero-o-falso">
+<h2 id="vero-o-falso">Per cominciare: vero o falso</h2>
+<p>Dieci situazioni da proiettare sulla LIM prima di qualsiasi spiegazione. La classe ragiona e risponde, chi conduce tocca la risposta: dopo un secondo compaiono l'esito, la soluzione, la spiegazione e una domanda per ragionare insieme, con la risposta argomentata. Il resto dell'articolo approfondisce ogni situazione.</p>
+<div class="vf" id="vf">
+  <div class="vf-testata">
+    <div class="vf-titolo">Vero o falso sul cloud</div>
+    <div class="dots" id="dots" aria-label="Avanzamento"></div>
+    <div class="score" id="score" aria-live="polite"></div>
+    <button class="small-btn" id="restart" type="button">Ricomincia</button>
+    <button class="small-btn" id="full" type="button">Schermo intero</button>
+  </div>
+  <div class="vf-campo" id="vf-campo"></div>
+</div>
+</section>
 <h2 id="cosa-imparerai">Cosa imparerai</h2>
 <ul>
 <li>Dove si trovano fisicamente i dati quando li salvi online, e perché la posizione conta.</li>
@@ -169,14 +257,6 @@
 <li>Google, modifiche alle norme di archiviazione di Google Foto in vigore dal 1° giugno 2021 (Centro assistenza Google Foto).</li>
 <li>Microsoft, dati sull'efficacia dell'autenticazione a più fattori contro gli attacchi automatici (Microsoft Security).</li>
 </ul>
-  <aside class="box-presentazione" aria-label="Attività per la LIM">
-    <div>
-      <p class="etichetta-box">Attività per la LIM</p>
-      <p class="titolo-box">Vero o falso sul cloud</p>
-      <p class="nota-box">Dieci situazioni da proiettare e discutere con tutta la classe. Dopo ogni risposta compaiono la soluzione, la spiegazione e una domanda per ragionare insieme.</p>
-    </div>
-    <a class="btn-pieno" href="lim-vero-falso-cloud.html">Apri l'attività</a>
-  </aside>
   <div id="presentazione">
   <aside class="box-presentazione" aria-label="Presentazione">
     <div>
@@ -202,5 +282,264 @@
   </div>
   <p class="link-legali"><a href="privacy.html">Privacy</a> · <a href="cookie.html">Cookie</a></p>
 </footer>
+
+<script>
+(function () {
+
+(function () {
+
+var ITEMS = [
+  { s: "Luca ha il backup delle foto attivo. Il telefono è pieno: seleziona duecento foto dalla galleria e le elimina.",
+    t: "Quelle duecento foto restano al sicuro nel cloud.",
+    v: false,
+    why: "Il cloud delle foto è sincronizzato con il telefono: quello che elimini da una parte sparisce anche dall'altra. Le foto restano nel cestino per 30 giorni, poi sono perse. Per liberare solo il telefono esiste un comando diverso, \"Libera spazio su questo dispositivo\".",
+    ask: "Che differenza c'è tra tenere due posti sempre uguali e avere una copia?",
+    ans: "Due posti sincronizzati sono lo stesso archivio visto da due parti: un errore fatto in uno arriva subito nell'altro. Una copia è un secondo esemplare che resta com'era, anche se l'originale cambia o sparisce. Per questo le foto importanti vanno anche in un posto che non si sincronizza con il telefono: un computer, una chiavetta, un secondo servizio.",
+    theme: "Sincronizzare non è fare una copia" },
+  { s: "Da mesi Sara chiude l'avviso \"Spazio di archiviazione quasi esaurito\". A giugno il telefono le cade in piscina.",
+    t: "Sul telefono nuovo ritrova tutte le foto, perché il backup era attivo.",
+    v: false,
+    why: "Quando lo spazio gratuito finisce il backup si ferma, anche se risulta attivo, e non riparte da solo. Sara ritrova le foto solo fino al giorno in cui lo spazio si è riempito.",
+    ask: "Perché un servizio regala lo spazio e poi lo fa pagare? Voi cosa fareste: pulire, pagare o spostare le foto altrove?",
+    ans: "Lo spazio gratuito serve a far abituare: quando l'archivio di anni è lì dentro, spostarlo costa fatica e molti pagano. Non è una truffa, è il modo in cui il servizio si mantiene. Pulire costa tempo, pagare costa pochi euro al mese, spostare richiede un posto sicuro dove mettere le foto: nessuna delle tre strade è sbagliata. L'unica scelta sbagliata è quella di Sara, cioè non fare niente.",
+    theme: "Lo spazio" },
+  { s: "Il data center in cui un grande servizio conserva le tue foto prende fuoco e un edificio va distrutto.",
+    t: "Quasi certamente le tue foto non vanno perse.",
+    v: true,
+    why: "I grandi servizi tengono più copie di ogni file, in edifici e città diverse: se un edificio brucia, restano le altre. Nel 2021 a Strasburgo è bruciato davvero un data center, e ha perso tutto solo chi aveva i dati in quell'unico edificio.",
+    ask: "Se il servizio ha già tante copie, perché ne serve comunque una mia, da un'altra parte?",
+    ans: "Le copie del servizio proteggono dai guasti del servizio: un disco rotto, un incendio. Non proteggono dai miei errori, né da chi entra nel mio account: se una foto viene cancellata, sparisce da tutte le copie insieme. E se perdo l'accesso all'account, perdo tutto in un colpo. Una copia fuori da quell'account è l'unica che questi problemi non toccano.",
+    theme: "Che cos'è davvero il cloud" },
+  { s: "Marta cambia telefono e tiene lo stesso numero. Non ha mai aperto le impostazioni di WhatsApp. Sul telefono nuovo installa l'app ed entra.",
+    t: "Le chat ricompaiono, perché WhatsApp le conserva sui suoi server.",
+    v: false,
+    why: "Le chat di WhatsApp stanno sul telefono, non sui server. Passano al telefono nuovo solo se era attivo il backup delle chat, che va su Google Drive o su iCloud. Senza quello, Marta riparte da zero.",
+    ask: "Quali altre cose vivono solo dentro il telefono, e quali invece stanno su un server?",
+    ans: "Sta su un server tutto ciò a cui si accede con un account: il profilo Instagram, la posta, i file di Drive, i compiti di Classroom. Vive solo nel telefono quello che non è stato caricato: le foto senza backup, le chat senza backup, i file scaricati, i codici dell'app di autenticazione. La prova è semplice: se domani entro da un altro telefono, lo ritrovo?",
+    theme: "Sincronizzare non è fare una copia" },
+  { s: "Iscrivendoti hai accettato i termini di servizio. Dicono che dai all'azienda il permesso di conservare, copiare e mostrare le foto che carichi.",
+    t: "Quindi l'azienda può vendere le tue foto a chi vuole.",
+    v: false,
+    why: "Quel permesso è una licenza, non una cessione: serve a far funzionare il servizio, e la foto resta tua. Senza quel permesso l'azienda non potrebbe nemmeno salvarla. Però le regole le scrive lei, e può cambiarle avvisandoti.",
+    ask: "Se le regole non vi piacciono potete rifiutarle? E allora, che cosa scegliete davvero?",
+    ans: "Rifiutare si può, ma significa non usare il servizio: i termini non si trattano. Quindi la scelta vera non è firmare o no, è decidere che cosa metterci dentro. Un documento d'identità fotografato o le password scritte in una nota è meglio non affidarli a un account che, se viene rubato, espone tutto insieme. E le regole possono cambiare: è già successo con lo spazio illimitato di Google Foto.",
+    theme: "Di chi sono i dati" },
+  { s: "Il lavoro di gruppo è nel Drive di Marco, sul suo account della scuola, condiviso con tre compagni. Dopo il diploma la scuola chiude l'account di Marco.",
+    t: "Anche gli altri tre perdono il file, benché fosse condiviso con loro.",
+    v: true,
+    why: "Un file condiviso vive nell'account di chi lo ha creato: gli altri hanno solo il permesso di entrarci. Se l'account del proprietario viene chiuso, il file sparisce per tutti. E l'account della scuola è della scuola, non dello studente.",
+    ask: "Chi dovrebbe essere il proprietario di un lavoro di gruppo? Come ci si porta via un file prima che l'account chiuda?",
+    ans: "Meglio che il proprietario non sia uno solo: almeno due persone devono poter modificare e condividere, così il gruppo non dipende da una. Un lavoro che deve durare va tenuto in un account che non scade, non in quello della scuola. Prima che l'account chiuda, ognuno si fa una copia nel proprio Drive personale, con File e poi Crea una copia, oppure scarica il file.",
+    theme: "Di chi sono i dati" },
+  { s: "In un documento condiviso tutti e quattro possono modificare. Alle undici di sera uno del gruppo cancella per sbaglio tutto il testo e chiude.",
+    t: "Il giorno dopo il testo si può recuperare, e si può anche vedere chi lo ha cancellato.",
+    v: true,
+    why: "Il documento ricorda tutte le sue versioni, con data e autore: dalla Cronologia versioni si torna a quella di prima. L'autore si vede se è entrato con il suo account; chi entra da un link aperto compare come anonimo.",
+    ask: "Se tanto si può tornare indietro, perché non dare a tutti il permesso di modificare?",
+    ans: "Tornare indietro si può, ma qualcuno deve accorgersi del danno: più tardi succede, più lavoro fatto nel frattempo si perde. Chi può modificare può anche cambiare una frase senza che nessuno lo noti. Per questo si dà a ognuno solo il permesso che gli serve: chi deve leggere legge, chi deve dare un parere commenta, chi scrive modifica. Non è sfiducia: un errore, o un account rubato, fa meno danni.",
+    theme: "Lavorare insieme" },
+  { s: "Un ladro scopre la password dell'account di Giulia. Giulia ha la verifica in due passaggi attiva e il telefono in tasca.",
+    t: "Il ladro resta fuori, anche se la password è quella giusta.",
+    v: true,
+    why: "Con la verifica in due passaggi la password non basta: serve un secondo codice, che arriva solo sul telefono di Giulia. La password è la chiave, il secondo codice è la catena alla porta.",
+    ask: "E se il ladro, oltre alla password, avesse in mano anche il telefono di Giulia?",
+    ans: "Allora il secondo codice arriva a lui, e la catena alla porta non serve più. Per questo conta il blocco schermo: un telefono bloccato non mostra i codici a chi lo ha in mano. E per questo, dopo un furto, la SIM va fatta bloccare subito: i codici via SMS smettono di arrivare. La verifica in due passaggi protegge finché il telefono resta protetto.",
+    theme: "L'account è la porta" },
+  { s: "A Sara arriva un SMS: \"iCloud: spazio esaurito. Le tue foto saranno cancellate entro 24 ore. Rinnova qui.\" Sara ha davvero lo spazio quasi pieno.",
+    t: "Il messaggio è affidabile, perché dice una cosa vera.",
+    v: false,
+    why: "È la trappola più usata proprio perché l'avviso di spazio pieno esiste davvero. Si riconosce da tre segni: ha fretta, minaccia, e porta a un indirizzo che non è quello vero. Il controllo si fa aprendo l'app o le impostazioni, mai dal link.",
+    ask: "Come fa Sara a sapere se lo spazio è pieno davvero, senza toccare quel messaggio?",
+    ans: "Apre lei le impostazioni del telefono, o l'app delle foto, e guarda lì quanto spazio resta: se l'avviso è vero, lo trova anche lì. Non usa mai il link, il numero o l'indirizzo scritti nel messaggio. Un avviso vero non dà scadenze di poche ore e non minaccia di cancellare tutto. La fretta è il segno della trappola.",
+    theme: "L'account è la porta" },
+  { s: "Sabato sera rubano il telefono a Giorgia. Un'amica le presta il suo: da lì Giorgia può localizzare, bloccare o cancellare il telefono a distanza.",
+    t: "La prima cosa da fare è cancellare subito tutti i dati.",
+    v: false,
+    why: "La cancellazione viene per ultima: dopo, il telefono non si può più localizzare. Prima lo si fa squillare e lo si blocca, poi si fa bloccare la SIM e si cambia la password dell'account principale.",
+    ask: "In che ordine fareste le cose? E che cosa doveva essere già impostato prima del furto?",
+    ans: "Prima lo fa squillare: magari è solo caduto nel locale. Poi lo blocca a distanza, fa bloccare la SIM dall'operatore, avvisa chi può bloccare la carta e cambia la password dell'account principale. Poi fa denuncia, con il codice IMEI. La cancellazione viene alla fine, quando è certo che non tornerà. Tutto questo funziona solo se prima del furto il telefono era rintracciabile, aveva il blocco schermo e l'IMEI era scritto da un'altra parte.",
+    theme: "L'account è la porta" }
+];
+
+var WAIT_MS = 1000;
+var state = { i: 0, results: [], phase: "ask" };  // phase: ask | wait | reveal | end
+var timer = null;
+var main = document.getElementById("vf-campo");
+
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+function label(v) { return v ? "VERA" : "FALSA"; }
+
+function drawBar() {
+  var dots = document.getElementById("dots");
+  dots.textContent = "";
+  ITEMS.forEach(function (_, n) {
+    var d = el("div", "dot", String(n + 1));
+    var r = state.results[n];
+    if (r === true) d.classList.add("ok");
+    else if (r === false) d.classList.add("ko");
+    else if (n === state.i && state.phase !== "end") d.classList.add("now");
+    dots.appendChild(d);
+  });
+  var right = state.results.filter(function (r) { return r === true; }).length;
+  document.getElementById("score").textContent = "Giuste: " + right + " su " + state.results.length;
+}
+
+function drawQuestion() {
+  var it = ITEMS[state.i];
+  main.textContent = "";
+  main.appendChild(el("p", "kicker", "Situazione " + (state.i + 1) + " di " + ITEMS.length));
+  var sc = el("p", "scenario", it.s);
+  var st = el("h3", "statement", it.t);
+  if (state.phase === "reveal") { sc.classList.add("shrunk"); st.classList.add("shrunk"); }
+  main.appendChild(sc);
+  main.appendChild(st);
+
+  if (state.phase === "reveal") { drawReveal(it); return; }
+
+  var row = el("div", "answers");
+  [true, false].forEach(function (val) {
+    var b = el("button", "ans", val ? "VERO" : "FALSO");
+    b.type = "button";
+    if (state.phase === "wait") {
+      b.disabled = true;
+      if (state.pick === val) b.classList.add("picked");
+    }
+    b.addEventListener("click", function () { answer(val); });
+    row.appendChild(b);
+  });
+  main.appendChild(row);
+
+  if (state.phase === "wait") {
+    var w = el("p", "wait", "Controllo");
+    for (var k = 0; k < 3; k++) w.appendChild(el("span", null, "."));
+    main.appendChild(w);
+  } else {
+    main.appendChild(el("p", "hint", "Tocca la risposta della classe. Da tastiera: V per vero, F per falso, R per la risposta alla domanda, Invio per andare avanti."));
+  }
+}
+
+function drawReveal(it) {
+  var ok = state.pick === it.v;
+  var box = el("section", "esito" + (ok ? "" : " ko"));
+  box.setAttribute("aria-live", "assertive");
+  box.appendChild(el("p", "verdict", ok ? "Risposta corretta" : "Risposta sbagliata"));
+  var truth = el("p", "truth", "L'affermazione è ");
+  truth.appendChild(el("b", null, label(it.v)));
+  box.appendChild(truth);
+  box.appendChild(el("p", "why", it.why));
+  var ask = el("div", "ask");
+  ask.appendChild(el("p", "ask-label", "Per ragionare insieme"));
+  ask.appendChild(el("p", "ask-text", it.ask));
+  if (state.shown) {
+    ask.appendChild(el("p", "ask-answer", it.ans));
+  } else {
+    var sh = el("button", "show", "Mostra la risposta");
+    sh.type = "button";
+    sh.addEventListener("click", showAnswer);
+    ask.appendChild(sh);
+  }
+  box.appendChild(ask);
+  var row = el("div", "foot-row");
+  row.appendChild(el("p", "theme", "Ne parliamo in: " + it.theme));
+  var last = state.i === ITEMS.length - 1;
+  var nx = el("button", "next", last ? "Vedi il risultato" : "Prossima situazione");
+  nx.type = "button";
+  nx.addEventListener("click", next);
+  row.appendChild(nx);
+  box.appendChild(row);
+  main.appendChild(box);
+  if (state.shown) nx.focus();
+  else box.querySelector(".show").focus();
+}
+
+function drawEnd() {
+  main.textContent = "";
+  var right = state.results.filter(function (r) { return r; }).length;
+  main.appendChild(el("p", "kicker", "Risultato della classe"));
+  main.appendChild(el("h3", "end-title", "Ne avete indovinate " + right + " su " + ITEMS.length));
+  var ul = el("ul", "recap");
+  ITEMS.forEach(function (it, n) {
+    var li = el("li");
+    var ok = state.results[n];
+    li.appendChild(el("span", "mark " + (ok ? "ok" : "ko"), ok ? "✓" : "✗"));
+    li.appendChild(el("span", "tag", label(it.v)));
+    li.appendChild(el("span", null, it.t));
+    li.title = it.s;
+    ul.appendChild(li);
+  });
+  main.appendChild(ul);
+}
+
+function draw() {
+  drawBar();
+  if (state.phase === "end") drawEnd(); else drawQuestion();
+}
+
+function answer(val) {
+  if (state.phase !== "ask") return;
+  state.pick = val;
+  state.shown = false;
+  state.phase = "wait";
+  draw();
+  timer = setTimeout(function () {
+    state.results[state.i] = (val === ITEMS[state.i].v);
+    state.phase = "reveal";
+    draw();
+  }, WAIT_MS);
+}
+
+function showAnswer() {
+  if (state.phase !== "reveal" || state.shown) return;
+  state.shown = true;
+  draw();
+}
+
+function next() {
+  if (state.phase !== "reveal") return;
+  state.shown = false;
+  if (state.i < ITEMS.length - 1) { state.i += 1; state.phase = "ask"; }
+  else { state.phase = "end"; }
+  state.pick = null;
+  draw();
+}
+
+function restart() {
+  clearTimeout(timer);
+  state = { i: 0, results: [], phase: "ask" };
+  draw();
+}
+
+document.getElementById("restart").addEventListener("click", restart);
+var box = document.getElementById("vf");
+document.getElementById("full").addEventListener("click", function () {
+  if (!document.fullscreenElement && box.requestFullscreen) {
+    box.requestFullscreen().catch(function () { box.classList.toggle("vf-pieno"); });
+  } else if (document.fullscreenElement) { document.exitFullscreen(); }
+  else { box.classList.toggle("vf-pieno"); }
+});
+document.addEventListener("fullscreenchange", function () {
+  document.getElementById("full").textContent = document.fullscreenElement ? "Esci da schermo intero" : "Schermo intero";
+});
+document.addEventListener("keydown", function (e) {
+  if (!document.fullscreenElement && !box.classList.contains("vf-pieno") && !box.contains(document.activeElement)) return;
+  if (e.target && e.target.tagName === "BUTTON" && (e.key === "Enter" || e.key === " ")) return;
+  var k = e.key.toLowerCase();
+  if (state.phase === "ask" && k === "v") answer(true);
+  else if (state.phase === "ask" && k === "f") answer(false);
+  else if (state.phase === "reveal" && k === "r") showAnswer();
+  else if (state.phase === "reveal" && (k === "enter" || k === "arrowright" || k === " ")) { e.preventDefault(); next(); }
+});
+
+draw();
+
+})();
+
+})();
+</script>
 </body>
 </html>
