@@ -4,10 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital Printing: Dal file all’oggetto — Mirafiori</title>
-<meta name="description" content="Come funziona la stampa 3D, dove si usa nel lavoro, come si progetta un pezzo e quando conviene davvero.">
+<meta name="description" content="Come funziona la stampa 3D, i casi reali in edilizia, medicina e automobile, la stampante usata in aula, come si progetta un pezzo e quando conviene davvero.">
 <link rel="stylesheet" href="css/style.css">
 <meta name="author" content="Beatrice Zicola">
 <meta name="copyright" content="© 2026 Beatrice Zicola · toBea">
+<style>
+  .cornice-video {
+    position: relative; width: 100%; aspect-ratio: 16 / 9; margin-top: 1.4rem;
+    border-radius: 16px; overflow: hidden; background: var(--bianco-2);
+    box-shadow: 0 10px 30px rgba(14,42,82,0.14);
+  }
+  .cornice-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .didascalia-video { text-align: center; font-size: 0.85rem !important; color: var(--grigio); margin: 0.9rem auto 1.6rem; }
+  .didascalia-video a { color: var(--blu-chiaro); }
+  @media print { .cornice-video { display: none; } .didascalia-video { text-align: left; } }
+</style>
 </head>
 <body>
 <header class="barra" id="barra"></header>
@@ -23,7 +34,7 @@
   <h1>Digital Printing</h1>
   <p class="sub">Dal file all’oggetto</p>
   <p class="autrice-articolo">A cura di <strong>Beatrice Zicola</strong> · toBea</p>
-  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 14 minuti</p>
+  <p class="meta-articolo">Laboratorio del progetto Mirafiori · lettura 20 minuti</p>
   <p class="azioni-guida"><a class="btn-pieno" href="#presentazione">Presentazione</a> <button type="button" class="btn-stampa" onclick="window.print()">Stampa o salva in PDF</button></p>
 </section>
 
@@ -35,8 +46,9 @@
       <li><a href="#una-tecnologia-di-quarantanni">Una tecnologia di quarant&#x27;anni</a></li>
       <li><a href="#modello-slicer-stampa">Modello, slicer, stampa</a></li>
       <li><a href="#le-tecnologie">Le tecnologie</a></li>
+      <li><a href="#la-stampante-in-aula">La stampante in aula: CampuSprint3D 5.0 PRO</a></li>
       <li><a href="#progettare-un-oggetto-che-si-stampa-bene">Progettare un oggetto che si stampa bene</a></li>
-      <li><a href="#dove-si-usa-nel-lavoro">Dove si usa nel lavoro</a></li>
+      <li><a href="#dove-si-usa-nel-lavoro">Stesso principio, materiali diversi: i casi reali</a></li>
       <li><a href="#modelli-licenze-e-materiali">Modelli, licenze e materiali</a></li>
       <li><a href="#progettare-per-un-cliente">Progettare per un cliente</a></li>
       <li><a href="#quando-conviene-e-quando-no">Quando conviene, e quando no</a></li>
@@ -53,8 +65,10 @@
 <li>Come è nata la stampa 3D e perché oggi è alla portata di tutti.</li>
 <li>Le tre fasi di ogni stampa: modello, slicer, stampa.</li>
 <li>Le principali tecnologie, dalla stampa a filamento a quella in metallo.</li>
+<li>Come è fatta la stampante che usiamo in aula: cosa si scalda, a quale temperatura e con quali materiali lavora.</li>
+<li>Quattro casi reali, con i video: una casa di terra, una caviglia su misura, tessuti vivi stampati in laboratorio, i pezzi per l'automobile a Mirafiori.</li>
 <li>Come progettare un oggetto che si stampa bene, a partire dalla regola dei 45 gradi.</li>
-<li>Dove si usa la stampa 3D nel lavoro, quali licenze hanno i modelli e quali materiali esistono.</li>
+<li>Quali licenze hanno i modelli e quali materiali esistono.</li>
 <li>Come stimare tempo e costo, e quando conviene davvero rispetto alla produzione con uno stampo.</li>
 </ul>
 <h2 id="una-tecnologia-di-quarantanni">Una tecnologia di quarant'anni</h2>
@@ -87,6 +101,36 @@
 <p>Nella sinterizzazione laser selettiva un laser fonde, strato dopo strato, una polvere di plastica, di solito nylon. La polvere non fusa sostiene il pezzo durante la stampa, quindi non servono supporti. Si ottengono pezzi robusti e funzionali. Sono macchine industriali.</p>
 <h3>In metallo</h3>
 <p>Esistono stampanti che fondono polveri metalliche con un laser o un fascio di elettroni. Producono componenti per l'aerospazio, protesi e impianti medici, pezzi per auto ad alte prestazioni. Sono macchine costose, usate in ambito industriale.</p>
+<h2 id="la-stampante-in-aula">La stampante in aula: CampuSprint3D 5.0 PRO</h2>
+<p>In laboratorio portiamo una CampuSprint3D 5.0 PRO High Speed. È una stampante a filamento (FDM) pensata per le scuole: a un solo estrusore, con livellamento automatico del piatto e un doppio sistema di ventilazione con filtri HEPA che trattiene fumi e odori. Guardarla lavorare da vicino è il modo più semplice per capire che cosa succede davvero durante una stampa.</p>
+<h3>Il percorso del filo</h3>
+<p>Il materiale parte da una bobina di filo di plastica spesso 1,75 mm. Una ruota dentata, mossa da un motore, lo afferra e lo spinge verso il basso con una forza costante: è l'estrusore, e funziona a freddo. Il filo entra poi nella parte calda della testina, si scioglie ed esce da un foro di 0,4 mm: da un filo spesso quasi due millimetri si ottiene un cordone largo meno di mezzo millimetro. La testina si muove sopra il piatto e disegna lo strato; finito lo strato, sale di una frazione di millimetro e ricomincia.</p>
+<h3>Che cosa si scalda, e come</h3>
+<p>Le parti calde sono due, e fanno lavori diversi.</p>
+<ul>
+<li><strong>L'ugello</strong>, cioè la punta della testina. Sta avvitato in un blocchetto di metallo che contiene una resistenza elettrica: la corrente la attraversa e la scalda, come nella piastra per capelli o nel tostapane. Accanto c'è un sensore di temperatura che misura i gradi molte volte al secondo; la scheda della stampante accende e spegne la resistenza per restare esattamente al valore impostato. Su questa macchina l'ugello arriva fino a 280 °C.</li>
+<li><strong>Il piatto</strong>, la superficie su cui cresce l'oggetto. Sotto la piastra c'è un'altra resistenza, con il suo sensore. Il piatto caldo serve a far aderire il primo strato e a evitare che gli angoli del pezzo, raffreddandosi troppo in fretta, si ritirino e si sollevino. Qui arriva fino a 110 °C.</li>
+</ul>
+<p>Altrettanto importante è ciò che deve restare freddo. Appena sopra il blocco caldo un dissipatore con una ventola impedisce al calore di risalire: se il filo si ammorbidisse troppo presto si gonfierebbe e bloccherebbe il passaggio. Una seconda ventola soffia sul materiale appena depositato, per solidificarlo subito e tenere nitidi i dettagli. La stampa 3D a filamento è tutta qui: sciogliere nel punto giusto e raffreddare subito dopo.</p>
+<h3>Materiali e temperature</h3>
+<p>Ogni plastica ha la sua temperatura. I valori sotto sono quelli tipici: fa sempre fede l'etichetta della bobina.</p>
+<table>
+<thead><tr><th>Materiale</th><th>Ugello</th><th>Piatto</th><th>A cosa serve</th></tr></thead>
+<tbody>
+<tr><td><strong>PLA</strong></td><td>190-220 °C</td><td>50-60 °C</td><td>Il materiale del laboratorio: facile, rigido, poco odore. Prototipi e oggetti dimostrativi.</td></tr>
+<tr><td><strong>PETG</strong></td><td>230-250 °C</td><td>70-80 °C</td><td>Oggetti che devono resistere a urti, acqua e calore moderato.</td></tr>
+<tr><td><strong>TPU</strong></td><td>220-240 °C</td><td>40-60 °C</td><td>Parti flessibili: guarnizioni, cover, impugnature.</td></tr>
+</tbody>
+</table>
+<p>PLA, PETG e TPU sono i materiali consigliati dal produttore con l'ugello da 0,4 mm in dotazione. La macchina può stampare anche ABS, ASA e filamenti caricati con fibra di carbonio, ma servono ugelli più larghi, da 0,6 o 0,8 mm, che non sono inclusi; con le classi restiamo sul PLA.</p>
+<h3>I numeri della macchina</h3>
+<ul>
+<li><strong>Volume di stampa</strong>: 220 × 220 × 220 mm. È il limite di dimensione di ogni oggetto.</li>
+<li><strong>Altezza dello strato</strong>: da 0,1 a 0,4 mm.</li>
+<li><strong>Velocità</strong>: fino a 600 mm al secondo. È una stampante veloce: molti oggetti piccoli escono mentre si lavora in aula.</li>
+<li><strong>Collegamenti</strong>: chiavetta USB, Wi-Fi, rete cablata, cloud.</li>
+<li><strong>Programmi</strong>: Flashprint, oppure Cura e Orca Slicer.</li>
+</ul>
 <h2 id="progettare-un-oggetto-che-si-stampa-bene">Progettare un oggetto che si stampa bene</h2>
 <h3>La domanda del progettista: cosa c'è sotto?</h3>
 <p>La stampante costruisce dal basso verso l'alto, e ogni strato deve appoggiarsi su quello precedente. Se una parte del modello è sospesa nel vuoto, la plastica fusa cade e si formano fili e grovigli. Si chiama sbalzo.</p>
@@ -109,13 +153,71 @@
 </ul>
 <h3>Il primo strato</h3>
 <p>Molti fallimenti nascono nel primo strato: piatto sporco, distanza sbagliata tra ugello e piatto, oggetto con poca superficie d'appoggio. Un piatto pulito e un oggetto ben appoggiato risolvono la maggior parte dei problemi.</p>
-<h2 id="dove-si-usa-nel-lavoro">Dove si usa nel lavoro</h2>
-<h3>Industria automobilistica</h3>
-<p>Nell'auto la stampa 3D raramente produce i pezzi della vettura finita. Si usa soprattutto per i prototipi, che permettono di provare forme e incastri in pochi giorni invece che in settimane, e per le attrezzature della produzione: maschere, supporti, dime e strumenti per la linea di montaggio, costruiti su misura per una postazione o un operatore. Si usa anche per piccole serie di componenti speciali e per pezzi di ricambio difficili da reperire.</p>
-<h3>Medicina</h3>
-<p>La medicina è uno dei campi in cui la stampa 3D dà il meglio, perché ogni corpo è diverso. Si stampano protesi e plantari su misura, apparecchi dentali, guide chirurgiche e modelli anatomici ricavati dalle immagini di TAC e risonanza, che permettono ai chirurghi di studiare e provare un intervento prima di eseguirlo.</p>
-<h3>Mestieri</h3>
-<p>La stampa 3D è entrata in molti mestieri: in cucina per stampi e decorazioni su misura, nella moda per accessori e prototipi, nell'edilizia per plastici e, in forma sperimentale, per costruire strutture in calcestruzzo, nel design per i prototipi, nell'odontotecnica per modelli e apparecchi. In ogni caso vale la stessa domanda: cosa fa la macchina, e cosa resta alla persona? La macchina esegue; ideare, progettare, scegliere e rifinire restano compiti umani.</p>
+<h2 id="dove-si-usa-nel-lavoro">Stesso principio, materiali diversi: i casi reali</h2>
+<p>In aula stampiamo plastica. Ma il principio che si vede sulla nostra stampante, un file digitale e un materiale depositato strato su strato, è lo stesso con cui oggi si costruiscono case, si ricostruiscono ossa e si producono tessuti vivi. Cambia soltanto ciò che esce dall'ugello: terra, metallo, cellule. I casi che seguono sono tutti reali e documentati, e per ognuno è indicato a che punto è davvero la tecnologia, perché non tutto ciò che si legge sulla stampa 3D è già disponibile.</p>
+<table>
+<thead><tr><th>Ambito</th><th>Che cosa si deposita</th><th>A che punto siamo</th></tr></thead>
+<tbody>
+<tr><td><strong>Edilizia</strong></td><td>Terra cruda, calcestruzzo</td><td>Prototipi abitabili e primi edifici</td></tr>
+<tr><td><strong>Ossa e protesi</strong></td><td>Polveri di metallo fuse</td><td>Già in sala operatoria</td></tr>
+<tr><td><strong>Tessuti vivi</strong></td><td>Cellule in un gel</td><td>Laboratorio e ricerca</td></tr>
+<tr><td><strong>Automobile</strong></td><td>Plastica e metallo</td><td>Uso industriale quotidiano</td></tr>
+</tbody>
+</table>
+<h3>Una casa di terra: TECLA</h3>
+<p>A Massa Lombarda, in provincia di Ravenna, esiste una casa stampata in 3D con la terra del posto. Si chiama TECLA, dall'unione di <em>technology</em> e <em>clay</em>, argilla: l'ha disegnata lo studio Mario Cucinella Architects e l'ha costruita WASP, un'azienda italiana che produce stampanti 3D. È stata completata nel 2021.</p>
+<p>La macchina è una gru che fa esattamente ciò che fa la nostra stampante, ma in grande: deposita un cordone di impasto, sale, ne deposita un altro. Più stampanti hanno lavorato insieme, nello stesso momento, sulla stessa struttura. I numeri danno la misura: circa 200 ore di stampa, 350 strati alti 12 millimetri, 60 metri cubi di materiali naturali, 150 chilometri di cordone depositato. La terra non viene cotta né trasportata da lontano, e a fine vita può tornare terra: per questo il progetto è nato come risposta al problema delle emissioni dell'edilizia.</p>
+<p>Resta un prototipo: dimostra che si può fare, non che oggi convenga costruire così ogni casa.</p>
+<div class="cornice-video">
+  <iframe
+    src="https://www.youtube-nocookie.com/embed/w9sXqxccRPM?rel=0"
+    title="La stampa di TECLA, video di WASP"
+    loading="lazy"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
+</div>
+<p class="didascalia-video">La stampa di TECLA, video di WASP. Se il video non parte, aprilo su <a href="https://youtu.be/w9sXqxccRPM" target="_blank" rel="noopener">YouTube</a>.</p>
+<h3>Ossa su misura: l'Istituto Ortopedico Rizzoli</h3>
+<p>Ogni corpo è diverso, e una protesi di serie non sempre si adatta. All'Istituto Ortopedico Rizzoli di Bologna la stampa 3D serve proprio a questo. Nell'ottobre 2019 un uomo di 57 anni, che dopo un incidente stradale non riusciva più a muovere la caviglia ed era considerato non operabile, ha ricevuto una caviglia completa progettata sulla sua anatomia: il primo intervento di questo tipo al mondo. È tornato a camminare.</p>
+<p>Il percorso è lo stesso di qualunque stampa, modello, verifica, produzione:</p>
+<ol>
+<li>dalle immagini della TAC si ricava il modello tridimensionale della gamba e del piede;</li>
+<li>chirurghi e ingegneri provano l'intervento al computer e adattano la forma di ogni componente;</li>
+<li>si stampa <strong>in plastica</strong> un modello dell'osso e della protesi, per le prove manuali;</li>
+<li>solo alla fine si stampa la protesi vera, in una lega di cromo, cobalto e molibdeno: un fascio di elettroni fonde la polvere di metallo strato dopo strato.</li>
+</ol>
+<p>Il terzo passaggio è quello che conta per noi: la stampa in plastica che facciamo in aula non è la versione giocattolo, è una tappa del lavoro in ospedale. Nel 2018, sempre al Rizzoli, a una paziente sono stati sostituiti due terzi dello sterno e parte di sei costole con un impianto in lega di titanio stampato su misura. Dal 2024 l'istituto ha un laboratorio dedicato, il Rizzoli su Misura 3DLab, dove ingegneri e chirurghi progettano insieme.</p>
+<p>Il limite è il costo: la protesi di sterno è costata circa dieci volte una protesi tradizionale. Ha senso dove il pezzo standard non basta.</p>
+<div class="cornice-video">
+  <iframe
+    src="https://www.youtube-nocookie.com/embed/k-faEwoeAMg?rel=0"
+    title="La caviglia ricostruita in 3D al Rizzoli di Bologna"
+    loading="lazy"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
+</div>
+<p class="didascalia-video">La caviglia ricostruita in 3D al Rizzoli di Bologna. Se il video non parte, aprilo su <a href="https://youtu.be/k-faEwoeAMg" target="_blank" rel="noopener">YouTube</a>.</p>
+<h3>Tessuti vivi: la biostampa</h3>
+<p>La biostampa, in inglese <em>bioprinting</em>, usa lo stesso principio con un materiale sorprendente: al posto della plastica c'è un bioinchiostro, un gel che contiene cellule vive. La stampante lo deposita a strati, le cellule restano vive e, nelle condizioni giuste, si organizzano in un tessuto.</p>
+<p>Che cosa esiste già: in laboratorio si sono ottenuti pelle, cornea e cartilagine. Servono soprattutto alla ricerca. All'Università tecnica di Vienna, per esempio, si stampano modelli di pelle per studiare malattie molto diffuse come psoriasi, eczema e acne, e per provare trattamenti senza ricorrere agli animali. È un tema che riguarda da vicino chi lavorerà nell'estetica e nella cosmesi.</p>
+<p>Che cosa non esiste ancora: un organo intero, come un cuore o un rene, stampato e trapiantato in una persona. Un organo ha bisogno di vasi sanguigni fin nel più piccolo dettaglio, e nessuno sa ancora costruirli in modo affidabile. Quando un titolo annuncia "il cuore stampato in 3D", di solito si tratta di un modello in miniatura per la ricerca.</p>
+<div class="cornice-video">
+  <iframe
+    src="https://www.youtube-nocookie.com/embed/pp17_EXPDYs?rel=0"
+    title="Come è fatta una stampante per tessuti biologici"
+    loading="lazy"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen></iframe>
+</div>
+<p class="didascalia-video">Come è fatta una stampante per tessuti biologici. Se il video non parte, aprilo su <a href="https://youtu.be/pp17_EXPDYs" target="_blank" rel="noopener">YouTube</a>.</p>
+<h3>L'automobile: Mirafiori</h3>
+<p>Nell'auto la stampa 3D raramente produce i pezzi della vettura finita. Si usa per i prototipi, che permettono di provare forme e incastri in pochi giorni invece che in settimane, e per le attrezzature della produzione: maschere, supporti, dime e strumenti per la linea di montaggio, costruiti su misura per una postazione o un operatore. Si usa anche per piccole serie e per pezzi di ricambio difficili da reperire.</p>
+<p>Succede anche a Torino. Nel polo di Ingegneria di Mirafiori Stellantis ha un centro dedicato alla manifattura additiva, che produce in tempi rapidi componenti in plastica e in metallo, attrezzature e parti per serie limitate, e che l'azienda considera un riferimento per tutto il gruppo. Dal 2025 ci lavora insieme a CIM4.0, il centro di competenza torinese per l'industria, che ha portato lì le proprie stampanti.</p>
+<h3>E nei mestieri</h3>
+<p>La stampa 3D è entrata in molti altri lavori: in cucina per stampi e decorazioni su misura, nella moda per accessori e prototipi, nell'odontotecnica per modelli e apparecchi, nel design per provare un'idea prima di produrla. In ogni caso vale la stessa domanda: cosa fa la macchina, e cosa resta alla persona? La macchina esegue; ideare, progettare, scegliere e rifinire restano compiti umani.</p>
 <h2 id="modelli-licenze-e-materiali">Modelli, licenze e materiali</h2>
 <h3>Gratis non vuol dire libero</h3>
 <p>Su archivi online come Printables e Thingiverse si trovano milioni di modelli gratuiti. Un modello 3D però è un'opera dell'ingegno, come una canzone o una fotografia, e chi lo pubblica sceglie a quali condizioni concederlo. Molti usano le licenze Creative Commons:</p>
@@ -166,13 +268,15 @@
 </ul>
 <h2 id="il-percorso-in-aula">Il percorso in aula</h2>
 <ol>
-<li><strong>Un oggetto che nasce davanti a tutti.</strong> Il laboratorio si apre avviando una stampa e facendo circolare oggetti già stampati, compreso uno venuto male. I ragazzi stimano peso, costo e tempo, e di solito sovrastimano il costo e sottostimano il tempo.</li>
-<li><strong>Come funziona.</strong> Si ripercorrono la storia della tecnologia e le tre fasi modello, slicer, stampa, osservando la macchina al lavoro e analizzando l'oggetto fallito per capire cosa sia uno sbalzo.</li>
-<li><strong>Ricerca a squadre.</strong> Ogni squadra cerca dal telefono una risposta documentata: come usano la stampa 3D le case automobilistiche, un caso in medicina, un mestiere a scelta, la licenza di un modello gratuito, le differenze tra i materiali.</li>
+<li><strong>Quale di questi è stato stampato?</strong> Si parte da quattro immagini: una casa, una caviglia, un lembo di pelle, un pezzo d'automobile. La classe vota dal telefono quale sia uscito da una stampante 3D. La risposta è: tutti.</li>
+<li><strong>Un oggetto che nasce davanti a tutti.</strong> Si avvia una stampa sulla CampuSprint3D e si fanno circolare oggetti già stampati, compreso uno venuto male. I ragazzi stimano peso, costo e tempo, e di solito sovrastimano il costo e sottostimano il tempo.</li>
+<li><strong>Come funziona.</strong> Si ripercorrono la storia della tecnologia e le tre fasi modello, slicer, stampa, osservando la macchina al lavoro: che cosa si scalda, che cosa resta freddo, perché. L'oggetto fallito serve a capire cosa sia uno sbalzo.</li>
+<li><strong>Stesso principio, materiali diversi.</strong> Si guardano insieme i casi reali, con i video: la casa di terra, la caviglia su misura, i tessuti vivi, Mirafiori. Per ognuno la classe dice a che punto è secondo lei la tecnologia, prima di scoprirlo.</li>
 <li><strong>Primi passi su Tinkercad.</strong> Forme piene e buchi, misure in millimetri, raggruppamento, e la sfida di un portachiavi con il proprio nome.</li>
 <li><strong>Prototipo per un cliente.</strong> I gruppi ricevono un brief con vincoli di dimensione, tempo e assenza di supporti, partono da uno schizzo su carta, modellano e verificano tempo e grammi nello slicer.</li>
 <li><strong>Presentazione al cliente.</strong> Ogni gruppo presenta problema, soluzione, tempo e costo, e risponde alla domanda decisiva: e se ne volessi 500?</li>
 <li><strong>Versione 2.</strong> I gruppi correggono il modello in base ai commenti ricevuti; le nuove versioni vengono stampate dopo l'incontro.</li>
+<li><strong>E nel tuo lavoro?</strong> Si chiude con una domanda a tutta la classe: che cosa stamperesti nel mestiere che vuoi fare, e con quale materiale?</li>
 </ol>
 <h2 id="mettilo-in-pratica">Mettilo in pratica</h2>
 <ol>
@@ -191,6 +295,10 @@
 <li><strong>Slicer</strong>: programma che divide il modello in strati e genera le istruzioni per la stampante.</li>
 <li><strong>G-code</strong>: linguaggio di istruzioni eseguito dalla stampante.</li>
 <li><strong>Ugello</strong>: punta riscaldata da cui esce la plastica fusa.</li>
+<li><strong>Estrusore</strong>: meccanismo con ruota dentata che spinge il filo verso l'ugello.</li>
+<li><strong>Piatto riscaldato</strong>: superficie calda su cui cresce l'oggetto; aiuta il primo strato ad aderire.</li>
+<li><strong>Bioinchiostro</strong>: gel che contiene cellule vive, usato nella biostampa.</li>
+<li><strong>Biostampa</strong>: stampa 3D di strutture fatte di cellule e materiali biocompatibili.</li>
 <li><strong>Strato</strong>: singola fetta orizzontale dell'oggetto, di solito spessa 0,2 mm.</li>
 <li><strong>Riempimento</strong>: struttura interna di un oggetto stampato, espressa in percentuale.</li>
 <li><strong>Sbalzo</strong>: parte del modello che sporge nel vuoto senza appoggio sottostante.</li>
@@ -206,6 +314,14 @@
 <li>Progetto RepRap: <a href="https://reprap.org">reprap.org</a></li>
 <li>Printables, archivio di modelli 3D: <a href="https://www.printables.com">printables.com</a></li>
 <li>Thingiverse, archivio di modelli 3D: <a href="https://www.thingiverse.com">thingiverse.com</a></li>
+<li>TECLA, casa stampata in 3D in terra cruda: <a href="https://www.3dnatives.com/it/tecla-wasp-210420219/">3Dnatives</a> e <a href="https://www.infobuild.it/stampa-3d-casa-eco-sostenibile-mario-cucinella-architects-wasp/">Infobuild</a></li>
+<li>Caviglia su misura all'Istituto Ortopedico Rizzoli: <a href="https://www.unionesarda.it/salute/caviglia-ricostruita-in-3d-a-bologna-il-primo-intervento-al-mondo-yuolravy">L'Unione Sarda</a> e <a href="https://www.italpress.com/?p=127967">Italpress</a></li>
+<li>Sterno e costole in titanio al Rizzoli: <a href="https://startupitalia.eu/68385-20180921-trapiantati-sterno-costole-3d-volta-italia">StartupItalia</a></li>
+<li>Rizzoli su Misura 3DLab: <a href="https://www.3dnatives.com/it/rizzoli-3dlab-laboratorio-protesi-stampa-3d-311020249/">3Dnatives</a></li>
+<li>Biostampa 3D, cos'è e come funziona: <a href="https://www.geopop.it/biostampa-3d-cose-come-funziona-e-come-promette-di-rivoluzionare-la-medicina-e-la-ricerca/">Geopop</a></li>
+<li>Modelli di pelle biostampati all'Università tecnica di Vienna: <a href="https://www.bionity.com/it/notizie/1187806/">Bionity</a></li>
+<li>Stellantis e CIM4.0 a Mirafiori: <a href="https://www.3dnatives.com/it/stellantis-cim40-stampa-3d-automotive-080420259/">3Dnatives</a></li>
+<li>CampuSprint3D 5.0 PRO High Speed, scheda del prodotto: <a href="https://www.dipiuperlascuola.it/it/strumenti-tecnologici/stampante-3d-campusprint3d-5-0pro-hspeed/pr-28558">dipiuperlascuola.it</a></li>
 <li>Brevetti originali: stereolitografia di Charles (Chuck) Hull, 1986; modellazione a deposizione fusa di S. Scott Crump, 1989.</li>
 </ul>
   <div id="presentazione">
